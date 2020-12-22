@@ -30,7 +30,7 @@ struct gcKeyNode_s *gc_node_new(char*k, int l)
 	node->key = (char*) malloc(l);
 	memcpy(node->key, k, l);
 	node->next = 0;
-	node->value = NULL;
+	node->dtor = NULL;
 	return node;
 }
 
@@ -39,9 +39,31 @@ struct gcKeyNode_s *gc_node_new(char*k, int l)
 static
 void gc_node_del(struct gcKeyNode_s *node) 
 {
-	if ( node->key!=NULL ) free(node->key);
-	
-	if ( node->value!=NULL ) free(node->value);	
+
+	if ( node->dtor!=NULL )
+	{ 
+		//free(node->dtor);	
+		
+			union {
+			char  ptrc[8];
+			void* ptr;
+			} pkey ;
+			
+			strncpy( pkey.ptrc , node->key , 8 ) ;
+			
+		//printf ("\n free %p %p %p\n",free,node->dtor,node->key);	
+		
+			(node->dtor)(pkey.ptr); // CALL DESTRUCTOR
+			
+				
+		//free(*node->dtor);
+			//node->dtor=NULL ;
+	}
+	if ( node->key!=NULL ) 
+	{ 
+			free(node->key); 
+			node->key=NULL ;
+	}
 	
 	if (node->next) gc_node_del(node->next);
 	
@@ -74,6 +96,30 @@ void gc_del(struct gc_s* gc)
 	free(gc->table);
 	gc->table = 0;
 	free(gc);
+	
+	//.......................... close stream
+	
+	#if defined(__MINGW32__) || defined(__MINGW64__)
+	fcloseall();
+	flushall();
+	#endif
+	
+	#if defined(__clang__) || defined(__APPLE__)
+	//fcloseall();
+	fflush(NULL);
+	#endif	
+	
+	#if defined(_WIN32) || defined(_WIN64)
+	_fcloseall();
+	_flushall();
+	#endif 	
+	
+	fclose(stdin);
+	fclose(stdout);
+	fclose(stderr);	
+		
+	//..........................
+	
 }
 
 // ........................................... gc reinsert when resizing
@@ -84,13 +130,13 @@ void gc_reinsert_when_resizing(struct gc_s* gc, struct gcKeyNode_s *k2)
 	if (gc->table[n] == 0) 
 	{
 		gc->table[n] = k2;
-		gc->value = &gc->table[n]->value;
+		gc->dtor = &gc->table[n]->dtor;
 		return;
 	}
 	struct gcKeyNode_s *k = gc->table[n];
 	k2->next = k;
 	gc->table[n] = k2;
-	gc->value = &k2->value;
+	gc->dtor = &k2->dtor;
 }
 
 // ........................................... gc  resize
@@ -129,7 +175,7 @@ int gc_add(struct gc_s* gc, void *key, int keyn)
 			return gc_add(gc, key, keyn);
 		}
 		gc->table[n] = gc_node_new((char*)key, keyn);
-		gc->value = &gc->table[n]->value;
+		gc->dtor = &gc->table[n]->dtor;
 		gc->count++;
 		return 0;
 	}
@@ -138,7 +184,7 @@ int gc_add(struct gc_s* gc, void *key, int keyn)
 	{
 		if (k->len == keyn && memcmp(k->key, key, keyn) == 0) 
 		{
-			gc->value = &k->value;
+			gc->dtor = &k->dtor;
 			return 1;
 		}
 		k = k->next;
@@ -147,7 +193,7 @@ int gc_add(struct gc_s* gc, void *key, int keyn)
 	struct gcKeyNode_s *k2 = gc_node_new((char*)key, keyn);
 	k2->next = gc->table[n];
 	gc->table[n] = k2;
-	gc->value = &k2->value;
+	gc->dtor = &k2->dtor;
 	return 0;
 }
 
@@ -163,7 +209,7 @@ int gc_find(struct gc_s* gc, void *key, int keyn)
 	{
 		if (k->len == keyn && !memcmp(k->key, key, keyn)) 
 		{
-			gc->value = &k->value;
+			gc->dtor = &k->dtor;
 			return 1;
 		}
 		k = k->next;
@@ -182,7 +228,7 @@ void gcPrint_(struct gc_s* gc)
 			struct gcKeyNode_s *k = gc->table[i];
 			while (k) 
 			{
-				printf ( "# node(%p)::(%p)\n",k,k->value ) ;
+				printf ( "# node(%p)::(%p)\n",k,k->dtor ) ;
 				k = k->next;
 			}
 		}
@@ -190,9 +236,9 @@ void gcPrint_(struct gc_s* gc)
 }
 #undef hash_func
 
-// ........................................... gc add
+// ........................................... gc add XXX
 static
-int gcAdd(struct gc_s* gc,void* key)
+int gcAdd(struct gc_s* gc,void* key,HASHDICT_VALUE_TYPE dtor)
 {
     union {
         char  ptrc[8];
@@ -200,7 +246,7 @@ int gcAdd(struct gc_s* gc,void* key)
     } pkey ;
 	pkey.ptr=(void*)key;
 	gc_add(gc, pkey.ptrc, 8);
-	*gc->value = (void*)key;
+	*gc->dtor = dtor;
 }
 
 // ........................................... gc find
@@ -220,7 +266,7 @@ int gcFind(struct gc_s* gc,void* key)
 void* gcMalloc_( struct gc_s* gc , size_t size )
 {
 	void* ptr = malloc( size ) ;
-	gcAdd(gc,ptr);
+	gcAdd(gc,ptr,free);
 	return ptr ;
 }
 
@@ -230,11 +276,19 @@ void* gcFree_( struct gc_s* gc , void* ptr )
 {
 	if ( gcFind(gc,ptr) ) 
 	{
-		if (*gc->value!=NULL)
-		{ 
-			free(*gc->value);
+		if (*gc->dtor!=NULL)
+		{
+			union {
+			char  ptrc[8];
+			void* ptr;
+			} pkey ;
 			
-			*gc->value=NULL ;
+			pkey.ptr=ptr; 
+			
+			(*gc->dtor)(ptr);
+			
+			*gc->dtor=NULL ;
+
 			
 			ptr=NULL;
 		}
@@ -249,14 +303,24 @@ void* gcRealloc_( struct gc_s* gc , void* ptr, size_t size )
 	void* old = ptr ;
 
 	ptr = realloc( ptr,size ) ;
-	gcAdd(gc,ptr); 
+	gcAdd(gc,ptr,free); 
 
 	gcFind(gc,old);
-	*gc->value=NULL ;	
+	*gc->dtor=NULL ;	
 
 	return ptr ;
 }
 
+
+// ........................................... gc file Open
+
+void* gcFileOpen_( struct gc_s* gc ,char* fileName, char* mode)
+{
+	FILE* ptr = fopen ( fileName,mode );
+	
+	gcAdd(gc,ptr,(void*)fclose);
+	return ptr ;
+}
 
 
 /**/
