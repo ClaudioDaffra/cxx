@@ -202,7 +202,14 @@ static
 int gc_find(struct gc_s* gc, void *key, int keyn) 
 {
 	int n = hash_func((const char*)key, keyn) % gc->length;
+    #if defined(__MINGW32__) || defined(__MINGW64__)
 	__builtin_prefetch(gc->table[n]);
+    #endif
+    
+    #if defined(_WIN32) || defined(_WIN64)
+    _mm_prefetch((char*)gc->table[n], _MM_HINT_T0);
+    #endif
+    
 	struct gcKeyNode_s *k = gc->table[n];
 	if (!k) return 0;
 	while (k) 
@@ -245,8 +252,9 @@ int gcAdd(struct gc_s* gc,void* key,HASHDICT_VALUE_TYPE dtor)
         void* ptr;
     } pkey ;
 	pkey.ptr=(void*)key;
-	gc_add(gc, pkey.ptrc, 8);
+	int ret=gc_add(gc, pkey.ptrc, 8);
 	*gc->dtor = dtor;
+    return ret ;
 }
 
 // ........................................... gc find

@@ -7,6 +7,7 @@
 #include <stdint.h> 
 #include <string.h> 
 #include <stdio.h> 
+#include <xmmintrin.h>
 
 //#define HASHDICT_VALUE_TYPE void*
 
