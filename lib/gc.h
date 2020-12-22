@@ -42,7 +42,8 @@ void* 			gcMalloc_	(struct gc_s* gc , size_t size ) ;
 void* 			gcFree_		(struct gc_s* gc , void* ptr ) ;
 void* 			gcRealloc_	(struct gc_s* gc , void* ptr, size_t size ) ;
 void 			gcPrint_	(struct gc_s* gc );
-void* gcFileOpen_( struct gc_s* gc ,char* fileName, char* action);
+void*           gcFileOpen_ ( struct gc_s* gc ,char* fileName, char* action);
+FILE*           gcFileTemp  ( void ) ;
 
 #define 		gcStart(...)	gc=gc_new(0)/*__VA_ARGS__*/
 #define 		gcStop(...)		gc_del(gc)/*__VA_ARGS__*/

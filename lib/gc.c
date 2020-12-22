@@ -319,7 +319,6 @@ void* gcRealloc_( struct gc_s* gc , void* ptr, size_t size )
 	return ptr ;
 }
 
-
 // ........................................... gc file Open
 
 void* gcFileOpen_( struct gc_s* gc ,char* fileName, char* mode)
@@ -327,6 +326,17 @@ void* gcFileOpen_( struct gc_s* gc ,char* fileName, char* mode)
 	FILE* ptr = fopen ( fileName,mode );
 	
 	gcAdd(gc,ptr,(void*)fclose);
+	return ptr ;
+}
+
+// ........................................... gc file temp
+
+FILE* gcFileTemp( void )
+{
+	FILE* ptr = tmpfile();
+	
+	gcAdd(gc,ptr,(void*)fclose);
+    
 	return ptr ;
 }
 

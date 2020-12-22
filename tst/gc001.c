@@ -4,6 +4,7 @@
 /*
  * 	gcc lib/gc.c tst/gc001.c -o bin/x
  *  valgrind ./bin/x
+ *  cl lib\gc.c tst\gc001.c /Febin\x.exe
  */
 
 // ........................................... MAIN
@@ -29,7 +30,10 @@ int main()
 	gcFileClose(fi) ;
 	
 	gcFree(a2);
-
+//
+    FILE * ft=gcFileTemp();
+    
+//
 	gcStop();
 
 	return 0;
