@@ -1,40 +1,41 @@
-#ifndef HASHDICTC
-#define HASHDICTC
-#include <stdlib.h> /* malloc/calloc */
-#include <stdint.h> /* uint32_t */
-#include <string.h> /* memcpy/memcmp */
-#include <stdio.h> /* malloc/calloc */
 
+#ifndef gcGarbageCollector
+#define gcGarbageCollector
 
-typedef int (*enumFunc)(void *key, int count, int *value, void *user);
+#include <stdlib.h> 
+#include <stdint.h> 
+#include <string.h> 
+#include <stdio.h> 
+
+//typedef int (*enumFunc)(void *key, int count, int *value, void *user);
 
 #define HASHDICT_VALUE_TYPE void*
-#define KEY_LENGTH_TYPE int
+#define KEY_LENGTH_TYPE 	int
 
-struct keynode 
+struct gcKeyNode_s 
 {
-	struct keynode *next;
-	char *key;
-	KEY_LENGTH_TYPE len;
-	HASHDICT_VALUE_TYPE value;
+	struct gcKeyNode_s *	next;
+	char *					key;
+	KEY_LENGTH_TYPE 		len;
+	HASHDICT_VALUE_TYPE 	value;
 };
 
-struct dictionary 
+struct gc_s 
 {
-	struct keynode **table;
-	int length, count;
-	double growth_treshold;
-	double growth_factor;
-	HASHDICT_VALUE_TYPE *value;
+	struct gcKeyNode_s **	table;
+	int 					length, count;
+	double 					growth_treshold;
+	double 					growth_factor;
+	HASHDICT_VALUE_TYPE *	value;
 };
 
 /* See README.md */
 
-struct dictionary* 	dic_new		(int initial_size);
-void 				dic_delete	(struct dictionary* dic);
-int 				dic_add		(struct dictionary* dic, void *key, int keyn);
-int 				dic_find	(struct dictionary* dic, void *key, int keyn);
-//void 				dic_forEach	(struct dictionary* dic, enumFunc f, void *user);
+struct gc_s* 	gc_new		(int initial_size);
+void 			gc_del		(struct gc_s* gc);
+int 			gc_add		(struct gc_s* gc, void *key, int keyn);
+int 			gc_find	(struct gc_s* gc, void *key, int keyn);
+//void 			dic_forEach	(struct gc_s* gc, enumFunc f, void *user);
 #endif
 
 #define hash_func meiyan
@@ -56,9 +57,9 @@ static inline uint32_t meiyan(const char *key, int count)
 	return h ^ (h >> 16);
 }
 
-struct keynode *keynode_new(char*k, int l) 
+struct gcKeyNode_s *gc_node_new(char*k, int l) 
 {
-	struct keynode *node = (struct keynode *) malloc(sizeof(struct keynode));
+	struct gcKeyNode_s *node = (struct gcKeyNode_s *) malloc(sizeof(struct gcKeyNode_s));
 	node->len = l;
 	node->key = (char*) malloc(l);
 	memcpy(node->key, k, l);
@@ -67,121 +68,135 @@ struct keynode *keynode_new(char*k, int l)
 	return node;
 }
 
-void keynode_delete(struct keynode *node) 
+// ........................................... gc delete node
+
+void gc_node_del(struct gcKeyNode_s *node) 
 {
 	if ( node->key!=NULL ) free(node->key);
 	
 	if ( node->value!=NULL ) free(node->value);	
 	
-	if (node->next) keynode_delete(node->next);
+	if (node->next) gc_node_del(node->next);
 	
 	free(node);
 }
 
-struct dictionary* dic_new(int initial_size) 
+// ........................................... gc new
+
+struct gc_s* gc_new(int initial_size) 
 {
-	struct dictionary* dic = (struct dictionary *)malloc(sizeof(struct dictionary));
+	struct gc_s* gc = (struct gc_s *)malloc(sizeof(struct gc_s));
 	if (initial_size == 0) initial_size = 1024;
-	dic->length = initial_size;
-	dic->count = 0;
-	dic->table =  calloc(sizeof(struct keynode*), initial_size);
-	dic->growth_treshold = 2.0;
-	dic->growth_factor = 10;
-	return dic;
+	gc->length = initial_size;
+	gc->count = 0;
+	gc->table =  calloc(sizeof(struct gcKeyNode_s*), initial_size);
+	gc->growth_treshold = 2.0;
+	gc->growth_factor = 10;
+	return gc;
 }
 
-void dic_delete(struct dictionary* dic) 
+// ........................................... gc delete
+
+void gc_del(struct gc_s* gc) 
 {
-	for (int i = 0; i < dic->length; i++) 
+	for (int i = 0; i < gc->length; i++) 
 	{
-		if (dic->table[i])
-		keynode_delete(dic->table[i]);
+		if (gc->table[i])
+		gc_node_del(gc->table[i]);
 	}
-	free(dic->table);
-	dic->table = 0;
-	free(dic);
+	free(gc->table);
+	gc->table = 0;
+	free(gc);
 }
 
-void dic_reinsert_when_resizing(struct dictionary* dic, struct keynode *k2) 
+// ........................................... gc reinsert when resizing
+
+void gc_reinsert_when_resizing(struct gc_s* gc, struct gcKeyNode_s *k2) 
 {
-	int n = hash_func(k2->key, k2->len) % dic->length;
-	if (dic->table[n] == 0) 
+	int n = hash_func(k2->key, k2->len) % gc->length;
+	if (gc->table[n] == 0) 
 	{
-		dic->table[n] = k2;
-		dic->value = &dic->table[n]->value;
+		gc->table[n] = k2;
+		gc->value = &gc->table[n]->value;
 		return;
 	}
-	struct keynode *k = dic->table[n];
+	struct gcKeyNode_s *k = gc->table[n];
 	k2->next = k;
-	dic->table[n] = k2;
-	dic->value = &k2->value;
+	gc->table[n] = k2;
+	gc->value = &k2->value;
 }
 
-void dic_resize(struct dictionary* dic, int newsize) 
+// ........................................... gc  resize
+
+void gc_resize(struct gc_s* gc, int newsize) 
 {
-	int o = dic->length;
-	struct keynode **old = dic->table;
-	dic->table = calloc(sizeof(struct keynode*), newsize);
-	dic->length = newsize;
+	int o = gc->length;
+	struct gcKeyNode_s **old = gc->table;
+	gc->table = calloc(sizeof(struct gcKeyNode_s*), newsize);
+	gc->length = newsize;
 	for (int i = 0; i < o; i++) 
 	{
-		struct keynode *k = old[i];
+		struct gcKeyNode_s *k = old[i];
 		while (k) 
 		{
-			struct keynode *next = k->next;
+			struct gcKeyNode_s *next = k->next;
 			k->next = 0;
-			dic_reinsert_when_resizing(dic, k);
+			gc_reinsert_when_resizing(gc, k);
 			k = next;
 		}
 	}
 	free(old);
 }
 
-int dic_add(struct dictionary* dic, void *key, int keyn)
+// ........................................... gc add
+
+int gc_add(struct gc_s* gc, void *key, int keyn)
 {
-	int n = hash_func((const char*)key, keyn) % dic->length;
-	if (dic->table[n] == 0)
+	int n = hash_func((const char*)key, keyn) % gc->length;
+	if (gc->table[n] == 0)
 	{
-		double f = (double)dic->count / (double)dic->length;
-		if (f > dic->growth_treshold)
+		double f = (double)gc->count / (double)gc->length;
+		if (f > gc->growth_treshold)
 		{
-			dic_resize(dic, dic->length * dic->growth_factor);
-			return dic_add(dic, key, keyn);
+			gc_resize(gc, gc->length * gc->growth_factor);
+			return gc_add(gc, key, keyn);
 		}
-		dic->table[n] = keynode_new((char*)key, keyn);
-		dic->value = &dic->table[n]->value;
-		dic->count++;
+		gc->table[n] = gc_node_new((char*)key, keyn);
+		gc->value = &gc->table[n]->value;
+		gc->count++;
 		return 0;
 	}
-	struct keynode *k = dic->table[n];
+	struct gcKeyNode_s *k = gc->table[n];
 	while (k) 
 	{
 		if (k->len == keyn && memcmp(k->key, key, keyn) == 0) 
 		{
-			dic->value = &k->value;
+			gc->value = &k->value;
 			return 1;
 		}
 		k = k->next;
 	}
-	dic->count++;
-	struct keynode *k2 = keynode_new((char*)key, keyn);
-	k2->next = dic->table[n];
-	dic->table[n] = k2;
-	dic->value = &k2->value;
+	gc->count++;
+	struct gcKeyNode_s *k2 = gc_node_new((char*)key, keyn);
+	k2->next = gc->table[n];
+	gc->table[n] = k2;
+	gc->value = &k2->value;
 	return 0;
 }
 
-int dic_find(struct dictionary* dic, void *key, int keyn) 
+// ........................................... gc find
+
+int gc_find(struct gc_s* gc, void *key, int keyn) 
 {
-	int n = hash_func((const char*)key, keyn) % dic->length;
-	__builtin_prefetch(dic->table[n]);
-	struct keynode *k = dic->table[n];
+	int n = hash_func((const char*)key, keyn) % gc->length;
+	__builtin_prefetch(gc->table[n]);
+	struct gcKeyNode_s *k = gc->table[n];
 	if (!k) return 0;
 	while (k) 
 	{
 		if (k->len == keyn && !memcmp(k->key, key, keyn)) 
 		{
-			dic->value = &k->value;
+			gc->value = &k->value;
 			return 1;
 		}
 		k = k->next;
@@ -189,13 +204,13 @@ int dic_find(struct dictionary* dic, void *key, int keyn)
 	return 0;
 }
 /*
-void dic_forEach(struct dictionary* dic, enumFunc f, void *user) 
+void dic_forEach(struct gc_s* gc, enumFunc f, void *user) 
 {
-	for (int i = 0; i < dic->length; i++) 
+	for (int i = 0; i < gc->length; i++) 
 	{
-		if (dic->table[i] != 0) 
+		if (gc->table[i] != 0) 
 		{
-			struct keynode *k = dic->table[i];
+			struct gcKeyNode_s *k = gc->table[i];
 			while (k) 
 			{
 				if (!f(k->key, k->len, &k->value, user)) return;
@@ -207,88 +222,91 @@ void dic_forEach(struct dictionary* dic, enumFunc f, void *user)
 */
 #undef hash_func
 
-int dicAdd(struct dictionary* dic,void* key)
+// ........................................... gc add
+
+int gcAdd(struct gc_s* gc,void* key)
 {
     union {
         char  ptrc[8];
         void* ptr;
     } pkey ;
 	pkey.ptr=(void*)key;
-	dic_add(dic, pkey.ptrc, 8);
-	*dic->value = (void*)key;
+	gc_add(gc, pkey.ptrc, 8);
+	*gc->value = (void*)key;
 }
 
-int dicFind(struct dictionary* dic,void* key)
+// ........................................... gc find
+
+int gcFind(struct gc_s* gc,void* key)
 {
     union {
         char  ptrc[8];
         void* ptr;
     } pkey ;
     pkey.ptr=(void*)key;
-    return dic_find(dic, pkey.ptrc, 8);
+    return gc_find(gc, pkey.ptrc, 8);
 }
 
-void* gcMalloc( struct dictionary* dic , size_t size )
+// ........................................... gc malloc
+
+void* gcMalloc( struct gc_s* gc , size_t size )
 {
 	void* ptr = malloc( size ) ;
-	dicAdd(dic,ptr);
+	gcAdd(gc,ptr);
 	return ptr ;
 }
-void* gcFree( struct dictionary* dic , void* ptr )
+
+// ........................................... gc free
+
+void* gcFree( struct gc_s* gc , void* ptr )
 {
-	if ( dicFind(dic,ptr) ) 
+	if ( gcFind(gc,ptr) ) 
 	{
-		if (*dic->value!=NULL)
+		if (*gc->value!=NULL)
 		{ 
-			free(*dic->value);
+			free(*gc->value);
 			
-			*dic->value=NULL ;
+			*gc->value=NULL ;
 			
 			ptr=NULL;
 		}
 	}
 	return ptr;
 }
-void* gcRealloc( struct dictionary* dic , void* ptr, size_t size )
+
+// ........................................... gc realloc
+
+void* gcRealloc( struct gc_s* gc , void* ptr, size_t size )
 {
 	void* old = ptr ;
 
 	ptr = realloc( ptr,size ) ;
-	dicAdd(dic,ptr); 
+	gcAdd(gc,ptr); 
 
-	dicFind(dic,old);
-	*dic->value=NULL ;	
+	gcFind(gc,old);
+	*gc->value=NULL ;	
 
 	return ptr ;
 }
+
+// ........................................... MAIN
+
 int main()
 {
-	struct dictionary* dic = dic_new(0);
-/*
-	int x=100;
-	int y=200;
-	int z=300;
+	struct gc_s* gc = gc_new(0);
 
-	dicAdd(dic,&x);
-	dicAdd(dic,&y);
-	dicAdd(dic,&z);
-
-	if (dicFind(dic,&x) ) printf("x found: %p\n", (void*)*dic->value); else printf("error\n");
-	if (dicFind(dic,&y) ) printf("y found: %p\n", (void*)*dic->value); else printf("error\n");
-	if (dicFind(dic,&z) ) printf("z found: %p\n", (void*)*dic->value); else printf("error\n");
-*/	 
-	int* a1 = gcMalloc( dic, sizeof(int)*10 ) ;
-	long* a2 = gcMalloc( dic, sizeof(long)*10 ) ;
+	int* a1 = gcMalloc( gc, sizeof(int)*10 ) ;
+	long* a2 = gcMalloc( gc, sizeof(long)*10 ) ;
 		
-	gcFree(dic,a2);
+	gcFree(gc,a2);
 	
-	a2 = gcMalloc( dic, sizeof(long)*410 ) ;
+	a2 = gcMalloc( gc, sizeof(long)*410 ) ;
 
-	a2 =  gcRealloc( dic,a2,sizeof(long)*500 );
+	a2 =  gcRealloc( gc,a2,sizeof(long)*500 );
 	
-	gcFree(dic,a2);
+	gcFree(gc,a2);
 
-	dic_delete(dic);
+	gc_del(gc);
 
 	return 0;
 }
