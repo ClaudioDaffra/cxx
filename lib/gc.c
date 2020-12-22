@@ -1,46 +1,12 @@
 
-#ifndef gcGarbageCollector
-#define gcGarbageCollector
-
-#include <stdlib.h> 
-#include <stdint.h> 
-#include <string.h> 
-#include <stdio.h> 
-
-//typedef int (*enumFunc)(void *key, int count, int *value, void *user);
-
-#define HASHDICT_VALUE_TYPE void*
-#define KEY_LENGTH_TYPE 	int
-
-struct gcKeyNode_s 
-{
-	struct gcKeyNode_s *	next;
-	char *					key;
-	KEY_LENGTH_TYPE 		len;
-	HASHDICT_VALUE_TYPE 	value;
-};
-
-struct gc_s 
-{
-	struct gcKeyNode_s **	table;
-	int 					length, count;
-	double 					growth_treshold;
-	double 					growth_factor;
-	HASHDICT_VALUE_TYPE *	value;
-};
-
-/* See README.md */
-
-struct gc_s* 	gc_new		(int initial_size);
-void 			gc_del		(struct gc_s* gc);
-int 			gc_add		(struct gc_s* gc, void *key, int keyn);
-int 			gc_find	(struct gc_s* gc, void *key, int keyn);
-//void 			dic_forEach	(struct gc_s* gc, enumFunc f, void *user);
-#endif
+#include "gc.h"
 
 #define hash_func meiyan
 
-static inline uint32_t meiyan(const char *key, int count) 
+struct gc_s* gc ;
+
+static 
+inline uint32_t meiyan(const char *key, int count) 
 {
 	typedef uint32_t* P;
 	uint32_t h = 0x811c9dc5;
@@ -70,6 +36,7 @@ struct gcKeyNode_s *gc_node_new(char*k, int l)
 
 // ........................................... gc delete node
 
+static
 void gc_node_del(struct gcKeyNode_s *node) 
 {
 	if ( node->key!=NULL ) free(node->key);
@@ -110,7 +77,7 @@ void gc_del(struct gc_s* gc)
 }
 
 // ........................................... gc reinsert when resizing
-
+static
 void gc_reinsert_when_resizing(struct gc_s* gc, struct gcKeyNode_s *k2) 
 {
 	int n = hash_func(k2->key, k2->len) % gc->length;
@@ -127,7 +94,7 @@ void gc_reinsert_when_resizing(struct gc_s* gc, struct gcKeyNode_s *k2)
 }
 
 // ........................................... gc  resize
-
+static
 void gc_resize(struct gc_s* gc, int newsize) 
 {
 	int o = gc->length;
@@ -149,7 +116,7 @@ void gc_resize(struct gc_s* gc, int newsize)
 }
 
 // ........................................... gc add
-
+static
 int gc_add(struct gc_s* gc, void *key, int keyn)
 {
 	int n = hash_func((const char*)key, keyn) % gc->length;
@@ -185,7 +152,7 @@ int gc_add(struct gc_s* gc, void *key, int keyn)
 }
 
 // ........................................... gc find
-
+static
 int gc_find(struct gc_s* gc, void *key, int keyn) 
 {
 	int n = hash_func((const char*)key, keyn) % gc->length;
@@ -203,8 +170,10 @@ int gc_find(struct gc_s* gc, void *key, int keyn)
 	}
 	return 0;
 }
-/*
-void dic_forEach(struct gc_s* gc, enumFunc f, void *user) 
+
+// ........................................... gc print
+
+void gcPrint_(struct gc_s* gc) 
 {
 	for (int i = 0; i < gc->length; i++) 
 	{
@@ -213,17 +182,16 @@ void dic_forEach(struct gc_s* gc, enumFunc f, void *user)
 			struct gcKeyNode_s *k = gc->table[i];
 			while (k) 
 			{
-				if (!f(k->key, k->len, &k->value, user)) return;
+				printf ( "# node(%p)::(%p)\n",k,k->value ) ;
 				k = k->next;
 			}
 		}
 	}
 }
-*/
 #undef hash_func
 
 // ........................................... gc add
-
+static
 int gcAdd(struct gc_s* gc,void* key)
 {
     union {
@@ -236,7 +204,7 @@ int gcAdd(struct gc_s* gc,void* key)
 }
 
 // ........................................... gc find
-
+static
 int gcFind(struct gc_s* gc,void* key)
 {
     union {
@@ -249,7 +217,7 @@ int gcFind(struct gc_s* gc,void* key)
 
 // ........................................... gc malloc
 
-void* gcMalloc( struct gc_s* gc , size_t size )
+void* gcMalloc_( struct gc_s* gc , size_t size )
 {
 	void* ptr = malloc( size ) ;
 	gcAdd(gc,ptr);
@@ -258,7 +226,7 @@ void* gcMalloc( struct gc_s* gc , size_t size )
 
 // ........................................... gc free
 
-void* gcFree( struct gc_s* gc , void* ptr )
+void* gcFree_( struct gc_s* gc , void* ptr )
 {
 	if ( gcFind(gc,ptr) ) 
 	{
@@ -276,7 +244,7 @@ void* gcFree( struct gc_s* gc , void* ptr )
 
 // ........................................... gc realloc
 
-void* gcRealloc( struct gc_s* gc , void* ptr, size_t size )
+void* gcRealloc_( struct gc_s* gc , void* ptr, size_t size )
 {
 	void* old = ptr ;
 
@@ -288,3 +256,9 @@ void* gcRealloc( struct gc_s* gc , void* ptr, size_t size )
 
 	return ptr ;
 }
+
+
+
+/**/
+
+
