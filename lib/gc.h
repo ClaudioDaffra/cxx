@@ -32,6 +32,7 @@ struct gc_s
 	HASHDICT_VALUE_TYPE *	dtor;
 };
 
+void 			cb_fclose	(void*ptr) ;
 struct gc_s* 	gc_new		(int initial_size);
 void			gc_del		(struct gc_s* gc);
 int 			gcAdd		(struct gc_s* gc,void* key,HASHDICT_VALUE_TYPE dtor);

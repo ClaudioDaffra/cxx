@@ -313,7 +313,7 @@ void* gcFileOpen_( struct gc_s* gc ,char* fileName, char* mode)
 {
 	FILE* ptr = fopen ( fileName,mode );
 	
-	gcAdd(gc,ptr,fclose);
+	gcAdd(gc,ptr,cb_fclose);
 	
 	return ptr ;
 }
@@ -324,11 +324,19 @@ FILE* gcFileTemp( void )
 {
 	FILE* ptr = tmpfile();
 	
-	gcAdd(gc,ptr,fclose);
+	gcAdd(gc,ptr,cb_fclose);
     
 	return ptr ;
 }
 
+// ........................................... call back fclose
+// hack to avoid  warning: passing argument 3 of ‘gcAdd’ 
+// from incompatible pointer type [-Wincompatible-pointer-types]
+
+void cb_fclose(void*ptr)
+{
+	if (ptr!=NULL) fclose(ptr);
+}
 
 /**/
 
