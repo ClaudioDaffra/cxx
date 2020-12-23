@@ -2,27 +2,8 @@
 #define pVector
 
 
+#include "cxx.h"
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
-#include "tgc.h"
-
-#ifdef __GNUC__
-#pragma GCC diagnostic ignored "-Wunused-local-typedefs"
-#endif
-
-
-#ifndef CONCATENATE
-#define CONCATENATE(x,y)   x##y
-#endif
-
-#ifndef MERGE
-#define MERGE(x,y)    CONCATENATE(x,y)
-#endif
-
-#endif
 
 // ........................................................... [] pVector(TYPE)
 
@@ -36,7 +17,7 @@
 	pVectorNew(pv1,vint_t,128);
 */
 
-#define pVectorStructDef(TYPE,ID)	\
+#define pVectorStruct(TYPE,ID)	\
 struct ID       					\
 {                                   \
     TYPE*   data 		;        	\
@@ -44,10 +25,8 @@ struct ID       					\
     size_t  capacity    ;         	\
 }
 
-#define pVectorTypeDef(ID) 			\
-typedef struct ID    
 
-// ........................................................... [] ALLOC
+// ........................................................... [] ALLOC TODO initialize memoey allocate
 
 #define pVectorAlloc(ID,N)                               	\
 do{ 														\
@@ -56,28 +35,31 @@ do{ 														\
 (ID).capacity  = N;											\
 }while(0);
 
-// ........................................................... [] DEALLOC
+// ........................................................... [] DEALLOC 
+// TODO pointer=NULL lo fa la garbage size capacity 0 pointer NULL
 
-#define pVectorDeAlloc(ID)                               	\
+#define pVectorDealloc(ID)                               	\
 do{ 														\
-if ( (ID).data!=NULL) tgc_free(&gc,(ID).data); 						\
+if ( (ID).data!=NULL) free((ID).data); 						\
 }while(0);
+
 
 // ........................................................... [] NEW
 
-#define pVectorNew(ID,TYPE,N)                         		\
+#define pVectorNew(ID,N)                         			\
 do{ 														\
-(ID) = tgc_alloc ( &gc,sizeof( TYPE )  ) ; 						\
-pVectorAlloc(*ID,N) 										\
+(ID) = malloc ( sizeof( (ID) )  ) ; 						\
+pVectorAlloc(ID,N) 	;										\
 }while(0);
 
 // ........................................................... [] Destroy
 
 #define pVectorDestroy(ID)     								\
 do{ 														\
-pVectorDeAlloc(*ID); 										\
-if ( (ID)!=NULL) tgc_free(&gc,(ID)); 								\
+pVectorDeAlloc(ID); 										\
+if ( (ID)!=NULL) free((ID)); 								\
 }while(0);
+
 
 // ........................................................... [] SIZE
 
@@ -95,27 +77,46 @@ if ( (ID)!=NULL) tgc_free(&gc,(ID)); 								\
 
 #define pVectorClear(ID) ((ID).size = 0)  
 
-// ........................................................... [] PUSH_BACK
+// ........................................................... [] PUSH_BACK  TODO IF NULL NOT
 
 
 #define pVectorPushBack(ID, VAL)											\
 do {                            											\
     if ((ID).size + 1 > (ID).capacity) {                               		\
         size_t N = ((ID).capacity += (ID).capacity);                     	\
-        (ID).data = tgc_realloc  ( &gc,(ID).data   , (N) * sizeof((ID).data)  ); 	\
+        (ID).data = realloc  ( (ID).data   , (N) * sizeof((ID).data)  ); 	\
         (ID).capacity = (N);                                          		\
     } ;                                                                 	\
     (ID).data[pVectorSize(ID)] = (VAL);                                 	\
     ++(ID).size ;                                                       	\
 } while (0) ;
 
+// ........................................................... [] POP_BACK [check < 0  );
 
-// ........................................................... [] AT
+#define vectorPopBack(ID) do {  \
+    if ((ID).size) --(ID).size; \
+} while (0)
+
+// ........................................................... [] AT check size
 
 #define pVectorAt(ID, INDEX) ((ID).data[INDEX])
 
+/*
 // ........................................................... [] vectorOfVector ... X , XY , XYZ
    
 #define pVectorX(ID,NDX1)                pVectorAt(ID,NDX1)
 #define pVectorXY(ID,NDX1,NDX2)          pVectorAt(pVectorAt(ID,NDX1),NDX2)
 #define pVectorXYZ(ID,NDX1,NDX2,NDX3)    pVectorAt(pVectorAt(pVectorAt(ID,NDX1),NDX2),NDX3)
+
+
+
+*/
+
+
+#endif
+
+
+
+/**/
+
+

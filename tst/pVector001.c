@@ -1,64 +1,82 @@
 #include <stdio.h>
-#include "../lib/tgc.h"
+#include "../lib/gc.h"
 #include "../lib/pVector.h"
 
-// gcc tst/pVector001.c lib/tgc.c -o bin/x
-// valgrind --undef-value-errors=no ./bin/x
+// clear  ; gcc lib/gc.c tst/pVector001.c -o bin/x -Wall -pedantic -Wextra
+// valgrind ./bin/x
+// cppcheck tst/pVector001.c
 
-static tgc_t gc;
 
-int main ( int argc , char* argv[] ) 
+
+int main ( void ) 
 {
-	tgc_start(&gc, &argc);
-
-	// ..............
+	// .............. START
 	
-	pVectorStructDef(int , vectorInt_s ) ;
-	
-	typedef struct vectorInt_s vector_t ;
-	
-	// ..............
+	gcStart();
 
-	struct	vectorInt_s v1 ;
+	// ................................................... vector stack
+	
+	pVectorStruct( int8t , vectorInt_s ) v1;
+	
+	
+	printf ( "vector size struct %zu.\n",sizeof(v1)) ; 
+	printf ( "vector size data   %zu.\n",sizeof(*v1.data)) ; 
 
-	pVectorAlloc( v1 , 128 , int ) ;
+	pVectorAlloc(v1,8);
+
+	// ................................................... vector size capacity
+		
+	printf ( "vector : size (%zu) capacity (%zu) empty(%d) \n",pVectorSize(v1),pVectorCapacity(v1),pVectorIsEmpty(v1) );
+	
+
+
+	// ................................................... vector push back
+	
+	for(int i=0;i<128;i++) pVectorPushBack(v1,i);
+
+	printf ( "vector : size (%zu) capacity (%zu) empty(%d) \n",pVectorSize(v1),pVectorCapacity(v1),pVectorIsEmpty(v1) ) ;
+
+	printf ( "vector[3]==%d\n",pVectorAt(v1,3) ) ;
+	
+	pVectorDealloc(v1);		
+
+	//pVectorDealloc(v1);	 TODO check with garbage collector
+		
+	//
+	
+	
+	
+	
+	// ................................................... vector heap
+		
+	pVectorStruct( int8t  , pvectorInt_s ) *pv1 = new(struct pvectorInt_s) ;
+	
+	
+	printf ( "vector size struct %zu.\n",sizeof(*pv1)) ; 
+	printf ( "vector size data   %zu.\n",sizeof(*pv1->data)) ; 	
+
+	pVectorAlloc(*pv1,8);
+
+	// ................................................... vector size capacity
+		
+	printf ( "vector : size (%zu) capacity (%zu) empty(%d) \n",pVectorSize(*pv1),pVectorCapacity(*pv1),pVectorIsEmpty(*pv1) );
+
+	// ................................................... vector push back
+	
+	for(int i=0;i<128;i++) pVectorPushBack(*pv1,i);
+
+	printf ( "vector size (%zu) capacity (%zu) empty(%d) \n",pVectorSize(*pv1),pVectorCapacity(*pv1),pVectorIsEmpty(*pv1) );
+
+	printf ( "vector[3]==%d\n",pVectorAt(*pv1,3) ) ;
 				
-	printf ( "vector size  %zu capacity %zu\n",pVectorSize(v1),pVectorCapacity(v1) ) ;
-	
-//	pVectorDeAlloc(v1) ;
+	pVectorDealloc(*pv1);
+		
+	delete(pv1);
 
-
-	// ..............
-
-	struct	vectorInt_s*  pv2 ; 
-		 #define N 128
-		 #define TYPE struct	vectorInt_s
-		 #define TYPE2 int
-	//pVectorNew( pv2 , struct	vectorInt_s , 64  , int ) ;
-pv2 			= (TYPE*)tgc_alloc (&gc,sizeof(TYPE));					 
-pv2->data		= (TYPE2*)tgc_alloc (&gc,sizeof(TYPE2)*N);			 
-pv2->size      = 0;                                   		 
-pv2->capacity  = N;	
-
-tgc_free(&gc,pv2->data);
-									 
-/*
-printf ( "size struct	vectorInt_s %zu\n",sizeof(struct	vectorInt_s))  ;
-printf ( "size pv2 %zu\n",sizeof(pv2))  ;
-printf ( "size pv2.data %zu\n",sizeof(pv2->data))  ;
+	// .............. END
 	
-	//(pv2) 		= tgc_alloc (&gc,sizeof(struct	vectorInt_s));	
-	//(pv2)->data	= tgc_alloc (&gc,sizeof(pv2)*64);		
-	//tgc_free(&gc,(pv2)->data);
-*/
-/*
-	printf ( "vector size  %zu capacity %zu\n",pVectorSize(*pv2),pVectorCapacity(*pv2) ) ;
-	
-	pVectorDelete( pv2 ) ;
-*/					 
-	// ..............
-	
-	tgc_stop(&gc);
+	printf("\n");
+	gcStop();
   
   return 0 ;
 }
