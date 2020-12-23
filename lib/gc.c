@@ -42,22 +42,15 @@ void gc_node_del(struct gcKeyNode_s *node)
 
 	if ( node->dtor!=NULL )
 	{ 
-		//free(node->dtor);	
-		
 			union {
 			char  ptrc[8];
 			void* ptr;
 			} pkey ;
 			
 			strncpy( pkey.ptrc , node->key , 8 ) ;
-			
-		//printf ("\n free %p %p %p\n",free,node->dtor,node->key);	
-		
+
 			(node->dtor)(pkey.ptr); // CALL DESTRUCTOR
-			
-				
-		//free(*node->dtor);
-			//node->dtor=NULL ;
+
 	}
 	if ( node->key!=NULL ) 
 	{ 
@@ -198,7 +191,7 @@ int gc_add(struct gc_s* gc, void *key, int keyn)
 }
 
 // ........................................... gc find
-static
+
 int gc_find(struct gc_s* gc, void *key, int keyn) 
 {
 	int n = hash_func((const char*)key, keyn) % gc->length;
@@ -235,7 +228,7 @@ void gcPrint_(struct gc_s* gc)
 			struct gcKeyNode_s *k = gc->table[i];
 			while (k) 
 			{
-				printf ( "# node(%p)::(%p)\n",k,k->dtor ) ;
+				printf ( "# node(0x%lx)::(0x%lx)\n",(unsigned long)k,(unsigned long)k->dtor ) ;
 				k = k->next;
 			}
 		}
@@ -244,13 +237,16 @@ void gcPrint_(struct gc_s* gc)
 #undef hash_func
 
 // ........................................... gc add XXX
-static
+
 int gcAdd(struct gc_s* gc,void* key,HASHDICT_VALUE_TYPE dtor)
 {
+	//void** callback = dtor ;
+	
     union {
         char  ptrc[8];
         void* ptr;
     } pkey ;
+    
 	pkey.ptr=(void*)key;
 	int ret=gc_add(gc, pkey.ptrc, 8);
 	*gc->dtor = dtor;
@@ -286,18 +282,10 @@ void* gcFree_( struct gc_s* gc , void* ptr )
 	{
 		if (*gc->dtor!=NULL)
 		{
-			union {
-			char  ptrc[8];
-			void* ptr;
-			} pkey ;
-			
-			pkey.ptr=ptr; 
-			
 			(*gc->dtor)(ptr);
 			
 			*gc->dtor=NULL ;
 
-			
 			ptr=NULL;
 		}
 	}
@@ -325,7 +313,8 @@ void* gcFileOpen_( struct gc_s* gc ,char* fileName, char* mode)
 {
 	FILE* ptr = fopen ( fileName,mode );
 	
-	gcAdd(gc,ptr,(void*)fclose);
+	gcAdd(gc,ptr,fclose);
+	
 	return ptr ;
 }
 
@@ -335,7 +324,7 @@ FILE* gcFileTemp( void )
 {
 	FILE* ptr = tmpfile();
 	
-	gcAdd(gc,ptr,(void*)fclose);
+	gcAdd(gc,ptr,fclose);
     
 	return ptr ;
 }

@@ -34,10 +34,8 @@ struct gc_s
 
 struct gc_s* 	gc_new		(int initial_size);
 void			gc_del		(struct gc_s* gc);
-static 
 int 			gcAdd		(struct gc_s* gc,void* key,HASHDICT_VALUE_TYPE dtor);
-static 
-int				gc_find		(struct gc_s* gc , void *key, int keyn );
+int 			gc_find		(struct gc_s* gc, void *key, int keyn) ;
 void* 			gcMalloc_	(struct gc_s* gc , size_t size ) ;
 void* 			gcFree_		(struct gc_s* gc , void* ptr ) ;
 void* 			gcRealloc_	(struct gc_s* gc , void* ptr, size_t size ) ;
