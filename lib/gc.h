@@ -44,17 +44,17 @@ void 			gcPrint_	(struct gc_s* gc );
 void*           gcFileOpen_ ( struct gc_s* gc ,char* fileName, char* action);
 FILE*           gcFileTemp  ( void ) ;
 
-#define 		gcStart(...)	gc=gc_new(0)/*__VA_ARGS__*/
-#define 		gcStop(...)		gc_del(gc)/*__VA_ARGS__*/
+#define 		gcStart(...)	GC=gc_new(0)/*__VA_ARGS__*/
+#define 		gcStop(...)		gc_del(GC)/*__VA_ARGS__*/
 
-#define 		gcRealloc(ptr,size)	gcRealloc_(gc,ptr,size)
-#define 		gcFree(ptr)			gcFree_(gc,ptr)
-#define 		gcMalloc(size)		gcMalloc_(gc,size)
-#define 		gcPrint(...)		gcPrint_(gc)/*__VA_ARGS__*/
-#define 		gcFileOpen(pf,mode)		gcFileOpen_(gc,pf,mode)
-#define 		gcFileClose(ptr)		gcFree_(gc,ptr)
+#define 		gcRealloc(ptr,size)	gcRealloc_(GC,ptr,size)
+#define 		gcFree(ptr)			gcFree_(GC,ptr)
+#define 		gcMalloc(size)		gcMalloc_(GC,size)
+#define 		gcPrint(...)		gcPrint_(GC)/*__VA_ARGS__*/
+#define 		gcFileOpen(pf,mode)		gcFileOpen_(GC,pf,mode)
+#define 		gcFileClose(ptr)		gcFree_(GC,ptr)
 
-extern struct gc_s* gc ;
+extern struct gc_s* GC ;
 
 #endif
 

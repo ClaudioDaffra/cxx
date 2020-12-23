@@ -3,7 +3,7 @@
 
 #define hash_func meiyan
 
-struct gc_s* gc ;
+struct gc_s* GC ;
 
 static 
 inline uint32_t meiyan(const char *key, int count) 
@@ -42,20 +42,21 @@ void gc_node_del(struct gcKeyNode_s *node)
 
 	if ( node->dtor!=NULL )
 	{ 
-			union {
-			char  ptrc[8];
-			void* ptr;
-			} pkey ;
-			
-			strncpy( pkey.ptrc , node->key , 8 ) ;
+        union {
+        char  ptrc[8];
+        void* ptr;
+        } pkey ;
+        
+        #pragma warning(disable:4996)
+        strncpy( pkey.ptrc , node->key , 8 ) ;
 
-			(node->dtor)(pkey.ptr); // CALL DESTRUCTOR
+        (node->dtor)(pkey.ptr); // CALL DESTRUCTOR
 
 	}
 	if ( node->key!=NULL ) 
 	{ 
-			free(node->key); 
-			node->key=NULL ;
+        free(node->key); 
+        node->key=NULL ;
 	}
 	
 	if (node->next) gc_node_del(node->next);
@@ -164,6 +165,7 @@ int gc_add(struct gc_s* gc, void *key, int keyn)
 		double f = (double)gc->count / (double)gc->length;
 		if (f > gc->growth_treshold)
 		{
+            #pragma warning(disable:4244)
 			gc_resize(gc, gc->length * gc->growth_factor);
 			return gc_add(gc, key, keyn);
 		}
@@ -228,7 +230,10 @@ void gcPrint_(struct gc_s* gc)
 			struct gcKeyNode_s *k = gc->table[i];
 			while (k) 
 			{
-				printf ( "# node(0x%lx)::(0x%lx)\n",(unsigned long)k,(unsigned long)k->dtor ) ;
+				printf ( "# node(0x%lx)::(0x%08lx)\n"
+                    ,(unsigned long)k
+                    ,(unsigned long)k->dtor 
+                ) ;
 				k = k->next;
 			}
 		}
@@ -311,6 +316,7 @@ void* gcRealloc_( struct gc_s* gc , void* ptr, size_t size )
 
 void* gcFileOpen_( struct gc_s* gc ,char* fileName, char* mode)
 {
+    #pragma warning(disable:4996)
 	FILE* ptr = fopen ( fileName,mode );
 	
 	gcAdd(gc,ptr,cb_fclose);
@@ -322,9 +328,10 @@ void* gcFileOpen_( struct gc_s* gc ,char* fileName, char* mode)
 
 FILE* gcFileTemp( void )
 {
+    #pragma warning(disable:4996)
 	FILE* ptr = tmpfile();
 	
-	gcAdd(gc,ptr,cb_fclose);
+	gcAdd(GC,ptr,cb_fclose);
     
 	return ptr ;
 }
