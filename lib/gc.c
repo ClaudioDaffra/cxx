@@ -47,7 +47,9 @@ void gc_node_del(struct gcKeyNode_s *node)
         void* ptr;
         } pkey ;
         
-        #pragma warning(disable:4996)
+		#if defined(_MSC_VER)
+		#pragma warning(disable:4996)
+		#endif
         strncpy( pkey.ptrc , node->key , 8 ) ;
 
         (node->dtor)(pkey.ptr); // CALL DESTRUCTOR
@@ -165,7 +167,9 @@ int gc_add(struct gc_s* gc, void *key, int keyn)
 		double f = (double)gc->count / (double)gc->length;
 		if (f > gc->growth_treshold)
 		{
-            #pragma warning(disable:4244)
+			#if defined(_MSC_VER)
+			#pragma warning(disable:4244)
+			#endif
 			gc_resize(gc, gc->length * gc->growth_factor);
 			return gc_add(gc, key, keyn);
 		}
@@ -316,7 +320,9 @@ void* gcRealloc_( struct gc_s* gc , void* ptr, size_t size )
 
 void* gcFileOpen_( struct gc_s* gc ,char* fileName, char* mode)
 {
+	#if defined(_MSC_VER)
     #pragma warning(disable:4996)
+    #endif
 	FILE* ptr = fopen ( fileName,mode );
 	
 	gcAdd(gc,ptr,cb_fclose);
@@ -328,7 +334,9 @@ void* gcFileOpen_( struct gc_s* gc ,char* fileName, char* mode)
 
 FILE* gcFileTemp( void )
 {
+	#if defined(_MSC_VER)
     #pragma warning(disable:4996)
+    #endif
 	FILE* ptr = tmpfile();
 	
 	gcAdd(GC,ptr,cb_fclose);
