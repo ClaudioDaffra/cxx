@@ -51,7 +51,7 @@ typedef signed int* 	pint32t 	;
 
 // ................................................ delete
 
-#define delete(ID)	free(ID);
+#define delete(ID)	if((ID)!=NULL){free(ID);(ID)=NULL;}
 
 
 #endif

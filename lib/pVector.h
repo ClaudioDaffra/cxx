@@ -65,23 +65,25 @@ if ((ID).data!=NULL)										\
 }															\
 }while(0);
 
-// ........................................................... [] NEW
+// ........................................................... [] vector NEW
 
-#define pVectorNew(ID,N)                         			\
-do{ 														\
-	(ID) = malloc ( sizeof( (ID) )  ) ; 					\
-	assert((ID)!=NULL);										\
-	pVectorAlloc(ID,N) 	;									\
+#define pVectorNew(TYPE,ID,N)                         			\
+do{ 															\
+	(ID)=malloc(sizeof(TYPE));									\
+	assert(ID!=NULL);											\
+	(ID)->size=0;												\
+	(ID)->data = (void*) malloc (sizeof(TYPE) * N);				\
+	assert((ID)->data!=NULL);									\
+	(ID)->capacity=N;											\
 }while(0);
 
-// ........................................................... [] Destroy
+// ........................................................... [] vector DESTROY
 
-#define pVectorDestroy(ID)     								\
-do{ 														\
-	pVectorDeAlloc(ID); 									\
-	if ( (ID)!=NULL ) { free((ID)); (ID)=NULL; }			\
+#define pVectorDestroy(ID)     												\
+do{ 																		\
+	if ( (ID)->data	!=NULL) { free((ID)->data	); ((ID)->data	)=NULL; } ;	\
+	if ( (ID)		!=NULL) { free((ID)			); ((ID)		)=NULL; } ;	\
 }while(0);
-
 
 // ........................................................... [] SIZE
 
