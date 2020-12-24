@@ -8,16 +8,33 @@
 // ........................................................... [] pVector(TYPE)
 
 /*
-	pVectorStructDef( int , vint_s ) ;
-	pVectorTypeDef( vint_s  ) vint_t ;
-	pVectorTypeDef( vint_s* ) pvint_t ;
-	vint_t v1 ;
-	pVectorAlloc(v1,16);
-	pvint_t  pv1 = NULL ;
-	pVectorNew(pv1,vint_t,128);
+	----------------------------------------------------- stack
+
+		pVectorStruct( signed char , vectorInt_s ) v1;
+
+		printf ( "vector size struct %zu.\n",sizeof(v1)			) ; 
+		printf ( "vector size data   %zu.\n",sizeof(*v1.data)	) ; 
+
+		pVectorAlloc(v1,8);
+		...
+		pVectorDealloc(v1);
+
+	----------------------------------------------------- heap
+
+		pVectorStruct( int8t  , pvectorInt_s ) *pv1 = new(struct pvectorInt_s ) ;
+
+		printf ( "vector size struct %zu.\n",sizeof(*pv1)) ; 
+		printf ( "vector size data   %zu.\n",sizeof(*pv1->data)) ; 	
+
+		pVectorAlloc(*pv1,8);
+		...
+		pVectorDealloc(*pv1);
+			
+		delete(pv1); 
+
 */
 
-#define pVectorStruct(TYPE,ID)	\
+#define pVectorStruct(TYPE,ID)		\
 struct ID       					\
 {                                   \
     TYPE*   data 		;        	\
@@ -25,39 +42,44 @@ struct ID       					\
     size_t  capacity    ;         	\
 }
 
-
-// ........................................................... [] ALLOC TODO initialize memoey allocate
+// ........................................................... [] ALLOC TODO initialize memoey allocate CPPCHECK
 
 #define pVectorAlloc(ID,N)                               	\
 do{ 														\
-(ID).data = (void*) malloc (sizeof((ID).data) * N);     	\
-(ID).size      = 0;                                   		\
-(ID).capacity  = N;											\
+	(ID).data = (void*) malloc (sizeof((ID).data) * N);     \
+	assert((ID).data!=NULL);								\
+	(ID).size      = 0;                                   	\
+	(ID).capacity  = N;										\
 }while(0);
 
 // ........................................................... [] DEALLOC 
-// TODO pointer=NULL lo fa la garbage size capacity 0 pointer NULL
 
 #define pVectorDealloc(ID)                               	\
 do{ 														\
-if ( (ID).data!=NULL) free((ID).data); 						\
+if ((ID).data!=NULL)										\
+{															\
+	(ID).size=0;											\
+	(ID).capacity=0;										\
+	free((ID).data);										\
+	(ID).data=NULL; 										\
+}															\
 }while(0);
-
 
 // ........................................................... [] NEW
 
 #define pVectorNew(ID,N)                         			\
 do{ 														\
-(ID) = malloc ( sizeof( (ID) )  ) ; 						\
-pVectorAlloc(ID,N) 	;										\
+	(ID) = malloc ( sizeof( (ID) )  ) ; 					\
+	assert((ID)!=NULL);										\
+	pVectorAlloc(ID,N) 	;									\
 }while(0);
 
 // ........................................................... [] Destroy
 
 #define pVectorDestroy(ID)     								\
 do{ 														\
-pVectorDeAlloc(ID); 										\
-if ( (ID)!=NULL) free((ID)); 								\
+	pVectorDeAlloc(ID); 									\
+	if ( (ID)!=NULL ) { free((ID)); (ID)=NULL; }			\
 }while(0);
 
 
@@ -77,27 +99,27 @@ if ( (ID)!=NULL) free((ID)); 								\
 
 #define pVectorClear(ID) ((ID).size = 0)  
 
-// ........................................................... [] PUSH_BACK  TODO IF NULL NOT
-
+// ........................................................... [] PUSH_BACK 
 
 #define pVectorPushBack(ID, VAL)											\
 do {                            											\
     if ((ID).size + 1 > (ID).capacity) {                               		\
         size_t N = ((ID).capacity += (ID).capacity);                     	\
         (ID).data = realloc  ( (ID).data   , (N) * sizeof((ID).data)  ); 	\
+        assert((ID).data!=NULL);											\
         (ID).capacity = (N);                                          		\
     } ;                                                                 	\
     (ID).data[pVectorSize(ID)] = (VAL);                                 	\
     ++(ID).size ;                                                       	\
 } while (0) ;
 
-// ........................................................... [] POP_BACK [check < 0  );
+// ........................................................... [] POP_BACK
 
 #define vectorPopBack(ID) do {  \
     if ((ID).size) --(ID).size; \
 } while (0)
 
-// ........................................................... [] AT check size
+// ........................................................... [] AT TODO check size range
 
 #define pVectorAt(ID, INDEX) ((ID).data[INDEX])
 

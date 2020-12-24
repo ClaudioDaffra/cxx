@@ -1,6 +1,7 @@
-#include <stdio.h>
+
 #include "../lib/gc.h"
 #include "../lib/pVector.h"
+
 
 // clear  ; gcc lib/gc.c tst/pVector001.c -o bin/x -Wall -pedantic -Wextra
 // valgrind ./bin/x
@@ -16,7 +17,7 @@ int main ( void )
 
 	// ................................................... vector stack
 	
-	pVectorStruct( int8t , vectorInt_s ) v1;
+	pVectorStruct( signed char , vectorInt_s ) v1;
 	
 	
 	printf ( "vector size struct %zu.\n",sizeof(v1)) ; 
@@ -37,10 +38,12 @@ int main ( void )
 	printf ( "vector : size (%zu) capacity (%zu) empty(%d) \n",pVectorSize(v1),pVectorCapacity(v1),pVectorIsEmpty(v1) ) ;
 
 	printf ( "vector[3]==%d\n",pVectorAt(v1,3) ) ;
-	
+
+	printf ( "before dealloc v1.data==%p\n",v1.data);	
 	pVectorDealloc(v1);		
 
-	//pVectorDealloc(v1);	 TODO check with garbage collector
+	printf ( "before scond dealloc v1.data==%p\n",v1.data);	
+	pVectorDealloc(v1);
 		
 	//
 	

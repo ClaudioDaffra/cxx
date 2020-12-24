@@ -46,7 +46,7 @@ int main()
 	
 	gcFree(a2);
 	
-	gcFree(a2); // double free
+	gcFree(a2); // double free !!
 		
 	// .......................... file temp
 
