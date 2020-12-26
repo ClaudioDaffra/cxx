@@ -125,6 +125,11 @@ do {                            											\
 
 #define pVectorAt(ID, INDEX) ((ID).data[INDEX])
 
+// ........................................................... [] vector iterator
+
+#define vectorBegin(ID) &(ID).data[0]
+#define vectorEnd(ID)   &(ID).data[(ID).size]
+
 /*
 // ........................................................... [] vectorOfVector ... X , XY , XYZ
    
