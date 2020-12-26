@@ -3,10 +3,10 @@
 #include "../lib/pVector.h"
 #include "../lib/iterator.h"
 
-// clear  ; gcc lib/gc.c tst/pVector001.c -o bin/x -Wall -pedantic -Wextra
-// valgrind ./bin/x
-// cppcheck tst/pVector001.c
-
+//	clear  ; gcc lib/gc.c tst/pVector001.c -o bin/x -Wall -pedantic -Wextra
+//	valgrind ./bin/x
+//	cppcheck tst/pVector001.c
+//	cls & cl lib\gc.c tst\pVector001.c /Fex.exe
 
 
 int main ( void ) 
@@ -21,7 +21,6 @@ int main ( void )
        
 		pVectorStruct( v1Data_t , vectorInt_s ) v1;
 
-		
 		printf ( "vector v1 : size struct %zu.\n",sizeof(v1)) ; 
 		
 		printf ( "vector v1 : size data   %zu.\n",sizeof(*v1.data)) ; 
@@ -44,8 +43,6 @@ int main ( void )
 
 		// ...................................................iterator
 
-
-        printf("\n");
         for(iterator(v1Data_t) it =  vectorBegin(v1) ; it<vectorEnd(v1);itNext(it) ) 
         {
         printf ( "(%d,%d)",(int)itDifference(it,vectorEnd(v1)),(int)*it ) ;
@@ -61,8 +58,6 @@ int main ( void )
 		printf ( "before second dealloc v1.data==%p\n",v1.data);	
 		
 		pVectorDealloc(v1);
-		
-	//
 
 	// ................................................... vector heap
 		
@@ -89,8 +84,6 @@ int main ( void )
 
 		// ................................................... iterator
         
-      
-        printf("\n");
         for(iterator(v1Data_t) it = vectorBegin(*pv1) ; it<vectorEnd(*pv1);itAdvance(it,2) ) 
             printf ( "[%d]",(int)*it ) ;
         printf("\n");
