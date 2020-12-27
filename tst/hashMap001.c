@@ -5,7 +5,7 @@
 
 
 // clear  ; gcc lib/hashMap.c tst/hashMap001.c -o bin/x -Wall -pedantic -Wextra
-//
+// cls    & cl lib\stdio.c lib\hashMap.c tst\hashMap001.c /Febin\x.exe /utf-8 /W4 /EHsc
 //
 
 int main() 

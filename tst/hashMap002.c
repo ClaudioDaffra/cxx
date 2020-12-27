@@ -6,7 +6,7 @@
 #include "../lib/hashMap.h"
 
 // clear  ; gcc lib/stdio.c lib/hashMap.c tst/hashMap002.c -o bin/x -Wall -pedantic -Wextra
-//
+// cls    & cl lib\stdio.c lib\hashMap.c tst\hashMap002.c /Febin\x.exe /utf-8 /W4 /EHsc
 //
 
 int main() 

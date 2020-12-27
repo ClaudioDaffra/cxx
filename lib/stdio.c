@@ -12,10 +12,11 @@ console_stream_t std_stream = console_stream_ansi;
 
     void cdConsolesetUTF8(void)
     {
-        const wchar_t*      _fontName=L"SimSun-ExtB";
-        uint32_t            _fontWeight=FW_NORMAL;
-        uint32_t            _fontSizeY=16;
-        uint32_t            _fontSizeX=0;    
+        //const wchar_t*   _fontName=L"SimSun-ExtB";
+        const wchar_t   _fontName[]=L"SimSun-ExtB";
+        SHORT           _fontWeight=FW_NORMAL;
+        SHORT           _fontSizeY=16;
+        SHORT           _fontSizeX=0;    
 
         // set font
         
@@ -24,7 +25,10 @@ console_stream_t std_stream = console_stream_ansi;
         info.dwFontSize.Y = _fontSizeY; // 16
         info.dwFontSize.X = _fontSizeX; // 0    
         info.FontWeight   = _fontWeight;
-        wcscpy(info.FaceName, _fontName);
+        
+        //wcscpy(info.FaceName, _fontName);
+        wcscpy_s( info.FaceName, _countof(_fontName) , _fontName ) ;
+        
         SetCurrentConsoleFontEx(GetStdHandle(STD_OUTPUT_HANDLE), false, &info);
         
         // set stream
