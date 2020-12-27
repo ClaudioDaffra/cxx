@@ -7,6 +7,21 @@ linux 	:	gcc version 10.2.0 (Ubuntu 10.2.0-13ubuntu1)
 windows :	Microsoft (R) C/C++ Optimizing Compiler versione 19.16.27044 per x86
 macosx	:
 
-[] GC	:	Garbage collector
-			gc is based on @exebook's work on hashed dictionaries, link : https://github.com/exebook/hashdict.c
+[] GC			:	Garbage collector
+					gc is based on @exebook's work on hashed dictionaries 
+					[ https://github.com/exebook/hashdict.c ]
 
+[] pVector		:	vector
+					std::vector 	Claudio Daffra	
+					[ https://github.com/ClaudioDaffra/cxx ]
+				
+[] iterator		:	iterator
+					std::iterator	Claudio Daffra
+					[ https://github.com/ClaudioDaffra/cxx  
+		
+[] hash map		:	hash map ( unordered map ) 
+					based on alexander-koch's work on coocko cuckoo-hash
+					[ https://github.com/alexander-koch/cuckoo-hash ]
+
+
+	

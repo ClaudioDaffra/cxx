@@ -1,0 +1,5 @@
+
+1) spostare i file la lib a src
+2) creare una lib dinamica gcc/cl
+3) read me
+
