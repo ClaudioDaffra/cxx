@@ -54,10 +54,11 @@ console_stream_t std_stream = console_stream_ansi;
    
     void cdConsolesetUTF8(void) 
     {
-        setlocale(LC_ALL, "");
+        setlocale(LC_ALL, "it_IT.UTF-8");
 
         // questo per evitare errori di conversione delle stringhe esadecimali   
         setlocale ( LC_NUMERIC , "C" ) ;
+        
         std_stream = console_stream_wide ;
     }
 

@@ -169,6 +169,26 @@ int hashCompareWStr(void* left,void*right)
 	return wcscmp( (wchar_t*)left,(wchar_t*)right ) ;
 }
 
+uint64_t ckDouble(double v)
+{
+ #define nByte 8
+	union{
+		double r;
+		char p[nByte] ;
+		uint64_t i ;
+	} val ;
+	//for (int i=0;i<nByte;i++) val.p[i]=0;
+	val.i=0UL;
+	val.r = (double)v ;
+	//for (int i=0;i<nByte;i++) printf("(%d)",val.p[i]); 
+	//printf("\n");
+	
+ return val.i ;
+ #undef nByte
+}
+
+
+
 /**/
 
 

@@ -51,5 +51,15 @@ void 			hashMapFree		(hashMap_t* self);
 #define itMapValue(IT)	(IT)->value
 
 typedef hashRecord_t* 	itMap_t ;
-		
+
+uint64_t ckDouble(double v) ;
+#define hmReal(V)	((void*)ckDouble(V))
+#define hmInt(V)	((void*)V)
+	
 #endif
+
+
+
+/**/
+
+
