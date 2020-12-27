@@ -34,14 +34,13 @@ int 			hashCompareWStr (void* left,void*right) ;
 void 			hashMapInsert	(hashMap_t* self, hashRecord_t* v);
 hashMap_t* 		hashMapNew		(size_t init_size);
 void 			hashMapPut		(hashMap_t* self, void* key, void* value);
-void* 			hashMapGetRaw	(hashMap_t* self, void* key);
 void* 			hashMapGet		(hashMap_t* self, void* key) ;
 void 			hashMapFree		(hashMap_t* self);
 
 // macro
 
-#define hmapCapacity(T)	(table->size)
-#define hmapSize(T)		(table->key_count)
+#define hmapCapacity(T)	(T->size)
+#define hmapSize(T)		(T->key_count)
 
 #define itMap(IT) 		hashRecord_t* IT 
 #define itMapBegin(T)	&T->records[0]
@@ -52,10 +51,8 @@ void 			hashMapFree		(hashMap_t* self);
 
 typedef hashRecord_t* 	itMap_t ;
 
-uint64_t ckDouble(double v) ;
-#define hmReal(V)	((void*)ckDouble(V))
-#define hmInt(V)	((void*)V)
-	
+
+
 #endif
 
 
