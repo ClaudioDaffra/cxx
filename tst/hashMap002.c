@@ -2,20 +2,18 @@
 
 #include <stdio.h>
 #include <locale.h>
+#include "../lib/stdio.h"
 #include "../lib/hashMap.h"
 
-// clear  ; gcc lib/hashMap.c tst/hashMap001.c -o bin/x -Wall -pedantic -Wextra
+// clear  ; gcc lib/stdio.c lib/hashMap.c tst/hashMap002.c -o bin/x -Wall -pedantic -Wextra
 //
 //
 
 int main() 
 {
-	#ifdef __linux__
-	setlocale(LC_ALL, "it_IT.UTF-8");
-	#else
-	#pragma("windows and other locale output console not implemetd yet!")
-	#endif
-	
+
+	consoleSetUTF8();
+
 	// ......................................................... new
 	
     hashMap_t* table = hashMapNew(8);
