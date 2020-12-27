@@ -1,43 +1,36 @@
 
 
 #include <stdio.h>
-#include <locale.h>
-#include "../lib/stdio.h"
 #include "../lib/hashMap.h"
 
-// clear  ; gcc lib/stdio.c lib/hashMap.c tst/hashMap002.c -o bin/x -Wall -pedantic -Wextra
-// cls    & cl lib\stdio.c lib\hashMap.c tst\hashMap002.c /Febin\x.exe /utf-8 /W4 /EHsc
+
+// clear  ; gcc lib/hashMap.c tst/hashMap003.c -o bin/x -Wall -pedantic -Wextra
+// cls    & cl lib\stdio.c lib\hashMap.c tst\hashMap003.c /Febin\x.exe /utf-8 /W4 /EHsc
 //
 
 int main() 
 {
-
-	consoleSetUTF8();
-
 	// ......................................................... new
 	
     hashMap_t* table = hashMapNew(8);
-	table->CMP = hashCompareWStr ;
 
 	// ......................................................... insert
 
-	hashMapSet(table, L"abc",L"123");
-	hashMapSet(table, L"汉字",L"456");
-	hashMapSet(table, L"ghi",L"789");
-		
-    wprintf(L"Key count: %d\n", (int)hmapSize(table));
+	hashMapSetInt(table, 1,"123");
+	hashMapSetInt(table, 2,"456");
+	hashMapSetInt(table, 3,"789");
+ 		
+    printf("Key count: %d\n", (int)hmapSize(table));
 
 	// ......................................................... get
 	    
-    void* value = hashMapGet(table, L"汉字");
+    void* value = hashMapGetInt(table, 2);
     
-    if(value) {
-        wprintf(L"Found: %ls\n", (wchar_t*)value);
-    }
+    if(value) printf("Found: %s\n", (char*)value);
 
 	// ......................................................... size capacity
 
-	wprintf ( L"size %zu capacity %zu\n",hmapSize(table) , hmapCapacity(table) ) ;
+	printf ( "size %zu capacity %zu\n",hmapSize(table) , hmapCapacity(table) ) ;
  
  	// ......................................................... iterator
 
@@ -45,7 +38,7 @@ int main()
     {
        if ( itMapKey(it)  ) 
        {
-		   wprintf ( L"key %ls value %ls\n",(wchar_t*)it->key,(wchar_t*)it->value );
+		   printf ( "key %zu value %s\n",(uint64_t)it->key,(char*)it->value );
 	   }
     }       
 

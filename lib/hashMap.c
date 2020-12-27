@@ -2,22 +2,22 @@
 #include "hashMap.h"
 
 static
-void hashMapSize(hashMap_t* self, size_t size) 
+void hashMapSize(hashMap_t* self, size_t capacity) 
 {
-    self->records = realloc(self->records, sizeof(hashRecord_t) * size);
+    self->records = realloc(self->records, sizeof(hashRecord_t) * capacity);
 
-    if(size > self->size) 
+    if(capacity > self->capacity) 
     {
-        size_t diff = (size - self->size) * sizeof(hashRecord_t);
-        memset(&self->records[self->size], 0, diff);
+        size_t diff = (capacity - self->capacity) * sizeof(hashRecord_t);
+        memset(&self->records[self->capacity], 0, diff);
     }
 
-    self->size = size;
+    self->capacity = capacity;
 }
 static
 void hashMapGrow(hashMap_t* self) 
 {
-    hashMapSize(self, self->size * 2);
+    hashMapSize(self, self->capacity * 2);
 }
 
 hashMap_t* hashMapNew(size_t init_size) 
@@ -31,14 +31,14 @@ static
 hashRecord_t* hashMapRecord1(hashMap_t* self, void* k) 
 {
     intptr_t kk = (intptr_t)k;
-    size_t pos = kk % self->size;
+    size_t pos = kk % self->capacity;
     return &self->records[pos];
 }
 static
 hashRecord_t* hashMapRecord2(hashMap_t* self, void* k) 
 {
     intptr_t kk = (intptr_t)k;
-    size_t pos = (kk / self->size) % self->size;
+    size_t pos = (kk / self->capacity) % self->capacity;
     return &self->records[pos];
 }
 static
@@ -57,7 +57,7 @@ void hashMapPutReHash(hashMap_t* self, hashRecord_t* v)
     if(!r->key) 
     {
         hashMapRecordSwap(r, v);
-        self->key_count++;
+        self->size++;
         return;
     }
 
@@ -72,7 +72,7 @@ void hashMapPutReHash(hashMap_t* self, hashRecord_t* v)
     if(!r->key) 
     {
         hashMapRecordSwap(r, v);
-        self->key_count++;
+        self->size++;
         return;
     }
 
@@ -85,7 +85,7 @@ void hashMapPutReHash(hashMap_t* self, hashRecord_t* v)
     hashMapInsert(self, v);
 }
 
-void hashMapPut(hashMap_t* self, void* key, void* value) 
+void hashMapSet(hashMap_t* self, void* key, void* value) 
 {
     hashRecord_t rec;
     rec.key = key;
@@ -107,7 +107,7 @@ void hashMapInsert(hashMap_t* self, hashRecord_t* v)
         // we successfully added the key
         if(!v->key) 
         {
-            self->key_count++;
+            self->size++;
             return;
         }
 
@@ -119,7 +119,7 @@ void hashMapInsert(hashMap_t* self, hashRecord_t* v)
 
         if(!v->key) 
         {
-            self->key_count++;
+            self->size++;
             return;
         }
         // If the newly replaced cell wasn't empty, repeat the process
@@ -139,6 +139,15 @@ void* hashMapGet(hashMap_t* self, void* key)
     r = hashMapRecord2(self, key);
     if(r->key && !self->CMP(key, r->key)) return r->value;
     
+    return 0;
+}
+
+void* hashMapGetRaw(hashMap_t* self, void* key) 
+{
+    hashRecord_t* r = hashMapRecord1(self, key);
+    if(key == r->key) return r->value;
+    r = hashMapRecord2(self, key);
+    if(key == r->key) return r->value;
     return 0;
 }
 

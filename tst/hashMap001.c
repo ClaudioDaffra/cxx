@@ -16,9 +16,9 @@ int main()
 
 	// ......................................................... insert
 
-	hashMapPut(table, "abc","123");
-	hashMapPut(table, "def","456");
-	hashMapPut(table, "ghi","789");
+	hashMapSet(table, "abc","123");
+	hashMapSet(table, "def","456");
+	hashMapSet(table, "ghi","789");
 		
     printf("Key count: %d\n", (int)hmapSize(table));
 
