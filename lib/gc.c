@@ -362,6 +362,120 @@ void cb_fclose(void*ptr)
 	if (ptr!=NULL) fclose(ptr);
 }
 
+
+
+/**/
+
+
+
+// ................................................................... wrapper strdup
+char* gcStrDup( char *s )
+{
+    if ( s == NULL ) return (char*)NULL ;
+    #undef strdup
+    gcAdd( GC,strdup(s),free ) ;
+    return s ;    
+    #define strdup gcStrDup
+}
+
+// ................................................................... wrapper wcsdup
+wchar_t* gcWcsDup( wchar_t *s)
+{
+    if ( s == NULL ) return (wchar_t*)NULL ;
+    #undef wcsdup
+    gcAdd( GC,wcsdup(s),free ) ;
+    return s ;    
+    #define wcsdup gcWcsDup
+}
+
+// ................................................................... intDup
+
+int* gcIntDup(int val)
+{
+    int* p=(int*)  gcMalloc ( sizeof(int) );
+    *p=val;
+    return p ;
+}
+
+// ................................................................... doubleDup
+double* gcDoubleDup ( double val )  
+{
+    double* p = (double*) gcMalloc ( sizeof(double) );
+    *p=val;
+    return p ;
+}
+
+/**/
+
+// ......................................... [] compare function
+
+int gcCompareInt(const void* a, const void* b)
+{
+  int va = *(const int*) a;
+  int vb = *(const int*) b;
+  return (va > vb) - (va < vb);
+}
+
+int gcCompareFloat (const void * a, const void * b)
+{
+  float fa = *(const float*) a;
+  float fb = *(const float*) b;
+  return (fa > fb) - (fa < fb);
+}
+
+int gcCompareDouble (const void * a, const void * b)
+{
+  double fa = *(const double*) a;
+  double fb = *(const double*) b;
+  return (fa > fb) - (fa < fb);
+}
+
+int gcCompareFloatAsInt (const void * a, const void * b)
+{
+  float _fa = *(const float*) a;
+  float _fb = *(const float*) b;
+  int fa = (int)_fa;
+  int fb = (int)_fb;
+  return (fa > fb) - (fa < fb);
+}
+int gcCompareDoubleAsInt (const void * a, const void * b)
+{
+  double _fa = *(const double*) a;
+  double _fb = *(const double*) b;
+  int fa = (int)_fa;
+  int fb = (int)_fb;  
+  return (fa > fb) - (fa < fb);
+}
+int gcCompareStrC ( const void * a, const void * b ) 
+{
+    const char **pa = (const char **)a;
+    const char **pb = (const char **)b;
+    return strcmp(*pa, *pb);   
+    
+}
+int gcCompareWStrC ( const void * a, const void * b ) 
+{
+    const wchar_t **pa = (const wchar_t **)a;
+    const wchar_t **pb = (const wchar_t **)b;
+    return wcscmp(*pa, *pb);  
+}
+
+int gcComparepStrC ( const void * a, const void * b ) 
+{
+    const char *pa = (const char *)a;
+    const char *pb = (const char *)b;
+    return strcmp(pa, pb);   
+    
+}
+int gcComparepWStrC ( const void * a, const void * b ) 
+{
+    const wchar_t *pa = (const wchar_t *)a;
+    const wchar_t *pb = (const wchar_t *)b;
+    return wcscmp(pa, pb);  
+}
+
+
+
 /**/
 
 

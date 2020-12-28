@@ -18,7 +18,7 @@ int main()
 
 	// ......................................................... insert
 
-	hashMapSet(table, "a1","123");
+	hashMapSet(table, "a1" ,"123");
 	hashMapSet(table, "a2","456");
 	hashMapSet(table, "a3","789");
 	hashMapSet(table, "a4","abc");
@@ -33,7 +33,7 @@ int main()
 
 	// ......................................................... del
 	
-	//hashMapDel(table, "a2" ) ;
+	hashMapDel(table, "a2" ) ;
 	
 	// ......................................................... size capacity
 
