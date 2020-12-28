@@ -283,6 +283,15 @@ void* gcMalloc_( struct gc_s* gc , size_t size )
 	return ptr ;
 }
 
+// ........................................... gc calloc
+
+void* gcCalloc_( struct gc_s* gc , size_t SIZEOF , size_t size )
+{
+	void* ptr = calloc( SIZEOF , size ) ;
+	gcAdd(gc,ptr,free);
+	return ptr ;
+}
+
 // ........................................... gc free
 
 void* gcFree_( struct gc_s* gc , void* ptr )

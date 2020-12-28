@@ -3,11 +3,13 @@
 #ifndef cuckoo_hash_h
 #define cuckoo_hash_h
 
+#include "gc.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <stdint.h>
 #include <wchar.h>
+
 
 typedef struct 
 {

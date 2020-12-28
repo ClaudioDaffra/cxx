@@ -4,10 +4,11 @@
 static
 void hashMapSize(hashMap_t* self, size_t capacity) 
 {
-    self->records = realloc(self->records, sizeof(hashRecord_t) * capacity);
+	self->records=gcMalloc(sizeof(hashRecord_t)*capacity);
 
     if(capacity > self->capacity) 
     {
+	    self->records = gcRealloc(self->records, sizeof(hashRecord_t) * capacity);	
         size_t diff = (capacity - self->capacity) * sizeof(hashRecord_t);
         memset(&self->records[self->capacity], 0, diff);
     }
@@ -22,7 +23,10 @@ void hashMapGrow(hashMap_t* self)
 
 hashMap_t* hashMapNew(size_t init_size) 
 {
-    hashMap_t* self = calloc(sizeof(hashMap_t), 1);
+    hashMap_t* self = gcCalloc(sizeof(hashMap_t), 1);
+    
+    
+    
     self->CMP = hashCompareStr ; // default compare function
     hashMapSize(self, init_size);
     return self;
@@ -153,8 +157,8 @@ void* hashMapGetRaw(hashMap_t* self, void* key)
 
 void hashMapFree(hashMap_t* self) 
 {
-    free(self->records);
-    free(self);
+    gcFree(self->records);
+    gcFree(self);
 }
 
 int hashCompareStr(void* left,void*right)

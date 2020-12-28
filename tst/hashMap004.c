@@ -1,15 +1,17 @@
 
 
 #include <stdio.h>
+#include "../lib/gc.h"
 #include "../lib/hashMap.h"
 
-
-// clear  ; gcc lib/hashMap.c tst/hashMap004.c -o bin/x -Wall -pedantic -Wextra
-// cls    & cl lib\stdio.c lib\hashMap.c tst\hashMap004.c /Febin\x.exe /utf-8 /W4 /EHsc
+// clear  ; gcc lib/gc.c lib/hashMap.c tst/hashMap004.c -o bin/x 		-Wall -pedantic -Wextra
+// cls    & cl  lib\gc.c lib\hashMap.c tst\hashMap004.c /Febin\x.exe 	/utf-8 /W4 /EHsc
 //
 
 int main() 
 {
+	gcStart() ;
+	
 	// ......................................................... new
 	
     hashMap_t* table = hashMapNew(8);
@@ -25,13 +27,13 @@ int main()
 
 	// ......................................................... get
 	    
-    void* value = hashMapGetInt(table, "a2" );
+    void* value = hashMapGet(table, "a2" );
     
     if(value) printf("Found: %s\n", (char*)value);
 
 	// ......................................................... del
 	
-	hashMapDel(table, "a2" ) ;
+	//hashMapDel(table, "a2" ) ;
 	
 	// ......................................................... size capacity
 
@@ -50,6 +52,8 @@ int main()
 	// ......................................................... free
 	            
     hashMapFree(table);
+    
+    gcStop();
     
     return 0;
 }
