@@ -167,6 +167,49 @@ int hashCompareWStr(void* left,void*right)
 	return wcscmp( (wchar_t*)left,(wchar_t*)right ) ;
 }
 
+void* hashMapDel(hashMap_t* self, void* key) 
+{
+    hashRecord_t* r = hashMapRecord1(self, key);
+    if(r->key && !self->CMP(key, r->key)) 
+    {
+		r->key=NULL;
+		r->value=NULL;
+		return NULL ;
+    }
+    
+    r = hashMapRecord2(self, key);
+    if(r->key && !self->CMP(key, r->key)) 
+    {
+		r->key=NULL;
+		r->value=NULL;
+		return NULL ;
+    }
+    
+    return (void*)-1;
+}
+
+void* hashMapDelInt(hashMap_t* self, void* key) 
+{
+    hashRecord_t* r = hashMapRecord1(self, key);
+    if(key == r->key) 
+    {
+		r->key=NULL;
+		r->value=NULL;
+		return NULL ;
+	}
+    r = hashMapRecord2(self, key);
+    if(key == r->key) 
+    {	
+		r->key=NULL;
+		r->value=NULL;
+		return NULL ;
+	}
+	
+    return (void*)-1;
+}
+
+
+
 /**/
 
 

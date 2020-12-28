@@ -37,6 +37,8 @@ void 			hashMapSet		(hashMap_t* self, void* key, void* value);
 void* 			hashMapGet		(hashMap_t* self, void* key) ;
 void* 			hashMapGetRaw	(hashMap_t* self, void* key) ;
 void 			hashMapFree		(hashMap_t* self);
+void* 			hashMapDel		(hashMap_t* self, void* key) ;
+void* 			hashMapDelInt	(hashMap_t* self, void* key) ;
 
 // macro
 
