@@ -1,5 +1,5 @@
-#ifndef gc_wrapper
-#define gc_wrapper
+#ifndef gcWrapper
+#define gcWrapper
 
 #ifdef __linux__
 #define _GNU_SOURCE 

@@ -1,12 +1,22 @@
 
 #include "gc.h"
 
-#define hash_func meiyan
+#define gcHashFunc gcMeyan
 
-struct gc_s* GC ;
+// global
+
+struct gc_s* GC=NULL ;
+
+// n.b.
+//
+// 1) I confronti vengono fatti con memcmp .
+// 2) Le chiavi vengono duplicate all'iterno della tavola 
+//
+
+// ........................................... gc hash function
 
 static 
-inline uint32_t meiyan(const char *key, int count) 
+inline uint32_t gcMeyan(const char *key, int count) 
 {
 	typedef uint32_t* P;
 	uint32_t h = 0x811c9dc5;
@@ -23,8 +33,12 @@ inline uint32_t meiyan(const char *key, int count)
 	return h ^ (h >> 16);
 }
 
+// ........................................... gc new node
+
 struct gcKeyNode_s *gc_node_new(char*k, int l) 
 {
+	if(GC==NULL) { printf("!! GC==NULL\n"); exit(-1);} ;
+	
 	struct gcKeyNode_s *node = (struct gcKeyNode_s *) malloc(sizeof(struct gcKeyNode_s));
 	node->len = l;
 	node->key = (char*) malloc(l);
@@ -43,8 +57,8 @@ void gc_node_del(struct gcKeyNode_s *node)
 	if ( node->dtor!=NULL )
 	{ 
         union {
-        char  ptrc[8];
-        void* ptr;
+			char  ptrc[8];
+			void* ptr;
         } pkey ;
         
 		#if defined(_MSC_VER)
@@ -113,16 +127,15 @@ void gc_del(struct gc_s* gc)
 	fclose(stdin);
 	fclose(stdout);
 	fclose(stderr);	
-		
-	//..........................
 	
 }
 
 // ........................................... gc reinsert when resizing
+
 static
 void gc_reinsert_when_resizing(struct gc_s* gc, struct gcKeyNode_s *k2) 
 {
-	int n = hash_func(k2->key, k2->len) % gc->length;
+	int n = gcHashFunc(k2->key, k2->len) % gc->length;
 	if (gc->table[n] == 0) 
 	{
 		gc->table[n] = k2;
@@ -136,6 +149,7 @@ void gc_reinsert_when_resizing(struct gc_s* gc, struct gcKeyNode_s *k2)
 }
 
 // ........................................... gc  resize
+
 static
 void gc_resize(struct gc_s* gc, int newsize) 
 {
@@ -158,10 +172,13 @@ void gc_resize(struct gc_s* gc, int newsize)
 }
 
 // ........................................... gc add
+
 static
 int gc_add(struct gc_s* gc, void *key, int keyn)
 {
-	int n = hash_func((const char*)key, keyn) % gc->length;
+	assert(gc!=NULL);
+	
+	int n = gcHashFunc((const char*)key, keyn) % gc->length;
 	if (gc->table[n] == 0)
 	{
 		double f = (double)gc->count / (double)gc->length;
@@ -200,7 +217,7 @@ int gc_add(struct gc_s* gc, void *key, int keyn)
 
 int gc_find(struct gc_s* gc, void *key, int keyn) 
 {
-	int n = hash_func((const char*)key, keyn) % gc->length;
+	int n = gcHashFunc((const char*)key, keyn) % gc->length;
     #if defined(__MINGW32__) || defined(__MINGW64__)
 	__builtin_prefetch(gc->table[n]);
     #endif
@@ -243,26 +260,26 @@ void gcPrint_(struct gc_s* gc)
 		}
 	}
 }
-#undef hash_func
+#undef gcHashFunc
 
-// ........................................... gc add XXX
+// ........................................... gc add key , dtor
 
-int gcAdd(struct gc_s* gc,void* key,HASHDICT_VALUE_TYPE dtor)
+int gcAdd(struct gc_s* gc,void* key,gcHashDictValue_t dtor)
 {
-	//void** callback = dtor ;
-	
     union {
         char  ptrc[8];
         void* ptr;
     } pkey ;
-    
 	pkey.ptr=(void*)key;
+	
 	int ret=gc_add(gc, pkey.ptrc, 8);
 	*gc->dtor = dtor;
     return ret ;
 }
 
+
 // ........................................... gc find
+
 static
 int gcFind(struct gc_s* gc,void* key)
 {
@@ -271,6 +288,7 @@ int gcFind(struct gc_s* gc,void* key)
         void* ptr;
     } pkey ;
     pkey.ptr=(void*)key;
+    
     return gc_find(gc, pkey.ptrc, 8);
 }
 
@@ -354,6 +372,7 @@ FILE* gcFileTemp( void )
 }
 
 // ........................................... call back fclose
+//
 // hack to avoid  warning: passing argument 3 of ‘gcAdd’ 
 // from incompatible pointer type [-Wincompatible-pointer-types]
 
@@ -362,13 +381,8 @@ void cb_fclose(void*ptr)
 	if (ptr!=NULL) fclose(ptr);
 }
 
-
-
-/**/
-
-
-
 // ................................................................... wrapper strdup
+
 char* gcStrDup( char *s )
 {
     if ( s == NULL ) return (char*)NULL ;
@@ -379,6 +393,7 @@ char* gcStrDup( char *s )
 }
 
 // ................................................................... wrapper wcsdup
+
 wchar_t* gcWcsDup( wchar_t *s)
 {
     if ( s == NULL ) return (wchar_t*)NULL ;
@@ -386,92 +401,6 @@ wchar_t* gcWcsDup( wchar_t *s)
     gcAdd( GC,wcsdup(s),free ) ;
     return s ;    
     #define wcsdup gcWcsDup
-}
-
-// ................................................................... intDup
-
-int* gcIntDup(int val)
-{
-    int* p=(int*)  gcMalloc ( sizeof(int) );
-    *p=val;
-    return p ;
-}
-
-// ................................................................... doubleDup
-double* gcDoubleDup ( double val )  
-{
-    double* p = (double*) gcMalloc ( sizeof(double) );
-    *p=val;
-    return p ;
-}
-
-/**/
-
-// ......................................... [] compare function
-
-int gcCompareInt(const void* a, const void* b)
-{
-  int va = *(const int*) a;
-  int vb = *(const int*) b;
-  return (va > vb) - (va < vb);
-}
-
-int gcCompareFloat (const void * a, const void * b)
-{
-  float fa = *(const float*) a;
-  float fb = *(const float*) b;
-  return (fa > fb) - (fa < fb);
-}
-
-int gcCompareDouble (const void * a, const void * b)
-{
-  double fa = *(const double*) a;
-  double fb = *(const double*) b;
-  return (fa > fb) - (fa < fb);
-}
-
-int gcCompareFloatAsInt (const void * a, const void * b)
-{
-  float _fa = *(const float*) a;
-  float _fb = *(const float*) b;
-  int fa = (int)_fa;
-  int fb = (int)_fb;
-  return (fa > fb) - (fa < fb);
-}
-int gcCompareDoubleAsInt (const void * a, const void * b)
-{
-  double _fa = *(const double*) a;
-  double _fb = *(const double*) b;
-  int fa = (int)_fa;
-  int fb = (int)_fb;  
-  return (fa > fb) - (fa < fb);
-}
-int gcCompareStrC ( const void * a, const void * b ) 
-{
-    const char **pa = (const char **)a;
-    const char **pb = (const char **)b;
-    return strcmp(*pa, *pb);   
-    
-}
-int gcCompareWStrC ( const void * a, const void * b ) 
-{
-    const wchar_t **pa = (const wchar_t **)a;
-    const wchar_t **pb = (const wchar_t **)b;
-    return wcscmp(*pa, *pb);  
-}
-
-int gcComparepStrC ( const void * a, const void * b ) 
-{
-    const char *pa = (const char *)a;
-    const char *pb = (const char *)b;
-    return strcmp(pa, pb);   
-    
-}
-int gcComparepWStrC ( const void * a, const void * b ) 
-{
-    const wchar_t *pa = (const wchar_t *)a;
-    const wchar_t *pb = (const wchar_t *)b;
-    return wcscmp(pa, pb);  
 }
 
 

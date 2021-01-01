@@ -1,52 +1,45 @@
 
+#include "../src/hashMap.h"
 
-#include <stdio.h>
-#include "../lib/hashMap.h"
-
-
-// clear  ; gcc lib/hashMap.c tst/hashMap001.c -o bin/x -Wall -pedantic -Wextra
-// cls    & cl lib\stdio.c lib\hashMap.c tst\hashMap001.c /Febin\x.exe /utf-8 /W4 /EHsc
+// clear  ; gcc src/gc.c src/hashMap.c tst/hashMap001.c -o bin/x -Wall -pedantic -Wextra
+//
 //
 
-int main() 
+int main()
 {
-	// ......................................................... new
+	gcStart();
 	
-    hashMap_t* table = hashMapNew(8);
+	setlocale(LC_ALL, "") ;
 
-	// ......................................................... insert
 
-	hashMapSet(table, "abc","123");
-	hashMapSet(table, "def","456");
-	hashMapSet(table, "ghi","789");
-		
-    printf("Key count: %d\n", (int)hmapSize(table));
+	char*source="claudio";
 
-	// ......................................................... get
-	    
-    void* value = hashMapGet(table, "def");
-    
-    if(value) {
-        printf("Found: %s\n", (char*)value);
-    }
+	hashMap_t hm = hashMapNew(0);
 
-	// ......................................................... size capacity
+	hashMapSet(hm,cnvWS2S(L"你好吗") 							, (void*) 100 );
+	hashMapSet(hm,cnvWS2S(L"§°çéè") 							, (void*) 200 );
+	hashMapSet(hm,cnvWS2S(L"°*§ç") 								, (void*) 300 );
+	hashMapSet(hm,source 										, (void*) 400 );	
+	hashMapSet(hm,cnvD2S (235325325325325353.14159265358L) 		, (void*) 500 );
+	hashMapSet(hm,cnvL2S (235325325325325353L) 					, (void*) 600 );
+	hashMapSet(hm,cnvP2S (&source) 								, (void*) &source 	);		
 
-	printf ( "size %zu capacity %zu\n",hmapSize(table) , hmapCapacity(table) ) ;
- 
- 	// ......................................................... iterator
 
-    for( itMap_t it = itMapBegin(table) ; it < itMapEnd(table) ; itMapNext(it) )
-    {
-       if ( itMapKey(it)  ) 
-       {
-		   printf ( "key %s value %s\n",(char*)it->key,(char*)it->value );
-	   }
-    }       
+	if (hashMapGet(hm, cnvWS2S(L"你好吗")) )
+			printf("found: %zu\n", (size_t)*hm->value);
+	else 
+			printf("error\n");
+			
+	if (hashMapGet(hm, cnvD2S(235325325325325353.14159265358L)) )
+			printf("found: %zu\n", (size_t)*hm->value);
+	else 
+			printf("error\n");	
 
-	// ......................................................... free
-	            
-    hashMapFree(table);
-    
-    return 0;
+	
+	hashMapDelete(hm);
+
+	gcStop();
+	
+return 0;
 }
+

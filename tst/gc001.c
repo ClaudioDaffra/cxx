@@ -1,11 +1,11 @@
 
-#include "../lib/gc.h"
+#include "../src/gc.h"
 
 /*
- * 	gcc -Wall -pedantic -Wextra lib/gc.c tst/gc001.c -o bin/x
+ * 	gcc -Wall -pedantic -Wextra src/gc.c tst/gc001.c -o bin/x
  *  valgrind ./bin/x
  *
- *  cl lib\gc.c tst\gc001.c /Febin\x.exe /W4
+ *  cl src\gc.c tst\gc001.c /Febin\x.exe /W4
  */
 
 // ........................................... MAIN
