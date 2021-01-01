@@ -1,5 +1,48 @@
+#ifndef HASHDICTC
+#define HASHDICTC
 
-#include "hashMap.h"
+#define _GNU_SOURCE
+
+#include <stdlib.h>  
+#include <stdint.h> 
+#include <string.h> 
+#include <xmmintrin.h>
+#include <stdio.h>
+#include <locale.h>
+#include <wchar.h>
+#include "src/gc.h"
+
+typedef int (*enumFunc)(void *key, int count, int *value, void *user);
+
+#define hashValue_t 	void*
+#define hashLength_t 	uint8_t
+
+struct hashMapNode_s 
+{
+	struct hashMapNode_s *	next;
+	char *					key;
+	hashLength_t 			len;
+	hashValue_t 			value;
+};
+
+struct hashMap_s 
+{
+	struct hashMapNode_s **	table;
+	int 					length; 
+	int						count;
+	double 					growth_treshold;
+	double 					growth_factor;
+	hashValue_t *			value;
+};
+
+
+struct hashMap_s* 	hashMapNew		(int initial_size);
+void 				hashMapDelete	(struct hashMap_s* hm);
+int 				hashMapAdd		(struct hashMap_s* hm, void *key, int keyn);
+int 				hashMapFind		(struct hashMap_s* hm, void *key, int keyn);
+//void dic_forEach(struct hashMap_s* hm, enumFunc f, void *user);
+
+#endif
 
 #define hash_func meiyan
 
@@ -24,8 +67,6 @@ static inline uint32_t meiyan(const char *key, int count)
 
 struct hashMapNode_s *hashMapKeyNodeNew(char*k, int l) 
 {
-	l=l+1 ; // fix : valgrind ->Invalid read of size 1
-
 	struct hashMapNode_s *node = gcMalloc(sizeof(struct hashMapNode_s));
 	node->len = l;
 	node->key = gcMalloc(l);
@@ -177,6 +218,11 @@ void dic_forEach(struct hashMap_s* hm, enumFunc f, void *user)
 */
 #undef hash_func
 
+char* cnvWS2S( wchar_t* ws) ;
+char* cnvD2S(double r);
+char* cnvL2S(long long r);
+char* cnvP2S(void* r);
+
 // ........................................................... convert
 
 char* cnvWS2S( wchar_t* ws )
@@ -217,6 +263,9 @@ char* cnvP2S(void* r)
     return buffer ;
 }  
 
+// .......................................... hashMap.h
+
+typedef struct hashMap_s* hashMap_t  ;
 
 // .......................................... hash map get
 
@@ -235,8 +284,70 @@ void* hashMapGet( hashMap_t hm,char * key  )
 	return hm->value  ;
 }
 
-/**/
+typedef struct hashMapNode_s ** hashMapIt_t ;
 
+#define hashMapCapacity(HM)		(HM->length)
+#define hashMapSize(HM)			(HM->count)	
 
+#define hashMapBegin(HM)		(&HM->table[0])
+#define hashMapEnd(HM)			(&HM->table[HM->length])
 
+// ..........................................
+    
+int main()
+{
+	gcStart();
+	
+	setlocale(LC_ALL, "") ;
+
+	char*source="claudio";
+
+	// ...................................................... new
+	
+	hashMap_t hm = hashMapNew(0);
+
+	// ...................................................... set
+	
+	hashMapSet(hm,cnvWS2S(L"你好吗") 							, (void*) 100 );
+	hashMapSet(hm,cnvWS2S(L"§°çéè") 							, (void*) 200 );
+	hashMapSet(hm,cnvWS2S(L"°*§ç") 								, (void*) 300 );
+	hashMapSet(hm,source 										, (void*) 400 );	
+	hashMapSet(hm,cnvD2S (235325325325325353.14159265358L) 		, (void*) 500 );
+	hashMapSet(hm,cnvL2S (235325325325325353L) 					, (void*) 600 );
+	hashMapSet(hm,cnvP2S (&source) 								, (void*) gcStrDup("daffra") 	);		
+
+	// ...................................................... get
+	
+	if (hashMapGet(hm, cnvWS2S(L"你好吗")) )
+			printf("found: %zu\n", (size_t)*hm->value);
+	else 
+			printf("error\n");
+			
+	if (hashMapGet(hm, cnvP2S (&source)) )
+			printf("found: %s\n", (char*)*hm->value);
+	else 
+			printf("error\n");	
+
+	// ...................................................... iterator
+	
+	printf ("table size %d capacity %d :\n",hashMapSize(hm),hashMapCapacity(hm) ) ;
+
+    for ( hashMapIt_t it=hashMapBegin(hm) ; it < hashMapEnd(hm); ++it )
+    {
+		if (*it!=NULL) 
+		{
+			if ((*it)->key!=NULL)
+				if ((*it)->value!=NULL)
+				
+				printf ( "key(%-20s) \nvalue(%p) %zu \n\n", (*it)->key,(*it)->value , (size_t)(*it)->value ) ;
+		
+		}
+	}
+		
+	hashMapDelete(hm);
+
+	gcStop();
+	
+return 0;
+}
 

@@ -12,7 +12,7 @@
 #include <wchar.h>
 #include "gc.h"
 
-//typedef int (*enumFunc)(void *key, int count, int *value, void *user);
+typedef int (*enumFunc)(void *key, int count, int *value, void *user);
 
 #define hashValue_t 	void*
 #define hashLength_t 	uint8_t
@@ -42,17 +42,12 @@ int 				hashMapAdd		(struct hashMap_s* hm, void *key, int keyn);
 int 				hashMapFind		(struct hashMap_s* hm, void *key, int keyn);
 //void dic_forEach(struct hashMap_s* hm, enumFunc f, void *user);
 
-char* cnvWS2S( wchar_t* ws) ;
-char* cnvD2S(double r);
-char* cnvL2S(long long r);
-char* cnvP2S(void* r);
+#endif
 
-typedef struct hashMap_s* hashMap_t  ;
 
-int 	hashMapSet	( hashMap_t hm,char * key , void * value ) ;
-void* 	hashMapGet	( hashMap_t hm,char * key  ) ;
 
 typedef struct hashMapNode_s ** hashMapIt_t ;
+
 
 #define hashMapCapacity(HM)		(HM->length)
 #define hashMapSize(HM)			(HM->count)	
@@ -61,10 +56,24 @@ typedef struct hashMapNode_s ** hashMapIt_t ;
 #define hashMapEnd(HM)			(&HM->table[HM->length])
 
 
-#endif
+char* cnvWS2S( wchar_t* ws) ;
+char* cnvD2S(double r);
+char* cnvL2S(long long r);
+char* cnvP2S(void* r);
+
+typedef struct hashMap_s* hashMap_t  ;
 
 
+// .......................................... hash map get
 
+int hashMapSet( hashMap_t hm,char * key , void * value ) ;
+ 
+// .......................................... hash map set
+
+void* hashMapGet( hashMap_t hm,char * key  ) ;
+ 
 /**/
+
+
 
 

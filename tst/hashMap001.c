@@ -5,39 +5,38 @@
 //
 //
 
+    
 int main()
 {
-	// ...................................................... start
-	
 	gcStart();
-
+	
 	setlocale(LC_ALL, "") ;
 
-	// ...................................................... new
+	char*source="claudio";
 
+	// ...................................................... new
+	
 	hashMap_t hm = hashMapNew(0);
 
 	// ...................................................... set
 	
-	char*source="claudio";	
-	
-	hashMapSet(hm,cnvWS2S(L"你好吗") 							, (void*) gcIntDup(100) );
-	hashMapSet(hm,cnvWS2S(L"§°çéè") 							, (void*) gcIntDup(101) );
-	hashMapSet(hm,cnvWS2S(L"°*§ç") 								, (void*) gcIntDup(102) );
-	hashMapSet(hm,source 										, (void*) gcIntDup(103) );	
-	hashMapSet(hm,cnvD2S (235325325325325353.14159265358L) 		, (void*) gcIntDup(104) );
-	hashMapSet(hm,cnvL2S (235325325325325353L) 					, (void*) gcIntDup(105) );
-	hashMapSet(hm,cnvP2S (&source) 								, (void*) gcIntDup(106) );		
+	hashMapSet(hm,cnvWS2S(L"你好吗") 							, (void*) 100 );
+	hashMapSet(hm,cnvWS2S(L"§°çéè") 							, (void*) 200 );
+	hashMapSet(hm,cnvWS2S(L"°*§ç") 								, (void*) 300 );
+	hashMapSet(hm,source 										, (void*) 400 );	
+	hashMapSet(hm,cnvD2S (235325325325325353.14159265358L) 		, (void*) 500 );
+	hashMapSet(hm,cnvL2S (235325325325325353L) 					, (void*) 600 );
+	hashMapSet(hm,cnvP2S (&source) 								, (void*) gcStrDup("daffra") 	);		
 
 	// ...................................................... get
-
+	
 	if (hashMapGet(hm, cnvWS2S(L"你好吗")) )
-			printf("found: %d\n", *(int*) (*hm->value) ) ;
+			printf("found: %zu\n", (size_t)*hm->value);
 	else 
 			printf("error\n");
-	
-	if (hashMapGet(hm, cnvD2S(235325325325325353.14159265358L)) )
-			printf("found: %d\n", *(int*) (*hm->value) ) ;
+			
+	if (hashMapGet(hm, cnvP2S (&source)) )
+			printf("found: %s\n", (char*)*hm->value);
 	else 
 			printf("error\n");	
 
@@ -50,20 +49,16 @@ int main()
 		if (*it!=NULL) 
 		{
 			if ((*it)->key!=NULL)
-			
-				printf ( "key(%20s) value(%p)\n", (*it)->key,(*it)->value ) ;
+				if ((*it)->value!=NULL)
+				
+				printf ( "key(%-20s) \nvalue(%p) %zu \n\n", (*it)->key,(*it)->value , (size_t)(*it)->value ) ;
 		
 		}
 	}
-
-	// ...................................................... free
-	
+		
 	hashMapDelete(hm);
 
-	// ...................................................... stop
-	printf("\n");
 	gcStop();
-
-	return 0;
+	
+return 0;
 }
-
