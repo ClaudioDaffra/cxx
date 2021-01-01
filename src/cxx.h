@@ -9,18 +9,13 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
-#include <assert.h>
 #include <stdint.h>
 #include <stddef.h>
+#include <string.h>
 #include <wchar.h>
-#include <stdlib.h>  
-#include <stdint.h> 
-#include <string.h> 
 #include <xmmintrin.h>
-#include <stdio.h>
 #include <locale.h>
-#include <wchar.h>
+#include <assert.h>
 
 // ................................................ merge
 
@@ -40,11 +35,11 @@
 
 // ................................................ new
 
-#define new(ID)		malloc(sizeof(ID));
+#define new(ID)		gcMalloc(sizeof(ID));
 
 // ................................................ delete
 
-#define delete(ID)	if((ID)!=NULL){free(ID);(ID)=NULL;}
+#define delete(ID)	if((ID)!=NULL){fgcFree(ID);(ID)=NULL;}
 
 
 #endif

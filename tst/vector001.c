@@ -4,10 +4,9 @@
 
 
 /*
-	clear  ; gcc src/gc.c tst/vector001.c -o   bin/x           -Wall -Wextra -pedantic 
+	clear  ; gcc src/gc.c tst/vector002.c -o   bin/x           -Wall -Wextra -pedantic 
 	
-	cls   ; cl  src\gc.c src\fs.c test\ex_vector_1.c      /Fex.exe    /EHsc /WX
-
+	cls   ; cl  src\gc.c tst\vector002.c      /Febin\x.exe    	/EHsc /WX
 */
 
 
@@ -15,11 +14,10 @@ int main ( void )
 {
     gcStart() ;
    
-    // .................................... vector
+    // .................................... vector typedef 
  
-    printf ( "\n --- vectorType(int,v1); " );
- 
-   
+    printf ( "--- vectorType(int,v1); \n" );
+
     // vector_ID_d			:	TYPE
 	// vector_ID_s			:	struct vector_ID_s
 	// vector_ID_t			:	vector_ID_s
@@ -27,21 +25,29 @@ int main ( void )
 	 
     vectorTypeDef(int,v1);
     
-    printf ( "\n vector : data size %zu , struct size %zu , struct size %zu,  struct * size %zu"
+    printf ( "vector : data size %zu , struct size %zu , struct size %zu,  struct * size %zu\n"
 		,sizeof(vector_v1_d),sizeof(struct vector_v1_s),sizeof(vector_v1_t),sizeof(vector_v1_p) );
 
-/*
-    printf ( "\n --- vectorNew( v1 , 128 ); " );
+    // .................................... vector new
+    
+    vector_v1_t	v1 ;
+    
+    vectorAlloc(v1,16) ;
 
-    vectorNew( v1 , 128 );
-
-    printf ( "\n --- vectorPushBack( v1 ,10 ) ; " );
+    // .................................... vector size capacity empty
+    
+    printf ( "vector : size %zu capacity %zu empty %d.\n",vectorSize(v1),vectorCapacity(v1),vectorEmpty(v1)	) ; 
+		   
+    // .................................... vector push back
+    
+    printf ( "\n--- vectorPushBack( v1 ,10 ) ; \n" );
     
     vectorPushBack( v1 ,10 ) ;
     
-    printf ( "\nv1 :: size %d capacity %d.", (int)vectorSize(v1) , (int)vectorCapacity(v1) );    
-    printf ( "\nv1 :: vector at vectorAt(v1,0):=%d.", vectorAt(v1,0) ); // 10
-    
+    printf ( "vector : size %zu capacity %zu empty %d.\n",vectorSize(v1),vectorCapacity(v1),vectorEmpty(v1)	) ; 
+
+
+/*   
     // .................................... vector of vector
  
     printf ( "\n --- vectorType(vector_v1,v2); " );
@@ -230,11 +236,13 @@ int main ( void )
 */
 
 
-	printf ("\n\n");
-	
-	gcStop() ;   
+    // ...................................... stop
+    
+    gcStop() ;
 
- return 0 ;
+    printf ("\n");
+    
+	return 0 ;
 }
 
 

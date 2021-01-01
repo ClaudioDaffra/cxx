@@ -26,34 +26,23 @@ typedef struct MERGE ( MERGE ( vector_ , ID )  , _s )	\
 }  MERGE ( MERGE ( vector_ , ID )  , _t ) ;				\
 typedef MERGE ( MERGE ( vector_ , ID )  , _t ) * MERGE ( MERGE ( vector_ , ID )  , _p )
 
-/*
-// ........................................................... [] vector def in struct 
-
-#define vectorDataType(TYPE,ID) typedef TYPE vectorDataType ## ID;  
-
-#define vectorStruct(TYPE,ID)                       \
-struct MERGE ( vector_s_ , ID )                    \
-{                                                   \
-    TYPE*   data        ;                           \
-    size_t  size        ;                           \
-    size_t  capacity    ;                           \
-}  ID 
-
-// ........................................................... [] vectorNew(ID,N) 
+// ........................................................... [] vectorAlloc(ID,N) 
  
-#define vectorNew(ID,N)                                                     \
-(ID).data = (void*) gcMalloc (  sizeof((ID).data) * N);                     \
-(ID).size      = 0;                                                         \
+#define vectorAlloc(ID,N)                        			\
+(ID).data = (void*) gcMalloc ( sizeof((ID).data) * N ); 	\
+assert((ID).data!=NULL);									\
+(ID).size      = 0;                                    		\
 (ID).capacity  = N;    
-    
+  
 // ........................................................... [] SIZE
-#define vectorSize(ID) (ID).size
+#define vectorSize(ID) ((ID).size)
 
 // ........................................................... [] CAPACITY
-#define vectorCapacity(ID) (ID).capacity
+#define vectorCapacity(ID) ((ID).capacity)
 
-// ........................................................... EMPTY
+// ........................................................... [] EMPTY
 #define vectorEmpty(ID) ((ID).size == 0) 
+
  
 // ........................................................... [] PUSH_BACK
 #define vectorPushBack(ID, VAL) do {                                                \
@@ -66,7 +55,7 @@ struct MERGE ( vector_s_ , ID )                    \
     ++(ID).size ;                                                                   \
 } while (0)
 
- 
+/*
 // ........................................................... [] POP_BACK
 #define vectorPopBack(ID) do {  \
     if ((ID).size) --(ID).size; \
