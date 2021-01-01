@@ -403,6 +403,23 @@ wchar_t* gcWcsDup( wchar_t *s)
     #define wcsdup gcWcsDup
 }
 
+// ................................................................... intDup
+
+int* gcIntDup(int val)
+{
+    int* p=(int*)  gcMalloc ( sizeof(int) );
+    *p=val;
+    return p ;
+}
+
+// ................................................................... doubleDup
+
+double* gcDoubleDup ( double val )  
+{
+    double* p = (double*) gcMalloc ( sizeof(double) );
+    *p=val;
+    return p ;
+}
 
 
 /**/

@@ -62,6 +62,11 @@ extern struct gc_s* GC ;
 
 char*    		gcStrDup	(char *s ) ;
 wchar_t* 		gcWcsDup	(wchar_t *s ) ;
+int* 			gcIntDup	(int val) ;
+double* 		gcDoubleDup (double val )  ;
+
+
+
 
 #endif
 
