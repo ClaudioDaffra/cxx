@@ -12,7 +12,7 @@
 #include <wchar.h>
 #include "gc.h"
 
-typedef int (*enumFunc)(void *key, int count, int *value, void *user);
+//typedef int (*enumFunc)(void *key, int count, int *value, void *user);
 
 #define hashValue_t 	void*
 #define hashLength_t 	uint8_t
@@ -52,6 +52,13 @@ typedef struct hashMap_s* hashMap_t  ;
 int 	hashMapSet	( hashMap_t hm,char * key , void * value ) ;
 void* 	hashMapGet	( hashMap_t hm,char * key  ) ;
 
+typedef struct hashMapNode_s ** hashMapIt_t ;
+
+#define hashMapCapacity(HM)		(HM->length)
+#define hashMapSize(HM)			(HM->count)	
+
+#define hashMapBegin(HM)		(&HM->table[0])
+#define hashMapEnd(HM)			(&HM->table[HM->length])
 
 
 #endif

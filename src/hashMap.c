@@ -24,6 +24,8 @@ static inline uint32_t meiyan(const char *key, int count)
 
 struct hashMapNode_s *hashMapKeyNodeNew(char*k, int l) 
 {
+	l=l+1; // fix valgrind -> valgrind - invalid read of size 1
+	
 	struct hashMapNode_s *node = gcMalloc(sizeof(struct hashMapNode_s));
 	node->len = l;
 	node->key = gcMalloc(l);
@@ -181,6 +183,7 @@ void dic_forEach(struct hashMap_s* hm, enumFunc f, void *user)
 char* cnvWS2S( wchar_t* ws )
 {
   size_t len = sizeof(wchar_t) * wcslen(ws) ;
+  
   char* buffer = gcCalloc ( sizeof(wchar_t),len );
   
   wcstombs ( buffer, ws, len ) ;
