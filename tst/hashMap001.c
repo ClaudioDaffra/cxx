@@ -1,10 +1,14 @@
 
 #include "../src/hashMap.h"
 
-// clear  ; gcc src/gc.c src/hashMap.c tst/hashMap001.c -o bin/x -Wall -pedantic -Wextra
-// cls & cl lib\gc.c src\hashMap.c tst\hashMap001.c /Febin/x.exe
-//
+/*
 
+    clear  ; gcc src/gc.c src/hashMap.c tst/hashMap001.c -o  bin/x           -Wall -pedantic -Wextra
+    valgrind ./bin/x
+
+    cls & cl lib\gc.c src\hashMap.c tst\hashMap001.c         /Febin/x.exe    /W4
+
+*/
     
 int main()
 {
@@ -42,7 +46,7 @@ int main()
 
 	// ...................................................... iterator
 	
-	printf ("table size %d capacity %d :\n",hashMapSize(hm),hashMapCapacity(hm) ) ;
+	printf ("table size %zu capacity %zu :\n",hashMapSize(hm),hashMapCapacity(hm) ) ;
 
     for ( hashMapIt_t it=hashMapBegin(hm) ; it < hashMapEnd(hm); ++it )
     {

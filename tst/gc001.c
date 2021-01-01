@@ -2,11 +2,11 @@
 #include "../src/gc.h"
 
 /*
- * 	gcc -Wall -pedantic -Wextra src/gc.c tst/gc001.c -o bin/x
- *  valgrind ./bin/x
- *
- *  cl src\gc.c tst\gc001.c /Febin\x.exe /W4
- */
+    clear ; gcc src/gc.c tst/gc001.c    -o bin/x        -Wall -pedantic -Wextra 
+
+    cls & cl src\gc.c tst\gc001.c       /Febin\x.exe    /W4
+    
+*/
 
 // ........................................... MAIN
 

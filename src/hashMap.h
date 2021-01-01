@@ -2,6 +2,7 @@
 #define HASHDICTC
 
 #define _GNU_SOURCE
+#define _XOPEN_SOURCE_EXTENDED 1
 
 #include <stdlib.h>  
 #include <stdint.h> 
@@ -12,10 +13,10 @@
 #include <wchar.h>
 #include "gc.h"
 
-typedef int (*enumFunc)(void *key, int count, int *value, void *user);
+typedef size_t (*enumFunc)(void *key, size_t count, size_t *value, void *user);
 
 #define hashValue_t 	void*
-#define hashLength_t 	uint8_t
+#define hashLength_t 	size_t
 
 struct hashMapNode_s 
 {
@@ -28,18 +29,18 @@ struct hashMapNode_s
 struct hashMap_s 
 {
 	struct hashMapNode_s **	table;
-	int 					length; 
-	int						count;
+	size_t 					length; 
+	size_t						count;
 	double 					growth_treshold;
 	double 					growth_factor;
 	hashValue_t *			value;
 };
 
 
-struct hashMap_s* 	hashMapNew		(int initial_size);
+struct hashMap_s* 	hashMapNew		(size_t initial_size);
 void 				hashMapDelete	(struct hashMap_s* hm);
-int 				hashMapAdd		(struct hashMap_s* hm, void *key, int keyn);
-int 				hashMapFind		(struct hashMap_s* hm, void *key, int keyn);
+size_t 				hashMapAdd		(struct hashMap_s* hm, void *key, size_t keyn);
+size_t 				hashMapFind		(struct hashMap_s* hm, void *key, size_t keyn);
 //void dic_forEach(struct hashMap_s* hm, enumFunc f, void *user);
 
 #endif
@@ -66,7 +67,7 @@ typedef struct hashMap_s* hashMap_t  ;
 
 // .......................................... hash map get
 
-int hashMapSet( hashMap_t hm,char * key , void * value ) ;
+size_t hashMapSet( hashMap_t hm,char * key , void * value ) ;
  
 // .......................................... hash map set
 

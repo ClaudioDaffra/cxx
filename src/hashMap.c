@@ -3,7 +3,7 @@
 
 #define hash_func meiyan
 
-static inline uint32_t meiyan(const char *key, int count) 
+static inline uint32_t meiyan(const char *key, size_t count) 
 {
 	typedef uint32_t* P;
 	uint32_t h = 0x811c9dc5;
@@ -22,11 +22,12 @@ static inline uint32_t meiyan(const char *key, int count)
 	return h ^ (h >> 16);
 }
 
-struct hashMapNode_s *hashMapKeyNodeNew(char*k, int l) 
+struct hashMapNode_s *hashMapKeyNodeNew(char*k, hashLength_t l) 
 {
 	l=l+1 ; // fix : valgrind ->Invalid read of size 1
 
 	struct hashMapNode_s *node = gcMalloc(sizeof(struct hashMapNode_s));
+    
 	node->len = l;
 	node->key = gcMalloc(l);
 	memcpy(node->key, k, l);
@@ -43,7 +44,7 @@ void hashMapKeyNodeDelete(struct hashMapNode_s *node)
 	gcFree(node);
 }
 
-struct hashMap_s* hashMapNew(int initial_size) 
+struct hashMap_s* hashMapNew(size_t initial_size) 
 {
 	struct hashMap_s* hm = gcMalloc(sizeof(struct hashMap_s));
 	if (initial_size == 0) initial_size = 1024;
@@ -57,7 +58,7 @@ struct hashMap_s* hashMapNew(int initial_size)
 
 void hashMapDelete(struct hashMap_s* hm) 
 {
-	for (int i = 0; i < hm->length; i++) 
+	for (size_t i = 0; i < hm->length; i++) 
 	{
 		if (hm->table[i])
 		hashMapKeyNodeDelete(hm->table[i]);
@@ -69,7 +70,7 @@ void hashMapDelete(struct hashMap_s* hm)
 
 void hashMapReinsertWhenResizing(struct hashMap_s* hm, struct hashMapNode_s *k2) 
 {
-	int n = hash_func(k2->key, k2->len) % hm->length;
+	size_t n = hash_func(k2->key, k2->len) % hm->length;
 	if (hm->table[n] == 0) 
 	{
 		hm->table[n] = k2;
@@ -82,13 +83,13 @@ void hashMapReinsertWhenResizing(struct hashMap_s* hm, struct hashMapNode_s *k2)
 	hm->value = &k2->value;
 }
 
-void hashMapResize(struct hashMap_s* hm, int newsize) 
+void hashMapResize(struct hashMap_s* hm, size_t newsize) 
 {
-	int o = hm->length;
+	size_t o = hm->length;
 	struct hashMapNode_s **old = hm->table;
 	hm->table = gcCalloc(sizeof(struct hashMapNode_s*), newsize);
 	hm->length = newsize;
-	for (int i = 0; i < o; i++) 
+	for (size_t i = 0; i < o; i++) 
 	{
 		struct hashMapNode_s *k = old[i];
 		while (k) 
@@ -102,9 +103,9 @@ void hashMapResize(struct hashMap_s* hm, int newsize)
 	gcFree(old);
 }
 
-int hashMapAdd(struct hashMap_s* hm, void *key, int keyn) 
+size_t hashMapAdd(struct hashMap_s* hm, void *key, size_t keyn) 
 {
-	int n = hash_func((const char*)key, keyn) % hm->length;
+	size_t n = hash_func((const char*)key, keyn) % hm->length;
 	if (hm->table[n] == 0) 
 	{
 		double f = (double)hm->count / (double)hm->length;
@@ -136,9 +137,9 @@ int hashMapAdd(struct hashMap_s* hm, void *key, int keyn)
 	return 0;
 }
 
-int hashMapFind(struct hashMap_s* hm, void *key, int keyn) 
+size_t hashMapFind(struct hashMap_s* hm, void *key, size_t keyn) 
 {
-	int n = hash_func((const char*)key, keyn) % hm->length;
+	size_t n = hash_func((const char*)key, keyn) % hm->length;
 	#if defined(__MINGW32__) || defined(__MINGW64__)
 	__builtin_prefetch(hm->table[n]);
 	#endif
@@ -162,7 +163,7 @@ int hashMapFind(struct hashMap_s* hm, void *key, int keyn)
 /*
 void dic_forEach(struct hashMap_s* hm, enumFunc f, void *user) 
 {
-	for (int i = 0; i < hm->length; i++) 
+	for (size_t i = 0; i < hm->length; i++) 
 	{
 		if (hm->table[i] != 0) 
 		{
@@ -183,7 +184,13 @@ char* cnvWS2S( wchar_t* ws )
 {
   size_t len = sizeof(wchar_t) * wcslen(ws) ;
   char* buffer = gcCalloc ( sizeof(wchar_t),len );
-  int ret = wcstombs ( buffer, ws, len ) ;
+  
+  #if defined(_MSC_VER)
+  size_t i=0;
+  wcstombs_s(&i,buffer,len,ws,len) ;
+  #else
+  wcstombs ( buffer, ws, len ) ;
+  #endif
 
   buffer=gcRealloc(buffer,strlen(buffer)+1);
 
@@ -194,7 +201,13 @@ char* cnvD2S(double r)
 {
     const unsigned char maxBufferLen=32;
     char* buffer=gcCalloc(sizeof(char),maxBufferLen);
-    gcvt(r,8,buffer);
+    const size_t digits=8;
+    
+    #if defined(_MSC_VER)
+    _gcvt_s( buffer, 32, r, digits );
+    #else
+    gcvt(r,digits,buffer);
+    #endif
 
     return buffer ;
 }
@@ -220,9 +233,9 @@ char* cnvP2S(void* r)
 
 // .......................................... hash map get
 
-int hashMapSet( hashMap_t hm,char * key , void * value )
+size_t hashMapSet( hashMap_t hm,char * key , void * value )
 {
-	int res=hashMapAdd(hm, key, strlen(key) );
+	size_t res=hashMapAdd(hm, key, strlen(key) );
 	*hm->value = value;
 	return res;
 }
