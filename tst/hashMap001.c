@@ -2,7 +2,7 @@
 #include "../src/hashMap.h"
 
 // clear  ; gcc src/gc.c src/hashMap.c tst/hashMap001.c -o bin/x -Wall -pedantic -Wextra
-//
+// cls & cl lib\gc.c src\hashMap.c tst\hashMap001.c /Febin/x.exe
 //
 
     

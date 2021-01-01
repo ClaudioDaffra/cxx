@@ -140,11 +140,11 @@ int hashMapFind(struct hashMap_s* hm, void *key, int keyn)
 {
 	int n = hash_func((const char*)key, keyn) % hm->length;
 	#if defined(__MINGW32__) || defined(__MINGW64__)
-	__builtin_prefetch(gc->table[n]);
+	__builtin_prefetch(hm->table[n]);
 	#endif
 
 	#if defined(_WIN32) || defined(_WIN64)
-	_mm_prefetch((char*)gc->table[n], _MM_HINT_T0);
+	_mm_prefetch((char*)hm->table[n], _MM_HINT_T0);
 	#endif
 	struct hashMapNode_s *k = hm->table[n];
 	if (!k) return 0;

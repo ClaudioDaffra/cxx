@@ -251,9 +251,9 @@ void gcPrint_(struct gc_s* gc)
 			struct gcKeyNode_s *k = gc->table[i];
 			while (k) 
 			{
-				printf ( "# node(0x%lx)::(0x%08lx)\n"
-                    ,(unsigned long)k
-                    ,(unsigned long)k->dtor 
+				printf ( "# node(%p)::(%p)\n"
+                    ,k
+                    ,k->dtor 
                 ) ;
 				k = k->next;
 			}
