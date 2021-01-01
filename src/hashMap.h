@@ -1,19 +1,10 @@
-#ifndef HASHDICTC
-#define HASHDICTC
+#ifndef HASHMAP
+#define HASHMAP
 
-#define _GNU_SOURCE
-#define _XOPEN_SOURCE_EXTENDED 1
-
-#include <stdlib.h>  
-#include <stdint.h> 
-#include <string.h> 
-#include <xmmintrin.h>
-#include <stdio.h>
-#include <locale.h>
-#include <wchar.h>
+#include "cxx.h"
 #include "gc.h"
 
-typedef size_t (*enumFunc)(void *key, size_t count, size_t *value, void *user);
+//typedef size_t (*enumFunc)(void *key, size_t count, size_t *value, void *user);
 
 #define hashValue_t 	void*
 #define hashLength_t 	size_t

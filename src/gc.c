@@ -251,9 +251,17 @@ void gcPrint_(struct gc_s* gc)
 			struct gcKeyNode_s *k = gc->table[i];
 			while (k) 
 			{
+				union // legal way to printf function pointer
+				{
+					// typed def void(*gcHashDictValue_t)(void*);
+					gcHashDictValue_t funcptr ;
+					void *objptr;
+				} u;
+				u.funcptr = k->dtor;
+  
 				printf ( "# node(%p)::(%p)\n"
-                    ,k
-                    ,k->dtor 
+                    ,(void*)k
+                    ,(void*)u.objptr
                 ) ;
 				k = k->next;
 			}
