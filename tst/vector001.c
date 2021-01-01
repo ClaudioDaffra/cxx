@@ -32,7 +32,7 @@ int main ( void )
     
     vector_v1_t	v1 ;
     
-    vectorAlloc(v1,16) ;
+    vectorAlloc(v1,8) ;
 
     // .................................... vector size capacity empty
     
@@ -40,13 +40,42 @@ int main ( void )
 		   
     // .................................... vector push back
     
-    printf ( "\n--- vectorPushBack( v1 ,10 ) ; \n" );
+    printf ( "--- vectorPushBack( v1 ,10 ) ; \n" );
     
-    vectorPushBack( v1 ,10 ) ;
+    vectorPushBack( v1 ,5) ;
     
     printf ( "vector : size %zu capacity %zu empty %d.\n",vectorSize(v1),vectorCapacity(v1),vectorEmpty(v1)	) ; 
 
+    printf ( "--- vectorPushBack( v1 ,10 item ) ; \n" );
+    
+	for(int i=0;i<10;i++) vectorPushBack( v1 ,i*10 ) ;
 
+    // .................................... vector pop back
+    
+    printf ( "--- vectorPopBack( v1 ) ; \n" );
+
+    vectorPopBack( v1 ) ;
+    
+    printf ( "vector : size %zu capacity %zu empty %d.\n",vectorSize(v1),vectorCapacity(v1),vectorEmpty(v1)	) ;   
+
+    // .................................... vector front back at
+    
+    printf ( "--- vector front %d back %d  at[3]=%d; \n",vectorFront(v1),vectorBack(v1),vectorAt(v1,3) );
+
+    // .................................... iterator
+    
+    printf ( "--- iterator ; \n" );
+    
+    for ( itVector(v1) it = vectorBegin(v1); it<vectorEnd(v1); it++) 
+    {
+		printf ( "(%02d)",*it );
+	}
+    printf ( "\n" );   
+    for ( itVector(v1) it = vectorRBegin(v1); it>vectorREnd(v1); it--) 
+    {
+		printf ( "(%02d)",*it );
+	}
+    printf ( "\n" );                    	
 /*   
     // .................................... vector of vector
  

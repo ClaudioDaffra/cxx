@@ -45,23 +45,23 @@ assert((ID).data!=NULL);									\
 
  
 // ........................................................... [] PUSH_BACK
-#define vectorPushBack(ID, VAL) do {                                                \
-    if ((ID).size + 1 > (ID).capacity) {                                            \
-        size_t N = ((ID).capacity += (ID).capacity);                                \
-        (ID).data = gcRealloc  ( (ID).data   , (N) * sizeof((ID).data)  );          \
-        (ID).capacity = (N);                                                        \
-    } ;                                                                             \
-    (ID).data[vectorSize(ID)] = (VAL);                                              \
-    ++(ID).size ;                                                                   \
+#define vectorPushBack(ID, VAL) do {                                   		\
+    if ((ID).size + 1 > (ID).capacity) {                                	\
+        size_t N = ((ID).capacity += (ID).capacity);                     	\
+        (ID).data = gcRealloc  ( (ID).data   , (N) * sizeof((ID).data)  );	\
+        (ID).capacity = (N);                                             	\
+    } ;                                                                 	\
+    (ID).data[vectorSize(ID)] = (VAL);                                    	\
+    ++(ID).size ;                                                       	\
 } while (0)
 
-/*
+
 // ........................................................... [] POP_BACK
 #define vectorPopBack(ID) do {  \
     if ((ID).size) --(ID).size; \
 } while (0)
 
-   
+  
 // ........................................................... [] CLEAR
 #define vectorClear(ID) do {    \
     (ID).size = 0;              \
@@ -73,27 +73,31 @@ assert((ID).data!=NULL);									\
 // ........................................................... [] AT 
 #define vectorAt(ID, INDEX) (ID).data[INDEX]    
 
+/*
 // ........................................................... [] vectorOfVector ... X , XY , XYZ
     
 #define vectorX(ID,NDX1)                vectorAt(ID,NDX1)
 #define vectorXY(ID,NDX1,NDX2)          vectorAt(vectorAt(ID,NDX1),NDX2)
 #define vectorXYZ(ID,NDX1,NDX2,NDX3)    vectorAt(vectorAt(vectorAt(ID,NDX1),NDX2),NDX3)
 
+*/
 // ........................................................... [] FRONT
 #define vectorFront(ID) (ID).data[0]
 
 // ........................................................... [] BACK 
 #define vectorBack(ID) (ID).data[vectorSize(ID) - 1]
 
+
 // ........................................................... [] ITERATOR 
-#define itVector(ID)        vectorDataType ## ID*  
+#define itVector(ID)        MERGE ( MERGE ( vector_ , ID )  , _d )*  
  
 #define vectorBegin(ID)     (ID).data
-#define vectorEnd(ID)       (ID).data + (ID).size 
+#define vectorEnd(ID)       ((ID).data+(ID).size) 
 
-#define vectorRBegin(ID)    (ID).data + (ID).size -1
-#define vectorREnd(ID)      (ID).data - 1
+#define vectorRBegin(ID)    ((ID).data + (ID).size - 1)
+#define vectorREnd(ID)      ((ID).data - 1 )
 
+/*
 // ........................................................... [] SHRINK TO FIT
 #define vectorShrinkToFit(ID) do {                                                  \
     (ID).data = gcRealloc  ( (ID).data   , ((ID).size) * sizeof((ID).data)  );      \
