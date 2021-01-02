@@ -17,6 +17,12 @@
 #include <locale.h>
 #include <assert.h>
 
+// ................................................ gcc
+
+#ifdef __GNUC__
+#pragma GCC diagnostic ignored "-Wunused-local-typedefs"
+#endif
+
 // ................................................ merge
 
 #ifndef CONCATENATE
@@ -31,7 +37,6 @@
 
 // warning: ISO C does not support ‘__FUNCTION__’ '__PRETTY_FUNCTION__' predefined identifier [-Wpedantic]
 #define debugInfo(...) fprintf ( stderr,"## file[%s] line[%d] fn[%s].\n",__FILE__,__LINE__,__func__);/*__VA_ARGS__*/
-
 
 // ................................................ new
 

@@ -117,7 +117,29 @@ int main ( void )
         
     for ( itVector(v1) it = vectorBegin(v1); it<vectorEnd(v1); it++)   printf ( "[%02d]" ,*it ) ; 
     printf ( "\n" ); 
-                                                    	
+
+    // .................................... resize
+
+    printf ( "--- resize > 15,0\n" );  
+    vectorResize(v1,15,0); 
+	printf ( "vector : size %zu capacity %zu empty %d.\n",vectorSize(v1),vectorCapacity(v1),vectorEmpty(v1)	) ;
+    for ( itVector(v1) it = vectorBegin(v1); it<vectorEnd(v1); it++)   printf ( "[%02d]" ,*it ) ; 
+    printf ( "\n" ); 	
+    
+	// .................................... new vector
+
+	vectorTypeDef(int,v2);
+
+	vector_v1_t	*v2 = new(vector_v2_t);
+
+	vectorAlloc(*v2,8) ; // always allocated first
+
+	vectorCopy( *v2 ,v1 ) ;
+	printf ( "vector : size %zu capacity %zu empty %d.\n",vectorSize(*v2),vectorCapacity(*v2),vectorEmpty(*v2)	) ; 
+	for ( itVector(v2) it = vectorBegin(*v2); it<vectorEnd(*v2); it++)   printf ( "[%02d]" ,*it ) ; 
+	printf ( "\n" ); 	
+
+ 	                                                                       	
 /*   
     // .................................... vector of vector
  
@@ -144,93 +166,7 @@ int main ( void )
     printf ( "\nv3[2] :: vectorAt(v3[2],0):=%d.", vectorAt(v3[2],0) );  // 123
     printf ( "\nv3[2] :: vectorAt(v3[2],1):=%d.", vectorAt(v3[2],1) );  // 456    
 
-    // .................................... front back 
-
-    printf ( "\n --- vectorFront(v3[2]);" ) ;
-    printf ( "\n --- vectorBack(v3[2]);" ) ;
-
-    printf ( "\nv3[2] :: vectorFront(v3[2]) :=%d."  , vectorFront(v3[2]) );  // 123
-    printf ( "\nv3[2] :: vectorBack(v3[2])  :=%d."  , vectorBack (v3[2]) );  // 456    
-
-    // .................................... clear
-
-    printf ( "\n --- vectorClear(v1) ;" ) ;
-    
-    vectorClear(v1) ;
-    
-    // .................................... iterator
-   
-    for ( int i=0; i<10 ; i++)
-    {
-        vectorPushBack( v1, i*2 ) ;
-    }
-
-    printf ( "\n --- itVector(v1) itv1 ;" ) ;
-    
-    itVector(v1) itv1 ;
-    
-    printf ( "\n" );
-    for( itv1 = vectorBegin(v1) ; itv1 != vectorEnd(v1); itv1++ )   printf ( "[%d]" ,*itv1 ) ;
-
-    printf ( "\n" );
-    for( itv1 = vectorRBegin(v1) ; itv1 != vectorREnd(v1); itv1-- ) printf ( "[%d]" ,*itv1 ) ;
-
-    // .................................... shrink to fit
-
-    printf ( "\n --- vectorShrinkToFit(v1);" ) ;
-    
-    vectorShrinkToFit(v1);
-
     printf ( "\nv1 :: size %d capacity %d.", (int)vectorSize(v1) , (int)vectorCapacity(v1) );      
-
-
-
-    printf ( "\nv1 :: size %d capacity %d.", (int)vectorSize(v1) , (int)vectorCapacity(v1) ); 
-
-    // .................................... insert At
-
-    printf ( "\n --- vectorInsertAtVal(v1,3,12);" ) ;
-  
-    vectorInsertAtVal(v1,3,123);  
- 
-    printf ( "\n" );
-    for( itv1 = vectorBegin(v1) ; itv1 != vectorEnd(v1); itv1++ )   printf ( "[%d]" ,*itv1 ) ; 
-    
-    // .................................... erase At 
-
-    printf ( "\n --- vectorEraseAt(v1,4);" ) ;
-    
-    vectorEraseAt(v1,4);
-
-    printf ( "\n" );
-    for( itv1 = vectorBegin(v1) ; itv1 != vectorEnd(v1); itv1++ )   printf ( "[%d]" ,*itv1 ) ; 
-
-    // .................................... erase At N
-
-    printf ( "\n --- vectorEraseAtN(v1,4,2);" ) ;
-    
-    vectorEraseAtN(v1,4,2);
-
-    printf ( "\n" );
-    for( itv1 = vectorBegin(v1) ; itv1 != vectorEnd(v1); itv1++ )   printf ( "[%d]" ,*itv1 ) ; 
-
-    // .................................... erase At N
-
-    printf ( "\n --- vectorResize(v1,16,0);" ) ;
-    
-    vectorResize(v1,16,0);
-
-    printf ( "\nv1 :: size %d capacity %d.", (int)vectorSize(v1) , (int)vectorCapacity(v1) );
-    printf ( "\n" );    
-    for( itv1 = vectorBegin(v1) ; itv1 != vectorEnd(v1); itv1++ )   printf ( "[%d]" ,*itv1 ) ; 
-
-    // .................................... copy
-     
-    vectorCopy ( v3[2] , v1 ) ;
-    
-    printf ( "\n" ); 
-    //for( unsigned int i=0; i<vectorSize(v3[2]) ; i++  )   printf ( "[%d]" ,v3[2].data[i] ) ; 
-    for( unsigned int i=0; i<vectorSize(v3[2]) ; i++  )   printf ( "[%d]" ,vectorAt(v3[2],i) ) ; 
 
     // .................................... Append
 
@@ -268,28 +204,16 @@ int main ( void )
     printf ( "\n" );    
     for( itv1 = vectorBegin(v1) ; itv1 != vectorEnd(v1); itv1++ )   printf ( "[%d]" ,*itv1 ) ; 
  
-    // .................................... sort
-    
-    vectorSort(v1,gcCompareInt);
-
-    printf ( "\n sort \n" );
-    for( itv1 = vectorBegin(v1) ; itv1 != vectorEnd(v1); itv1++ )   printf ( "[%d]" ,*itv1 ) ; 
-    
-    // .................................... free
-
-    printf ( "\n --- vectorFree( ... ) ;" ) ;
-
-    vectorFree( v1 ) ;
-    vectorFree( v2 ) ;    
-    vectorFree( v3[2] ) ;   
-    //vectorFree( v4 ) ;  
 */
 
     // .................................... dealloc
     
     printf ( "--- dealloc v1\n" ) ;    
 	vectorDealloc(v1);
-
+	
+	vectorDealloc(*v2);
+	delete(v2);
+	
     // ...................................... stop
     
     gcStop() ;

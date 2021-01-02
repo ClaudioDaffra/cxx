@@ -113,7 +113,6 @@ assert((ID).data!=NULL);									\
     } \
 } while (0)
 
-
 // ........................................................... [] vectorInsertAtVal     
         
 #define vectorInsertAtVal(ID, POS, VAL) do {                                                \
@@ -144,7 +143,6 @@ assert((ID).data!=NULL);									\
     }                                                                                           \
 } while (0)
 
-/*
 // ........................................................... [] RESIZE
     
 #define vectorResize(ID, N, VAL) do {                                       \
@@ -155,7 +153,8 @@ assert((ID).data!=NULL);									\
     (ID).size = (N);                                                        \
 } while (0)
 
-// ........................................................... [] COPY V1 V2 
+
+// ........................................................... [] COPY V1 <- V2 
  
 #define vectorCopy(ID, PTR ) do {                                                               \
     while ((ID).size + (PTR).size > (ID).capacity) {                                            \
@@ -168,6 +167,7 @@ assert((ID).data!=NULL);									\
     (ID).size = (PTR).size;                                                                     \
 } while (0)
 
+/*
 // ........................................................... [] APPEND 
  
 #define vectorAppend(ID, V2 ) do {                                                      \
@@ -225,8 +225,9 @@ assert((ID).data!=NULL);									\
 
 #define vectorBinarySearch(TYPE,ID,CMP,KEY)  bsearch (&KEY, (ID).data, (ID).size , sizeof (TYPE), CMP) 
 
-#endif
 
+
+#endif
 
  
  

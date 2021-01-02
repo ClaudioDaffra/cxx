@@ -117,16 +117,42 @@ int main ( void )
     
     for ( itVector(v1) it = vectorBegin(*v1); it<vectorEnd(*v1); it++)   printf ( "[%02d]" ,*it ) ; 
     printf ( "\n" );  
-          	
+
+    // .................................... resize
+
+    printf ( "--- resize < 5,0\n" );  
+    vectorResize(*v1,5,0); 
+	printf ( "vector : size %zu capacity %zu empty %d.\n",vectorSize(*v1),vectorCapacity(*v1),vectorEmpty(*v1)	) ;
+    for ( itVector(v1) it = vectorBegin(*v1); it<vectorEnd(*v1); it++)   printf ( "[%02d]" ,*it ) ; 
+    printf ( "\n" ); 	 
+
+	// .................................... new vector
+
+	vectorTypeDef(int,v2);
+
+	vector_v1_t	*v2 = new(vector_v2_t);
+
+	vectorAlloc(*v2,8) ; // always allocated first
+
+	vectorCopy( *v2 , *v1 ) ;
+	printf ( "vector : size %zu capacity %zu empty %d.\n",vectorSize(*v2),vectorCapacity(*v2),vectorEmpty(*v2)	) ; 
+	for ( itVector(v2) it = vectorBegin(*v2); it<vectorEnd(*v2); it++)   printf ( "[%02d]" ,*it ) ; 
+	printf ( "\n" ); 	
+		              	
     // .................................... dealloc
     
-    printf ( "--- dealloc *v1\n" ) ;    
+    printf ( "--- dealloc *v1,*v2\n" ) ;   
+     
 	vectorDealloc(*v1);
+	vectorDealloc(*v2);	
 	
     // ...................................... delete
-    
+
+    printf ( "--- delete v1,v2\n" ) ;  
+     
     delete(v1) ;
-           	    		        
+    delete(v2) ;
+               	    		        
     // ...................................... stop
     
     gcStop() ;
