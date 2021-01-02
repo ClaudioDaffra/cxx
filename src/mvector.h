@@ -113,7 +113,7 @@ assert((ID).data!=NULL);									\
     } \
 } while (0)
 
-/*
+
 // ........................................................... [] vectorInsertAtVal     
         
 #define vectorInsertAtVal(ID, POS, VAL) do {                                                \
@@ -135,7 +135,7 @@ assert((ID).data!=NULL);									\
     } ;                                                                                     \
 } while (0)
 
-    // ........................................................... [] ERASE N
+// ........................................................... [] ERASE N
         
 #define vectorEraseAtN(ID, POS, N) do {                                                         \
     if ( ((ID).size-(N))>0 ) {                                                                  \
@@ -144,6 +144,7 @@ assert((ID).data!=NULL);									\
     }                                                                                           \
 } while (0)
 
+/*
 // ........................................................... [] RESIZE
     
 #define vectorResize(ID, N, VAL) do {                                       \

@@ -103,7 +103,21 @@ int main ( void )
     vector_v1_d key = 88 ;
     vector_v1_d* value = (vector_v1_d*)vectorBinarySearch(vector_v1_d,*v1,gcCompareInt,key ) ;
     if ( value != NULL ) printf ( "found %d in vector.\n" ,key) ; else printf ( "not found %d in vector.\n" ,key);
-       	
+
+    // .................................... insert erase eraseN
+        
+    printf ( "--- insert at 3 34 \n" );  
+    vectorInsertAtVal(*v1,3,34); 
+        
+    printf ( "--- erase at 2 \n" );  
+    vectorEraseAt(*v1,2); 
+
+    printf ( "--- erase at 4 n.3 elements \n" );  
+    vectorEraseAtN(*v1,4,3);
+    
+    for ( itVector(v1) it = vectorBegin(*v1); it<vectorEnd(*v1); it++)   printf ( "[%02d]" ,*it ) ; 
+    printf ( "\n" );  
+          	
     // .................................... dealloc
     
     printf ( "--- dealloc *v1\n" ) ;    
