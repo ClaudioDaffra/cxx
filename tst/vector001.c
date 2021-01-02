@@ -120,14 +120,16 @@ int main ( void )
 
     // .................................... resize
 
-    printf ( "--- resize > 15,0\n" );  
-    vectorResize(v1,15,0); 
-	printf ( "vector : size %zu capacity %zu empty %d.\n",vectorSize(v1),vectorCapacity(v1),vectorEmpty(v1)	) ;
+    printf ( "--- resize > 8,0\n" );  
+    vectorResize(v1,8,0); 
+	printf ( "vector v1 : size %zu capacity %zu empty %d.\n",vectorSize(v1),vectorCapacity(v1),vectorEmpty(v1)	) ;
     for ( itVector(v1) it = vectorBegin(v1); it<vectorEnd(v1); it++)   printf ( "[%02d]" ,*it ) ; 
     printf ( "\n" ); 	
     
 	// .................................... new vector
 
+    printf ( "--- new vector copy append\n" );
+    
 	vectorTypeDef(int,v2);
 
 	vector_v1_t	*v2 = new(vector_v2_t);
@@ -135,11 +137,35 @@ int main ( void )
 	vectorAlloc(*v2,8) ; // always allocated first
 
 	vectorCopy( *v2 ,v1 ) ;
-	printf ( "vector : size %zu capacity %zu empty %d.\n",vectorSize(*v2),vectorCapacity(*v2),vectorEmpty(*v2)	) ; 
-	for ( itVector(v2) it = vectorBegin(*v2); it<vectorEnd(*v2); it++)   printf ( "[%02d]" ,*it ) ; 
-	printf ( "\n" ); 	
+	vectorAppend( *v2 ,v1 ) ;
+		
+	printf ( "vector *v2 : size %zu capacity %zu empty %d.\n",vectorSize(*v2),vectorCapacity(*v2),vectorEmpty(*v2)	) ; 
 
- 	                                                                       	
+	vectorPrintf("(%02d)",*v2);
+    printf("\n");
+    
+	// .................................... insert vector
+
+    printf ( "--- vectorInsertAtVector(*v2,5,v1); \n" );
+    
+    //  v1 [00][05][33][20][60][70][80]
+    // *v2 [00][05][33][20][60][70][80][00][00][05][33][20][60][70][80][00] 
+    // *v2 [00][05][33][20][60]		[00][05][33][20][60][70][80]	[00][70][80][00][00][05][33][20][60][70][80][00]
+    
+    vectorInsertAtVector(*v2,5,v1);
+    
+	vectorPrintf("(%02d)",*v2);
+	printf ( "\n" ); 	 
+
+    //  v1 [00][05][33]	-	[20][60][70][80]
+    // *v2 [00][05][33]		[20][60][00][05][33]	[20][60][70][80][00][70][80][00][00][05][33][20][60][70][80][00]
+    //  v1 (00)(05)(33)		(20)(60)(00)(05)(33)	(20)(60)(70)(80)(00)	
+    
+	vectorInsertAtVectorFromN(v1, 3, *v2 , 3 , 5 );
+
+	vectorPrintf("(%02d)",v1);
+	printf ( "\n" ); 
+			                                                                       	
 /*   
     // .................................... vector of vector
  

@@ -36,16 +36,19 @@ assert((ID).data!=NULL);									\
 (ID).capacity  = N;    
   
 // ........................................................... [] SIZE
+
 #define vectorSize(ID) ((ID).size)
 
 // ........................................................... [] CAPACITY
+
 #define vectorCapacity(ID) ((ID).capacity)
 
 // ........................................................... [] EMPTY
+
 #define vectorEmpty(ID) ((ID).size == 0) 
 
- 
 // ........................................................... [] PUSH_BACK
+
 #define vectorPushBack(ID, VAL) do {                                   		\
     if ((ID).size + 1 > (ID).capacity) {                                	\
         size_t N = ((ID).capacity += (ID).capacity);                     	\
@@ -56,22 +59,24 @@ assert((ID).data!=NULL);									\
     ++(ID).size ;                                                       	\
 } while (0)
 
-
 // ........................................................... [] POP_BACK
+
 #define vectorPopBack(ID) do {  \
     if ((ID).size) --(ID).size; \
 } while (0)
 
-  
 // ........................................................... [] CLEAR
+
 #define vectorClear(ID) do {    \
     (ID).size = 0;              \
 } while (0)
 
 // ........................................................... [] DATA
+
 #define vectorData(ID) (ID).data
 
 // ........................................................... [] AT 
+
 #define vectorAt(ID, INDEX) (ID).data[INDEX]    
 
 /*
@@ -82,14 +87,17 @@ assert((ID).data!=NULL);									\
 #define vectorXYZ(ID,NDX1,NDX2,NDX3)    vectorAt(vectorAt(vectorAt(ID,NDX1),NDX2),NDX3)
 
 */
+
 // ........................................................... [] FRONT
+
 #define vectorFront(ID) (ID).data[0]
 
 // ........................................................... [] BACK 
+
 #define vectorBack(ID) (ID).data[vectorSize(ID) - 1]
 
-
 // ........................................................... [] ITERATOR 
+
 #define itVector(ID)        MERGE ( MERGE ( vector_ , ID )  , _d )*  
  
 #define vectorBegin(ID)     (ID).data
@@ -98,14 +106,15 @@ assert((ID).data!=NULL);									\
 #define vectorRBegin(ID)    ((ID).data + (ID).size - 1)
 #define vectorREnd(ID)      ((ID).data - 1 )
 
-
 // ........................................................... [] SHRINK TO FIT
+
 #define vectorShrinkToFit(ID) do {                                                  \
     (ID).data = gcRealloc  ( (ID).data   , ((ID).size) * sizeof((ID).data)  );      \
     (ID).capacity = (ID).size;                                                      \
 } while (0)    
 
 // ........................................................... [] RESERVE 
+
 #define vectorReserve(ID, N) do {                                                   \
     if ((ID).capacity < (N)) {                                                      \
         (ID).data = gcRealloc  ( (ID).data   , (N) * sizeof((ID).data)  );          \
@@ -153,7 +162,6 @@ assert((ID).data!=NULL);									\
     (ID).size = (N);                                                        \
 } while (0)
 
-
 // ........................................................... [] COPY V1 <- V2 
  
 #define vectorCopy(ID, PTR ) do {                                                               \
@@ -162,17 +170,17 @@ assert((ID).data!=NULL);									\
         (ID).data = gcRealloc ( (ID).data , (ID).capacity * sizeof((ID).data)   );              \
     } ;                                                                                         \
     memmove((ID).data + 0 + (PTR).size, (ID).data + 0, ((ID).size - 0) * sizeof *(ID).data);    \
-    for (unsigned i = 0; i < (PTR).size; i++)                                                   \
+    for (size_t i = 0; i < (PTR).size; i++)                                                   	\
         (ID).data[0 + i] = (PTR).data[0 + i];                                                   \
     (ID).size = (PTR).size;                                                                     \
 } while (0)
 
-/*
+
 // ........................................................... [] APPEND 
  
 #define vectorAppend(ID, V2 ) do {                                                      \
-    unsigned V1z = (ID).size ;                                                          \
-    unsigned V2z = (V2).size ;                                                          \
+    size_t V1z = (ID).size ;                                                          	\
+    size_t V2z = (V2).size ;                                                          	\
     if ((ID).capacity < (V1z+V2z)) {                                                    \
         (ID).data = gcRealloc ( (ID).data , (V1z + V2z ) *  sizeof((ID).data) ) ;       \
     }                                                                                   \
@@ -184,6 +192,7 @@ assert((ID).data!=NULL);									\
     (ID).size = (ID).capacity ;                                                         \
 } while (0)
 
+
 // ........................................................... [] insert vector at
 
 #define vectorInsertAtVector(ID, POS, PTR ) do {                                                    \
@@ -192,7 +201,7 @@ assert((ID).data!=NULL);									\
         (ID).data = gcRealloc ( (ID).data , (ID).capacity *  sizeof((ID).data)   );                 \
     }                                                                                               \
     memmove((ID).data + POS + (PTR).size, (ID).data + POS, ((ID).size - POS) * sizeof *(ID).data);  \
-    for (unsigned i = 0; i < (PTR).size; i++)                                                       \
+    for (size_t i = 0; i < (PTR).size; i++)                                                       	\
         (ID).data[POS + i] = (PTR).data[0 + i];                                                     \
     (ID).size += (PTR).size;                                                                        \
 } while (0)
@@ -206,11 +215,17 @@ assert((ID).data!=NULL);									\
         (ID).data = gcRealloc ( (ID).data , (ID).capacity *  sizeof((ID).data)  );                  \
     } ;                                                                                             \
     memmove((ID).data + POS + (N), (ID).data + POS, ((ID).size - POS) * sizeof *(ID).data);         \
-    for (unsigned i = 0; i < (N); i++)                                                              \
+    for (size_t i = 0; i < (N); i++)                                                              	\
         (ID).data[POS + i] = (PTR).data[POS2 + i];                                                  \
     (ID).size += (N);                                                                               \
 } while (0)
-*/    
+
+// ........................................................... [] PRINTF
+
+#define vectorPrintf(FORMAT,ID) do { 												\
+for ( size_t i = 0 ; i < (ID).size ; i++)  printf ( FORMAT , (ID).data[i] ) ;		\
+}while(0);
+
 // ........................................................... [] FREE 
 
 #define vectorDealloc(ID) do {                        \
@@ -221,7 +236,7 @@ assert((ID).data!=NULL);									\
 
 #define vectorSort(TYPE,ID,CMP)  qsort((ID).data, (ID).size, sizeof(TYPE), CMP )  
 
-// ........................................................... [] binary search 
+// ........................................................... [] BINARY SEARCH 
 
 #define vectorBinarySearch(TYPE,ID,CMP,KEY)  bsearch (&KEY, (ID).data, (ID).size , sizeof (TYPE), CMP) 
 

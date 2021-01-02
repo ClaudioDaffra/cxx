@@ -122,11 +122,13 @@ int main ( void )
 
     printf ( "--- resize < 5,0\n" );  
     vectorResize(*v1,5,0); 
-	printf ( "vector : size %zu capacity %zu empty %d.\n",vectorSize(*v1),vectorCapacity(*v1),vectorEmpty(*v1)	) ;
+	printf ( "vector *v1 : size %zu capacity %zu empty %d.\n",vectorSize(*v1),vectorCapacity(*v1),vectorEmpty(*v1)	) ;
     for ( itVector(v1) it = vectorBegin(*v1); it<vectorEnd(*v1); it++)   printf ( "[%02d]" ,*it ) ; 
     printf ( "\n" ); 	 
 
 	// .................................... new vector
+
+    printf ( "--- new vector copy append\n" );
 
 	vectorTypeDef(int,v2);
 
@@ -135,10 +137,35 @@ int main ( void )
 	vectorAlloc(*v2,8) ; // always allocated first
 
 	vectorCopy( *v2 , *v1 ) ;
-	printf ( "vector : size %zu capacity %zu empty %d.\n",vectorSize(*v2),vectorCapacity(*v2),vectorEmpty(*v2)	) ; 
+	vectorAppend( *v2 , *v1 ) ;
+		
+	printf ( "vector *v2 : size %zu capacity %zu empty %d.\n",vectorSize(*v2),vectorCapacity(*v2),vectorEmpty(*v2)	) ; 
 	for ( itVector(v2) it = vectorBegin(*v2); it<vectorEnd(*v2); it++)   printf ( "[%02d]" ,*it ) ; 
 	printf ( "\n" ); 	
-		              	
+
+	// .................................... insert vector
+
+    printf ( "--- vectorInsertAtVector(*v2,5,v1); \n" );
+    
+    // *v1 [00][05][34][22][66]
+    // *v2 [00][05][34][22][66][00][05][34][22][66] 
+    
+    // *v2 (00)(05)(34)(22)(66)		(00)(05)(34)(22)(66)	(00)(05)(34)(22)(66)
+    
+    vectorInsertAtVector(*v2,5,*v1);
+    
+	vectorPrintf("(%02d)",*v2);
+	printf ( "\n" ); 	 
+
+    // *v1 [00][05][34]	V	[22][66]
+    // *v2 (00)(05)(34)		(22)(66)(00)(05)(34)	(22)(66)(00)(05)(34)(22)(66)
+    // *v1 (00)(05)(34)		(22)(66)(00)(05)(34)	(22)(66)	
+    
+	vectorInsertAtVectorFromN(*v1, 3, *v2 , 3 , 5 );
+
+	vectorPrintf("(%02d)",*v1);
+	printf ( "\n" ); 
+			              	
     // .................................... dealloc
     
     printf ( "--- dealloc *v1,*v2\n" ) ;   
