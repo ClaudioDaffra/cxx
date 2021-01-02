@@ -3,13 +3,14 @@
 #include "../src/argParse.h"
 
 /*
-	clear ; gcc src/argParse.c tst/argParse001.c -o 	bin/x -Wall -pedantic -Wextra
+	clear   ; gcc src/argParse.c tst/argParse001.c  -o 	bin/x   -Wall -pedantic -Wextra
 	./bin/x /help
 	
-    cl  lib\argParse.c  test\ex_argParse_1.c /Fex.exe   /WX
-    E:\c--\test>x.exe -i "xxx"
-    [xxx]
-    E:\c--\test>
+    cls     & cl src\argParse.c tst\argParse001.c   /Febin\x.exe /WX
+    
+    C:\project\cxx>bin\x.exe -i "file.txt"
+
+    file input [file.txt]
 */
 
 int main ( int argc , const char** argv ) 
