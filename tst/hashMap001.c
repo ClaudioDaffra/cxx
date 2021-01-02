@@ -6,10 +6,18 @@
     clear  ; gcc src/gc.c src/hashMap.c tst/hashMap001.c -o  bin/x           -Wall -pedantic -Wextra
     valgrind ./bin/x
 
-    cls & cl lib\gc.c src\hashMap.c tst\hashMap001.c         /Febin/x.exe    /W4
+    cls & cl lib\gc.c src\hashMap.c tst\hashMap001.c         /Febin/x.exe    /WX
 
 */
-    
+ 
+size_t	f1(void *key, size_t count,void** value, void *user)
+{
+	(void)count;
+	(void)user;
+	printf ( "key : %-20s , value %p .\n",(char*)key , *value ) ;
+	return 1;
+}
+   
 int main()
 {
 	gcStart();
@@ -20,7 +28,7 @@ int main()
 
 	// ...................................................... new
 	
-	hashMap_t hm = hashMapNew(0);
+	hashMap_p hm = hashMapNew(0);
 
 	// ...................................................... set
 	
@@ -56,10 +64,15 @@ int main()
 				if ((*it)->value!=NULL)
 				
 				printf ( "key(%-20s) \nvalue(%p) %zu \n\n", (*it)->key,(*it)->value , (size_t)(*it)->value ) ;
-		
 		}
 	}
-		
+
+	// ...................................................... for each
+	
+	hashMapForEach(hm,f1,NULL);
+	
+	// ...................................................... delete
+				
 	hashMapDelete(hm);
 
 	gcStop();

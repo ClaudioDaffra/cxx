@@ -1,5 +1,4 @@
 
-1) vector binary search
 
 2) creare una lib dinamica gcc/cl
 

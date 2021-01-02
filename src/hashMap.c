@@ -160,22 +160,23 @@ size_t hashMapFind(struct hashMap_s* hm, void *key, size_t keyn)
 	}
 	return 0;
 }
-/*
-void dic_forEach(struct hashMap_s* hm, enumFunc f, void *user) 
+
+void hashMapForEach(struct hashMap_s* hm, enumFunc f, void *user) 
 {
 	for (size_t i = 0; i < hm->length; i++) 
 	{
 		if (hm->table[i] != 0) 
 		{
 			struct hashMapNode_s *k = hm->table[i];
-			while (k) {
-			if (!f(k->key, k->len, &k->value, user)) return;
-			k = k->next;
+			while (k) 
+			{
+				if (	!	f(k->key, k->len, &k->value, user)	) return;
+				k = k->next;
 			}
 		}
 	}
 }
-*/
+
 #undef hash_func
 
 // ........................................................... convert
@@ -230,10 +231,9 @@ char* cnvP2S(void* r)
     return buffer ;
 }  
 
-
 // .......................................... hash map get
 
-size_t hashMapSet( hashMap_t hm,char * key , void * value )
+size_t hashMapSet( hashMap_p hm,char * key , void * value )
 {
 	size_t res=hashMapAdd(hm, key, strlen(key) );
 	*hm->value = value;
@@ -242,14 +242,14 @@ size_t hashMapSet( hashMap_t hm,char * key , void * value )
 
 // .......................................... hash map set
 
-void* hashMapGet( hashMap_t hm,char * key  )
+void* hashMapGet( hashMap_p hm,char * key  )
 {
 	hashMapFind(hm, key, strlen(key) ) ;
 	return hm->value  ;
 }
 
+
+
 /**/
-
-
 
 
