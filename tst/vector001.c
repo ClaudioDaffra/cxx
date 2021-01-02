@@ -6,7 +6,7 @@
 /*
 	clear  	; gcc src/gc.c tst/vector001.c -o   bin/x           -Wall -Wextra -pedantic 
 	
-	cls		&
+	cls     & cl src\gc.c tst\vector001.c       /Febin\x.exe    /WX
 */
 
 

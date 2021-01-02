@@ -4,9 +4,9 @@
 
 
 /*
-	clear  ; gcc src/gc.c tst/vector002.c -o   bin/x           -Wall -Wextra -pedantic 
+	clear   ; gcc src/gc.c tst/vector002.c -o   bin/x           -Wall -Wextra -pedantic 
 	
-	cls		&
+	cls     & cl src\gc.c tst\vector002.c       /Febin\x.exe    /WX
 */
 
 
