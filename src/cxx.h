@@ -16,6 +16,8 @@
 #include <xmmintrin.h>
 #include <locale.h>
 #include <assert.h>
+#include <errno.h>
+#include <stdbool.h>
 
 // ................................................ gcc
 
