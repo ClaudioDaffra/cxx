@@ -60,12 +60,33 @@ extern struct gc_s* GC ;
 
 // ......................................... [] dup functioon
 
-char*    		gcStrDup	(char *s ) ;
-wchar_t* 		gcWcsDup	(wchar_t *s ) ;
-int* 			gcIntDup	(int val) ;
-double* 		gcDoubleDup (double val )  ;
+char*		gcStrDup	(char *s ) ;
 
+wchar_t*	gcWcsDup	(wchar_t *s ) ;
 
+int* 		gcIntDup	(int val) ;
+
+double*		gcDoubleDup (double val )  ;
+
+// ......................................... [] compare functioon
+
+int	gcCompareInt  	( const void * a, const void * b ) ;
+
+int	gcCompareFloat	( const void * a, const void * b ) ;
+
+int	gcCompareDouble	( const void * a, const void * b ) ;
+
+int	gcCompareFloatAsInt ( const void * a, const void * b ) ;
+
+int gcCompareDoubleAsInt( const void * a, const void * b ) ;
+
+int gcCompareStrC	( const void * a, const void * b ) ;
+
+int gcCompareWStrC	( const void * a, const void * b ) ;
+
+int gcComparepStrC	( const void * a, const void * b ) ;
+
+int gcComparepWStrC	( const void * a, const void * b ) ;
 
 
 #endif

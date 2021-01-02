@@ -75,21 +75,40 @@ int main ( void )
     {
 		printf ( "(%02d)",*it );
 	}
-    printf ( "\n" );                    	
+    printf ( "\n" );   
+    
+	// .................................... shrink to fit
+
+	printf ( "--- shrink to fit v1\n" ) ; 
+	vectorShrinkToFit(v1);
+	printf ( "vector : size %zu capacity %zu empty %d.\n",vectorSize(v1),vectorCapacity(v1),vectorEmpty(v1)	) ;  
+	  
+	// .................................... reserve
+
+	printf ( "--- reserve v1\n" ) ; 
+	vectorReserve(v1,16);
+	printf ( "vector : size %zu capacity %zu empty %d.\n",vectorSize(v1),vectorCapacity(v1),vectorEmpty(v1)	) ; 
+
+    // .................................... sort
+    
+    printf ( "--- sort \n" );   
+     
+    vectorSort(vector_v1_d,v1,gcCompareInt);
+
+    for ( itVector(v1) it = vectorBegin(v1); it<vectorEnd(v1); it++)   printf ( "[%02d]" ,*it ) ; 
+    printf ( "\n" ); 
+
+    // .................................... binary search
+     
+    vector_v1_d key = 80 ;
+    vector_v1_d* value = (vector_v1_d*)vectorBinarySearch(vector_v1_d,v1,gcCompareInt,key ) ;
+    if ( value != NULL ) printf ( "found %d in vector.\n" ,key) ; else printf ( "not found %d in vector.\n" ,key);
+    
+                                    	
 /*   
     // .................................... vector of vector
  
-    printf ( "\n --- vectorType(vector_v1,v2); " );
-
-    vectorType(vector_v1,v2);
-
-    printf ( "\n --- vectorNew( v2 , 64 ); " );
-
-    vectorNew( v2 , 64 );
-
-    printf ( "\n --- vectorPushBack( v2 ,v1 ); " );
-
-    vectorPushBack( v2 ,v1 ) ;
+;
     
     printf ( "\nv2 :: size %d capacity %d.", (int)vectorSize(v2) , (int)vectorCapacity(v2) );   
 
@@ -100,13 +119,6 @@ int main ( void )
  
     // .................................... array of vector 
 
-    printf ( "\n --- vectorType(int,v3)[10]; " ) ;
- 
-    vectorType(int,v3)[10];    
-
-    printf ( "\n --- vectorNew( v3[2] , 64 ); " ) ;
-
-    vectorNew( v3[2] , 64 );
 
     printf ( "\n --- vectorPushBack( v3[2] ,123 ) ;" ) ;
     printf ( "\n --- vectorPushBack( v3[2] ,456 ) ;" ) ;
@@ -158,11 +170,7 @@ int main ( void )
 
     printf ( "\nv1 :: size %d capacity %d.", (int)vectorSize(v1) , (int)vectorCapacity(v1) );      
 
-    // .................................... shrink to fit
 
-    printf ( "\n --- vectorReserve(v1,16);" ) ;
-    
-    vectorReserve(v1,16);
 
     printf ( "\nv1 :: size %d capacity %d.", (int)vectorSize(v1) , (int)vectorCapacity(v1) ); 
 
@@ -264,6 +272,10 @@ int main ( void )
     //vectorFree( v4 ) ;  
 */
 
+    // .................................... dealloc
+    
+    printf ( "--- dealloc v1\n" ) ;    
+	vectorDealloc(v1);
 
     // ...................................... stop
     

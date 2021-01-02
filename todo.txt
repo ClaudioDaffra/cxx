@@ -1,7 +1,8 @@
 
-1) spostare i file la lib a src
+1) vector binary search
+
 2) creare una lib dinamica gcc/cl
-3) read me
+
 4) check strlen / wcslen != NULL
 
 

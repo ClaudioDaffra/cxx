@@ -9,12 +9,13 @@
 // vectorTypeDef(TYPE,ID)
 
 /*
+ 
     vector_ID_d			:	TYPE
 	vector_ID_s			:	struct vector_ID_s
 	vector_ID_t			:	vector_ID_s
-	pvector_ID_t		:	vector_ID_t*
+	vector_ID_p			:	vector_ID_t*
+	
 */
-
 
 #define vectorTypeDef(TYPE,ID)                         	\
 typedef TYPE MERGE ( MERGE ( vector_ , ID )  , _d );  	\
@@ -97,7 +98,7 @@ assert((ID).data!=NULL);									\
 #define vectorRBegin(ID)    ((ID).data + (ID).size - 1)
 #define vectorREnd(ID)      ((ID).data - 1 )
 
-/*
+
 // ........................................................... [] SHRINK TO FIT
 #define vectorShrinkToFit(ID) do {                                                  \
     (ID).data = gcRealloc  ( (ID).data   , ((ID).size) * sizeof((ID).data)  );      \
@@ -112,6 +113,7 @@ assert((ID).data!=NULL);									\
     } \
 } while (0)
 
+/*
 // ........................................................... [] vectorInsertAtVal     
         
 #define vectorInsertAtVal(ID, POS, VAL) do {                                                \
@@ -207,20 +209,20 @@ assert((ID).data!=NULL);									\
         (ID).data[POS + i] = (PTR).data[POS2 + i];                                                  \
     (ID).size += (N);                                                                               \
 } while (0)
-    
+*/    
 // ........................................................... [] FREE 
 
-#define vectorFree(ID) do {                           \
+#define vectorDealloc(ID) do {                        \
     if ( (ID).data != NULL ) gcFree( (ID).data );     \
 } while(0)
-    
+   
 // ........................................................... [] SORT 
 
-#define vectorSort(ID,CMP)  qsort((ID).data, (ID).size, sizeof(vectorDataType ## ID), CMP )  
+#define vectorSort(TYPE,ID,CMP)  qsort((ID).data, (ID).size, sizeof(TYPE), CMP )  
 
+// ........................................................... [] binary search 
 
-*/
- 
+#define vectorBinarySearch(TYPE,ID,CMP,KEY)  bsearch (&KEY, (ID).data, (ID).size , sizeof (TYPE), CMP) 
 
 #endif
 

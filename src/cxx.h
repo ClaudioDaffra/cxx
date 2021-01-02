@@ -30,7 +30,7 @@
 // ................................................ debug
 
 // warning: ISO C does not support ‘__FUNCTION__’ '__PRETTY_FUNCTION__' predefined identifier [-Wpedantic]
-#define debugInfo fprintf ( stderr,"## file[%s] line[%d] fn[%s].\n",__FILE__,__LINE__,__func__);
+#define debugInfo(...) fprintf ( stderr,"## file[%s] line[%d] fn[%s].\n",__FILE__,__LINE__,__func__);/*__VA_ARGS__*/
 
 
 // ................................................ new
@@ -39,7 +39,7 @@
 
 // ................................................ delete
 
-#define delete(ID)	if((ID)!=NULL){fgcFree(ID);(ID)=NULL;}
+#define delete(ID)	if((ID)!=NULL){gcFree(ID);(ID)=NULL;}
 
 
 #endif

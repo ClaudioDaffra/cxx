@@ -48,7 +48,7 @@ int main ( void )
 
     printf ( "--- vectorPushBack( v1 ,10 item ) ; \n" );
     
-	for(int i=0;i<10;i++) vectorPushBack( *v1 ,i*10 ) ;
+	for(int i=0;i<10;i++) vectorPushBack( *v1 ,i*11 ) ;
 
     // .................................... vector pop back
     
@@ -76,7 +76,43 @@ int main ( void )
 		printf ( "(%02d)",*it );
 	}
     printf ( "\n" );   
-                  	    		        
+
+	// .................................... shrink to fit
+
+	printf ( "--- shrink to fit *v1\n" ) ; 
+	vectorShrinkToFit(*v1);
+    printf ( "vector : size %zu capacity %zu empty %d.\n",vectorSize(*v1),vectorCapacity(*v1),vectorEmpty(*v1)	) ;
+        
+	// .................................... reserve
+
+	printf ( "--- reserve *v1\n" ) ; 
+	vectorReserve(*v1,16);
+    printf ( "vector : size %zu capacity %zu empty %d.\n",vectorSize(*v1),vectorCapacity(*v1),vectorEmpty(*v1)	) ;
+
+    // .................................... sort
+    
+    printf ( "--- sort \n" );   
+     
+    vectorSort(vector_v1_d,*v1,gcCompareInt);
+
+    for ( itVector(v1) it = vectorBegin(*v1); it<vectorEnd(*v1); it++)   printf ( "[%02d]" ,*it ) ; 
+    printf ( "\n" ); 
+
+    // .................................... binary search
+     
+    vector_v1_d key = 88 ;
+    vector_v1_d* value = (vector_v1_d*)vectorBinarySearch(vector_v1_d,*v1,gcCompareInt,key ) ;
+    if ( value != NULL ) printf ( "found %d in vector.\n" ,key) ; else printf ( "not found %d in vector.\n" ,key);
+       	
+    // .................................... dealloc
+    
+    printf ( "--- dealloc *v1\n" ) ;    
+	vectorDealloc(*v1);
+	
+    // ...................................... delete
+    
+    delete(v1) ;
+           	    		        
     // ...................................... stop
     
     gcStop() ;
