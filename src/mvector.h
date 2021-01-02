@@ -11,21 +11,26 @@
 /*
  
     vector_ID_d			:	TYPE
+    ID_d				:   TYPE
 	vector_ID_s			:	struct vector_ID_s
 	vector_ID_t			:	vector_ID_s
 	vector_ID_p			:	vector_ID_t*
-	
 */
 
 #define vectorTypeDef(TYPE,ID)                         	\
 typedef TYPE MERGE ( MERGE ( vector_ , ID )  , _d );  	\
+typedef TYPE MERGE ( ID  , _d );  						\
 typedef struct MERGE ( MERGE ( vector_ , ID )  , _s )	\
 {                                                   	\
     TYPE*   data ;                                  	\
     size_t  size        ;                           	\
     size_t  capacity    ;                           	\
 }  MERGE ( MERGE ( vector_ , ID )  , _t ) ;				\
-typedef MERGE ( MERGE ( vector_ , ID )  , _t ) * MERGE ( MERGE ( vector_ , ID )  , _p )
+typedef MERGE ( MERGE ( vector_ , ID )  , _t ) * MERGE ( MERGE ( vector_ , ID )  , _p );
+
+// vectorType(TYPE,ID) :  generic vector
+
+#define vectorType(TYPE)	vectorTypeDef(TYPE,TYPE)
 
 // ........................................................... [] vectorAlloc(ID,N) 
  

@@ -126,7 +126,7 @@ int main ( void )
     for ( itVector(v1) it = vectorBegin(*v1); it<vectorEnd(*v1); it++)   printf ( "[%02d]" ,*it ) ; 
     printf ( "\n" ); 	 
 
-	// .................................... new vector
+    // .................................... new vector
 
     printf ( "--- new vector copy append\n" );
 
@@ -143,7 +143,7 @@ int main ( void )
 	for ( itVector(v2) it = vectorBegin(*v2); it<vectorEnd(*v2); it++)   printf ( "[%02d]" ,*it ) ; 
 	printf ( "\n" ); 	
 
-	// .................................... insert vector
+    // .................................... insert vector
 
     printf ( "--- vectorInsertAtVector(*v2,5,v1); \n" );
     
@@ -173,14 +173,14 @@ int main ( void )
 	vectorDealloc(*v1);
 	vectorDealloc(*v2);	
 	
-    // ...................................... delete
+    // .................................... delete
 
     printf ( "--- delete v1,v2\n" ) ;  
      
     delete(v1) ;
     delete(v2) ;
                	    		        
-    // ...................................... stop
+    // .................................... stop
     
     gcStop() ;
 

@@ -144,7 +144,7 @@ int main ( void )
 	vectorPrintf("(%02d)",*v2);
     printf("\n");
     
-	// .................................... insert vector
+    // .................................... insert vector
 
     printf ( "--- vectorInsertAtVector(*v2,5,v1); \n" );
     
@@ -165,72 +165,6 @@ int main ( void )
 
 	vectorPrintf("(%02d)",v1);
 	printf ( "\n" ); 
-			                                                                       	
-/*   
-    // .................................... vector of vector
- 
-;
-    
-    printf ( "\nv2 :: size %d capacity %d.", (int)vectorSize(v2) , (int)vectorCapacity(v2) );   
-
-    printf ( "\n --- vectorAt(vectorAt(v2,0),0)) " ) ;
-    
-    printf ( "\nv2 :: vectorAt(vectorAt(v2,0),0)):=%d.", vectorAt(vectorAt(v2,0),0)    );  // 10
-    printf ( "\nv2 :: vectorAt(vectorAt(v2,0),0)):=%d.", vectorXY(v2,0,0)              );  // 10
- 
-    // .................................... array of vector 
-
-
-    printf ( "\n --- vectorPushBack( v3[2] ,123 ) ;" ) ;
-    printf ( "\n --- vectorPushBack( v3[2] ,456 ) ;" ) ;
- 
-    vectorPushBack( v3[2] ,123 ) ;
-    vectorPushBack( v3[2] ,456 ) ;
-    
-    printf ( "\nv3[2] :: size %d capacity %d.", (int)vectorSize(v3[2]) , (int)vectorCapacity(v3[2]) );   
-    
-    printf ( "\nv3[2] :: vectorAt(v3[2],0):=%d.", vectorAt(v3[2],0) );  // 123
-    printf ( "\nv3[2] :: vectorAt(v3[2],1):=%d.", vectorAt(v3[2],1) );  // 456    
-
-    printf ( "\nv1 :: size %d capacity %d.", (int)vectorSize(v1) , (int)vectorCapacity(v1) );      
-
-    // .................................... Append
-
-    printf ( "\n --- vectorType(int,v4);" ) ;
-
-    vectorType(int,v4);
-
-    vectorNew( v4 , 128 );
-    
-    vectorAppend( v4,v1 ) ;
-  
-    itVector(v4) itv4; // vectorDataType ## ID* ... vectorDataTypev4 *itv4
-    
-    printf ( "\nv4 :: size %d capacity %d.", (int)vectorSize(v4) , (int)vectorCapacity(v4) );
-    printf ( "\n" );    
-    for( itv4 = vectorBegin(v4) ; itv4 != vectorEnd(v4); itv4++ )   printf ( "[%d]" ,*itv4 ) ; 
-  
-    // .................................... insert at vector
-
-    printf ( "\n --- vectorInsertAtVector(v1, 2, v4 ) ;" ) ;
- 
-    vectorInsertAtVector(v1, 2, v4 ) ; 
-
-    printf ( "\nv1 :: size %d capacity %d.", (int)vectorSize(v1) , (int)vectorCapacity(v1) );
-    printf ( "\n" );    
-    for( itv1 = vectorBegin(v1) ; itv1 != vectorEnd(v1); itv1++ )   printf ( "[%d]" ,*itv1 ) ; 
- 
-    // .................................... insert at vector from and for
-
-    printf ( "\n --- vectorInsertAtVectorFromN(v1, 2, v4 ,2, 2) ;" ) ;
-    
-    vectorInsertAtVectorFromN(v1, 2, v4 ,2, 2) ;
-
-    printf ( "\nv1 :: size %d capacity %d.", (int)vectorSize(v1) , (int)vectorCapacity(v1) );
-    printf ( "\n" );    
-    for( itv1 = vectorBegin(v1) ; itv1 != vectorEnd(v1); itv1++ )   printf ( "[%d]" ,*itv1 ) ; 
- 
-*/
 
     // .................................... dealloc
     
@@ -240,7 +174,7 @@ int main ( void )
 	vectorDealloc(*v2);
 	delete(v2);
 	
-    // ...................................... stop
+    // .................................... stop
     
     gcStop() ;
 

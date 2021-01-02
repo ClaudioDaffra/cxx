@@ -11,6 +11,7 @@
 /*
  
     stack_ID_d			:	TYPE
+    ID_d				:	TYPE
 	stack_ID_s			:	struct stack_ID_s
 	stack_ID_t			:	stack_ID_s
 	stack_ID_p			:	stack_ID_t*
@@ -19,6 +20,7 @@
 
 #define stackTypeDef(TYPE,ID)                         	\
 typedef TYPE MERGE ( MERGE ( stack_ , ID )  , _d );  	\
+typedef TYPE MERGE ( ID  , _d );  						\
 typedef struct MERGE ( MERGE ( stack_ , ID )  , _s )	\
 {                                                   	\
     TYPE*   data ;                                  	\
@@ -26,6 +28,11 @@ typedef struct MERGE ( MERGE ( stack_ , ID )  , _s )	\
     size_t  capacity    ;                           	\
 }  MERGE ( MERGE ( stack_ , ID )  , _t ) ;				\
 typedef MERGE ( MERGE ( stack_ , ID )  , _t ) * MERGE ( MERGE ( stack_ , ID )  , _p )
+
+
+// stackType(TYPE,ID) :  generic stack
+
+#define stackType(TYPE)	stackTypeDef(TYPE,TYPE)
 
 // ........................................................... [] stackAlloc(ID,N) 
  
