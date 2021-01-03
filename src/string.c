@@ -5,7 +5,7 @@
 
 size_t str16len(char16_t* strarg)
 {
-   if(!strarg) return 0; // NULL pointer
+   if(!strarg) return 0; 
    
    char16_t* str = strarg;
    
@@ -17,7 +17,7 @@ size_t str16len(char16_t* strarg)
 
 size_t str32len(char32_t* strarg)
 {
-   if(!strarg) return 0; // NULL pointer
+   if(!strarg) return 0; 
    
    char32_t* str = strarg;
    
@@ -29,7 +29,7 @@ size_t str32len(char32_t* strarg)
 
 size_t str8len(char* strarg)
 {
-   if(!strarg) return 0; // NULL pointer
+   if(!strarg) return 0; 
    
    char* str = strarg;
    
@@ -41,7 +41,7 @@ size_t str8len(char* strarg)
 
 size_t strwlen(wchar_t* strarg)
 {
-   if(!strarg) return 0; // NULL pointer
+   if(!strarg) return 0; 
    
    wchar_t* str = strarg;
    
@@ -82,7 +82,7 @@ wchar_t* cnvS32toWS(char32_t *str )
     { 
         length = c32rtomb(s, str[j], &p); // initializing the function
         if ((length == 0) || (length > MB_CUR_MAX)) break; 
-        for (int i = 0; i < length; ++i) sret[kret++]=s[i] ;
+        for (size_t i = 0; i < length; ++i) sret[kret++]=s[i] ;
         ++j; 
     } 
     sret[kret]=0; 
@@ -124,7 +124,7 @@ wchar_t* cnvS16toWS(char16_t *str )
     { 
         length = c16rtomb(s, str[j], &p); // initializing the function
         if ((length == 0) || (length > MB_CUR_MAX)) break; 
-        for (int i = 0; i < length; ++i) sret[kret++]=s[i] ;
+        for (size_t i = 0; i < length; ++i) sret[kret++]=s[i] ;
         ++j; 
     } 
     sret[kret]=0; 

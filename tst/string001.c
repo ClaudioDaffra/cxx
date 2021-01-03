@@ -1,6 +1,9 @@
 
 #include "../src/string.h"
 
+//	gcc src/string.c tst/string001.c 	-o bin\x 		-Wall -pedantic -Wextra
+//	cl 	src\stdio.c  tst\string001 		/Febin\x.exe 	/utf-8
+
 // ...................................................................
 
 int main() 
