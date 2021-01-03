@@ -3,7 +3,7 @@
 #include "../src/string.h"
 
 //	gcc src/stdio.c src/string.c tst/string001.c 	-o bin\x 		-Wall -pedantic -Wextra
-//	cl 	src\stdio.c src\string.c tst\string001.c    /Febin\x.exe 	/WX
+//	cl 	src\stdio.c src\string.c tst\string001.c    /Febin\x.exe 	/utf-8 /WX
 
 // ...................................................................
 
