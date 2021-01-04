@@ -84,14 +84,11 @@ assert((ID).data!=NULL);									\
 
 #define vectorAt(ID, INDEX) (ID).data[INDEX]    
 
-/*
 // ........................................................... [] vectorOfVector ... X , XY , XYZ
     
 #define vectorX(ID,NDX1)                vectorAt(ID,NDX1)
 #define vectorXY(ID,NDX1,NDX2)          vectorAt(vectorAt(ID,NDX1),NDX2)
 #define vectorXYZ(ID,NDX1,NDX2,NDX3)    vectorAt(vectorAt(vectorAt(ID,NDX1),NDX2),NDX3)
-
-*/
 
 // ........................................................... [] FRONT
 
@@ -197,7 +194,6 @@ assert((ID).data!=NULL);									\
     (ID).size = (ID).capacity ;                                                         \
 } while (0)
 
-
 // ........................................................... [] insert vector at
 
 #define vectorInsertAtVector(ID, POS, PTR ) do {                                                    \
@@ -210,7 +206,6 @@ assert((ID).data!=NULL);									\
         (ID).data[POS + i] = (PTR).data[0 + i];                                                     \
     (ID).size += (PTR).size;                                                                        \
 } while (0)
-
 
 // ........................................................... [] vectorInsertAtVectorFromN( v1, POS1, v2 , POS2 , N )
 
@@ -245,7 +240,13 @@ for ( size_t i = 0 ; i < (ID).size ; i++)  printf ( FORMAT , (ID).data[i] ) ;		\
 
 #define vectorBinarySearch(TYPE,ID,CMP,KEY)  bsearch (&KEY, (ID).data, (ID).size , sizeof (TYPE), CMP) 
 
+// ........................................................... [] VECTOR ALLLOC VECTOR 
 
+#define vectorAllocVector(TYPE,ID,N)                  		\
+(ID).data = (void*) gcMalloc ( sizeof(TYPE) * N ); 			\
+assert((ID).data!=NULL);									\
+(ID).size      = 0;                                    		\
+(ID).capacity  = N;	
 
 #endif
 

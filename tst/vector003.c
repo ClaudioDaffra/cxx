@@ -90,7 +90,51 @@ int main ( void )
 	vectorAlloc(*v4,8);
 	
 	delete(v4);	
+
+    // .................................... vector of vector
+    	
+    // vectorType(float);					// vector_float_t
+ 
+	vectorTypeDef( float 	   , x1 ) ;	// vector_x1_t
 	
+	vectorTypeDef( vector_x1_t , x2 ) ;	// vector_x2_t 
+
+	vectorTypeDef( vector_x2_t , x3 ) ;	// vector_x3_t 
+ 
+	// define vector contain vector
+	
+		vector_x3_t	x3 ;  // [8,8,8];
+
+		const size_t dim=8;
+		
+		x3.data						= (void*) gcMalloc ( sizeof(x3_d) * dim ) ;
+		x3.size=0;
+		x3.capacity=dim;
+		
+		x3.data[2].data 			= (void*) gcMalloc ( sizeof(x2_d) * dim ) ;
+		x3.data[2].size=0;
+		x3.data[2].capacity=dim;
+			
+		x3.data[2].data[4].data	 	= (void*) gcMalloc ( sizeof(x1_d) * dim) ;
+		x3.data[2].data[4].size=0;
+		x3.data[2].data[4].capacity=dim;
+				
+		x3.data[2].data[4].data[6] = 3.1 ;
+		
+		printf("\n --> %g.\n",x3.data[2].data[4].data[6] );
+
+	// define vector contain vector
+
+		vector_x3_t	y3 ;  // [8,8,8];
+
+		vectorAllocVector(x3_d,y3					,8	);
+		vectorAllocVector(x2_d,vectorX(y3,2)		,8	);
+		vectorAllocVector(x1_d,vectorXY(y3,2,4)		,8	);
+		
+		vectorXYZ(y3,2,4,6)=4.6;
+		
+		printf("\n --> %g.\n",vectorXYZ(y3,2,4,6) );
+		
     // ...................................... stop
     
     gcStop() ;
