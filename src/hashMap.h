@@ -2,15 +2,9 @@
 #define HASHMAP
 
 #include "cxx.h"
-#include "gc.h"
+
 
 typedef size_t (*enumFunc)(void *key, size_t count,void** value, void *user);
-
-/*
-	#define hashValue_t 	void*
-	#define hashMap_d		hashValue_t
-	#define hashLength_t 	size_t
-*/
 
 typedef void*  			hashValue_t 	;
 typedef hashValue_t 	hashMap_d 		;
@@ -47,21 +41,12 @@ typedef struct hashMapNode_s ** hashMapIt_t ;
 #define hashMapBegin(HM)		(&HM->table[0])
 #define hashMapEnd(HM)			(&HM->table[HM->length])
 
-char* cnvWS2S	(wchar_t* ws) ;
-char* cnvD2S	(double r);
-char* cnvL2S	(long long r);
-char* cnvP2S	(void* r);
-
 typedef struct hashMap_s 	hashMap_t  ;
 typedef struct hashMap_s* 	hashMap_p  ;
 
-// .......................................... hash map get
 
-size_t hashMapSet( hashMap_p hm,char * key , void * value ) ;
- 
-// .......................................... hash map set
-
-void* hashMapGet( hashMap_p hm,char * key  ) ;
+size_t 	hashMapSet	( hashMap_p hm,char * key , void * value ) ;
+void* 	hashMapGet	( hashMap_p hm,char * key  ) ;
 
 // hashMap_d  ; 
 // hashMap_s  ; 

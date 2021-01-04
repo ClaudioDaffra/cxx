@@ -2,14 +2,7 @@
 #ifndef gcGarbageCollector
 #define gcGarbageCollector
 
-#define _GNU_SOURCE
-#include <stdlib.h> 
-#include <stdint.h> 
-#include <string.h> 
-#include <stdio.h> 
-#include <xmmintrin.h>
-#include <wchar.h>
-#include <assert.h>
+#include "cxx.h"
 
 
 typedef void(*gcHashDictValue_t)(void*);

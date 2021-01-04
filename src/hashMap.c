@@ -177,62 +177,6 @@ void hashMapForEach(struct hashMap_s* hm, enumFunc f, void *user)
 	}
 }
 
-#undef hash_func
-
-// ........................................................... convert
-
-char* cnvWS2S( wchar_t* ws )
-{
-  size_t len = sizeof(wchar_t) * wcslen(ws) ;
-  char* buffer = gcCalloc ( sizeof(wchar_t),len );
-  
-  #if defined(_MSC_VER)
-  size_t i=0;
-  wcstombs_s(&i,buffer,len,ws,len) ;
-  #else
-  wcstombs ( buffer, ws, len ) ;
-  #endif
-
-  buffer=gcRealloc(buffer,strlen(buffer)+1);
-
-  return buffer ;
-}
-
-char* cnvD2S(double r)
-{
-    const unsigned char maxBufferLen=32;
-    char* buffer=gcCalloc(sizeof(char),maxBufferLen);
-    const size_t digits=8;
-    
-    #if defined(_MSC_VER)
-    _gcvt_s( buffer, 32, r, digits );
-    #else
-    gcvt(r,digits,buffer);
-    #endif
-
-    return buffer ;
-}
-
-char* cnvL2S(long long r)
-{
-    const unsigned char maxBufferLen=32;
-    char* buffer=gcCalloc(sizeof(char),maxBufferLen);
-    snprintf(buffer, maxBufferLen, "%lld", r);
-
-    return buffer ;
-}
-
-char* cnvP2S(void* r)
-{
-    const unsigned char maxBufferLen=32;
-    char* buffer=gcCalloc(sizeof(char),maxBufferLen);
-    snprintf(buffer, maxBufferLen, "%p", r);
-   
-    return buffer ;
-}  
-
-// .......................................... hash map get
-
 size_t hashMapSet( hashMap_p hm,char * key , void * value )
 {
 	size_t res=hashMapAdd(hm, key, strlen(key) );
@@ -240,13 +184,15 @@ size_t hashMapSet( hashMap_p hm,char * key , void * value )
 	return res;
 }
 
-// .......................................... hash map set
-
 void* hashMapGet( hashMap_p hm,char * key  )
 {
 	hashMapFind(hm, key, strlen(key) ) ;
 	return hm->value  ;
 }
+
+
+
+#undef hash_func
 
 
 

@@ -2,7 +2,7 @@
 #define mvector
 
 #include "cxx.h"
-#include "gc.h"
+
 
 //.................................................... [] vector(TYPE) 
 

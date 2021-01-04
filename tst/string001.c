@@ -18,16 +18,10 @@ int main()
     char16_t* str2 = u"2) ç°§é*èé€ 一周有七天。一周有七天,сказать,غداً في العاشرة و.\n"; 
 
     fwprintf ( stdout, L"%ls\n",cnvS16toWS(str2)) ;
-    
-/*  WINDOWS KO
 
-    wchar_t* str3 = L"3) ç°§é*èé€ 一周有七天。一周有七天,сказать,غداً في العاشرة و.\n"; 
+    char* str3 = "claudio daffra";
 
-    fwprintf ( stdout, L"%hs\n",cnvWStoS8(str3)) ;
-*/    
-    char* str4 = "claudio daffra";
-
-    fwprintf ( stdout, L"4) %ls\n",cnvS8toWS(str4) ) ;
+    fwprintf ( stdout, L"3) %ls\n",cnvS8toWS(str4) ) ;
 
     return 0; 
 } 

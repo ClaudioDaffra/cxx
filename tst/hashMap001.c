@@ -1,12 +1,12 @@
 
-#include "../src/hashMap.h"
+#include "../src/cxx.h"
 
 /*
 
-    clear  ; gcc src/gc.c src/hashMap.c tst/hashMap001.c -o  bin/x           -Wall -pedantic -Wextra
+    clear  ; gcc src/gc.c src/string.c src/hashMap.c tst/hashMap001.c -o  bin/x           -Wall -pedantic -Wextra
     valgrind ./bin/x
 
-    cls & cl lib\gc.c src\hashMap.c tst\hashMap001.c         /Febin/x.exe    /WX
+    cls & cl lib\gc.c src\string.c src\hashMap.c tst\hashMap001.c         /Febin/x.exe    /WX
 
 */
  
@@ -32,22 +32,22 @@ int main()
 
 	// ...................................................... set
 	
-	hashMapSet(hm,cnvWS2S(L"你好吗") 							, (void*) 100 );
-	hashMapSet(hm,cnvWS2S(L"§°çéè") 							, (void*) 200 );
-	hashMapSet(hm,cnvWS2S(L"°*§ç") 								, (void*) 300 );
+	hashMapSet(hm,cnvWStoS8(L"你好吗") 							, (void*) 100 );
+	hashMapSet(hm,cnvWStoS8(L"§°çéè") 							, (void*) 200 );
+	hashMapSet(hm,cnvWStoS8(L"°*§ç") 							, (void*) 300 );
 	hashMapSet(hm,source 										, (void*) 400 );	
-	hashMapSet(hm,cnvD2S (235325325325325353.14159265358L) 		, (void*) 500 );
-	hashMapSet(hm,cnvL2S (235325325325325353L) 					, (void*) 600 );
-	hashMapSet(hm,cnvP2S (&source) 								, (void*) gcStrDup("daffra") 	);		
+	hashMapSet(hm,cnvR64toS8 (235325325325325353.14159265358L)	, (void*) 500 );
+	hashMapSet(hm,cnvI64toS8 (235325325325325353L) 				, (void*) 600 );
+	hashMapSet(hm,cnvPTRtoS8 (&source) 							, (void*) gcStrDup("daffra") 	);		
 
 	// ...................................................... get
 	
-	if (hashMapGet(hm, cnvWS2S(L"你好吗")) )
+	if (hashMapGet(hm, cnvWStoS8(L"你好吗")) )
 			printf("found: %zu\n", (size_t)*hm->value);
 	else 
 			printf("error\n");
 			
-	if (hashMapGet(hm, cnvP2S (&source)) )
+	if (hashMapGet(hm, cnvPTRtoS8 (&source)) )
 			printf("found: %s\n", (char*)*hm->value);
 	else 
 			printf("error\n");	

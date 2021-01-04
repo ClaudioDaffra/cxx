@@ -1,7 +1,5 @@
 
-#include "../src/gc.h"
-#include "../src/mstack.h"
-
+#include "../src/cxx.h"
 
 /*
 	clear  	; gcc src/gc.c tst/stack001.c -o   bin/x           -Wall -Wextra -pedantic 

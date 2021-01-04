@@ -4,7 +4,9 @@
 
 // ................................................ default header
 
+
 #define _GNU_SOURCE
+
 #define _XOPEN_SOURCE_EXTENDED 1
 
 #include <stdio.h>
@@ -18,6 +20,19 @@
 #include <assert.h>
 #include <errno.h>
 #include <stdbool.h>
+#include <ctype.h>
+
+
+// ................................................ header cxx
+
+#include "gc.h"
+#include "stdio.h"
+#include "argParse.h"
+#include "hashMap.h"
+#include "iterator.h"
+#include "mvector.h"
+#include "mstack.h"
+#include "string.h"
 
 // ................................................ gcc
 
@@ -47,6 +62,8 @@
 // ................................................ delete
 
 #define delete(ID)	if((ID)!=NULL){gcFree(ID);(ID)=NULL;}
+
+
 
 
 #endif

@@ -1,7 +1,8 @@
 
-#include "../src/gc.h"
+#include "../src/cxx.h"
 
 /*
+ * 
     clear ; gcc src/gc.c tst/gc001.c    -o bin/x        -Wall -pedantic -Wextra 
 
     cls & cl src\gc.c tst\gc001.c       /Febin\x.exe    /W4

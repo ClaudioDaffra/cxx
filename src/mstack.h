@@ -2,7 +2,7 @@
 #define mstack
 
 #include "cxx.h"
-#include "gc.h"
+
 
 //.................................................... [] stack(TYPE) 
 
