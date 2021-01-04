@@ -3,7 +3,10 @@
 
 
 /*
-	clear  	; gcc src/gc.c tst/vector001.c -o   bin/x           -Wall -Wextra -pedantic 
+	1) 	clear  	; gcc src/gc.c tst/vector001.c 			-o   bin/x	-Wall -Wextra -pedantic 
+
+	2) 	sh buildLib.sh
+		clear  	; gcc tst/vector001.c	lib/libcxx.so   -o   bin/x	-Wall -Wextra -pedantic
 	
 	cls     & cl src\gc.c tst\vector001.c       /Febin\x.exe    /WX
 */

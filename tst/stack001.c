@@ -2,8 +2,11 @@
 #include "../src/cxx.h"
 
 /*
-	clear  	; gcc src/gc.c tst/stack001.c -o   bin/x           -Wall -Wextra -pedantic 
+	1) clear  	; gcc src/gc.c tst/stack001.c 			-o   bin/x	-Wall -Wextra -pedantic 
 	
+	2) sh buildLib.sh
+	   clear  	; gcc tst/stack001.c	lib/libcxx.so   -o   bin/x	-Wall -Wextra -pedantic
+	  
 	cls     & cl src\gc.c tst\stack001.c       /Febin\x.exe    /WX
 */
 

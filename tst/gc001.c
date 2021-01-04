@@ -2,9 +2,12 @@
 #include "../src/cxx.h"
 
 /*
- * 
-    clear ; gcc src/gc.c tst/gc001.c    -o bin/x        -Wall -pedantic -Wextra 
+  
+    1)	clear	; gcc src/gc.c tst/gc001.c    	-o bin/x	-Wall -pedantic -Wextra 
 
+	2)	sh buildLib.sh
+		clear	; gcc tst/gc001.c lib/libcxx.so	-o bin/x 	-Wall -pedantic -Wextra
+		
     cls & cl src\gc.c tst\gc001.c       /Febin\x.exe    /W4
     
 */
