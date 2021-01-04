@@ -16,7 +16,7 @@
 
 int main() 
 {
-    consoleSetUTF8();
+    //consoleSetUTF8();
 
     char* str3 = "claudio daffra";
 
@@ -33,10 +33,11 @@ int main()
 	fprintf ( stdout,"(%s)\n",cnvI32toS8(INT_MAX) 		) ;
 	fprintf ( stdout,"(%s)\n",cnvI16toS8(SHRT_MAX) 		) ;
 	
+    #ifdef __linux__
+    char* x = cnvWStoS8(L"你好吗") ;
+    printf ( "[%hs]\n",x ) ;
+    #endif
 
- 	char* x = cnvWStoS8(L"你好吗") ;
-    printf ( "[%s]\n",x ) ;
-					
     return 0; 
 } 
 
