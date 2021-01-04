@@ -15,12 +15,14 @@
 #include <stddef.h>
 #include <string.h>
 #include <wchar.h>
+#include <uchar.h>
 #include <xmmintrin.h>
 #include <locale.h>
 #include <assert.h>
 #include <errno.h>
 #include <stdbool.h>
 #include <ctype.h>
+#include <limits.h>
 
 
 // ................................................ header cxx
@@ -33,6 +35,17 @@
 #include "mvector.h"
 #include "mstack.h"
 #include "string.h"
+
+// .............................................. string.h
+
+#ifndef MB_CUR_MAX
+    #if defined(_MSC_VER)
+        #define MB_CUR_MAX __mb_cur_max
+    #else
+        #define MB_CUR_MAX 2
+    #endif
+#endif
+
 
 // ................................................ gcc
 

@@ -3,7 +3,7 @@
 
 /*
 
-    1) 	clear  ; gcc src/gc.c src/string.c src/hashMap.c tst/hashMap001.c -o  	-o bin/x	-Wall -pedantic -Wextra
+    1) 	clear  ; gcc src/gc.c src/string.c src/hashMap.c tst/hashMap001.c  		-o bin/x	-Wall -pedantic -Wextra
     
     2) 	sh build.lib
 		clear  ; gcc tst/hashMap001.c lib/libcxx.so 							-o bin/x	-Wall -pedantic -Wextra
