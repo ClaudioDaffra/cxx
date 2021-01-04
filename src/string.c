@@ -59,7 +59,7 @@ size_t strwlen(wchar_t* strarg)
 
 wchar_t* cnvS32toWS(char32_t *str ) 
 { 
-    // viene allocata la dimensione massima del buffer
+    // viene allocata la dimensione massima del vOut
     const size_t    size32  =   sizeof(char32_t);
     const size_t    sizew   =   sizeof(wchar_t ); 
     
@@ -86,7 +86,7 @@ wchar_t* cnvS32toWS(char32_t *str )
         ++j; 
     } 
     sret[kret]=0; 
-    // viene riallocata la dimensione effettiva del buffer
+    // viene riallocata la dimensione effettiva del vOut
     sret = realloc ( sret , kret*sizeof(char)  );
 
     wchar_t* wcs =  malloc( slenw ) ;   
@@ -101,7 +101,7 @@ wchar_t* cnvS32toWS(char32_t *str )
 
 wchar_t* cnvS16toWS(char16_t *str ) 
 { 
-    // viene allocata la dimensione massima del buffer
+    // viene allocata la dimensione massima del vOut
     const size_t    size16  =   sizeof(char16_t);
     const size_t    sizew   =   sizeof(wchar_t ); 
     
@@ -129,7 +129,7 @@ wchar_t* cnvS16toWS(char16_t *str )
     } 
     sret[kret]=0; 
     
-    // viene riallocata la dimensione effettiva del buffer
+    // viene riallocata la dimensione effettiva del vOut
     sret = realloc ( sret , kret*sizeof(char)  );
 
     wchar_t* wcs =  malloc( slenw*sizeof(wchar_t) ) ;   
@@ -162,18 +162,18 @@ wchar_t* cnvS8toWS(char * vIn)
 char* cnvWStoS8( wchar_t* ws )
 {
   size_t len = sizeof(wchar_t) * wcslen(ws) ;
-  char* buffer = calloc ( sizeof(wchar_t),len );
+  char* vOut = calloc ( sizeof(wchar_t),len );
   
   #if defined(_MSC_VER)
   size_t i=0;
-  wcstombs_s(&i,buffer,len,ws,len) ;
+  wcstombs_s(&i,vOut,len,ws,len) ;
   #else
-  wcstombs ( buffer, ws, len ) ;
+  wcstombs ( vOut, ws, len ) ;
   #endif
 
-  buffer=realloc(buffer,strlen(buffer)+1);
+  vOut=realloc(vOut,strlen(vOut)+1);
 
-  return buffer ;
+  return vOut ;
 }
 
 // ........................................................... convert real32 to S8 WS
@@ -214,19 +214,19 @@ wchar_t* cnvR32toWS(float vIn)
 
 // ........................................................... convert real64 to S8 WS
 
-char* cnvR64toS8(double r)
+char* cnvR64toS8(double vIn)
 {
     const unsigned char maxBufferLen=32;
-    char* buffer=calloc(sizeof(char),maxBufferLen);
+    char* vOut=calloc(sizeof(char),maxBufferLen);
     const size_t digits=8;
     
     #if defined(_MSC_VER)
-    _gcvt_s( buffer, 32, r, digits );
+    _gcvt_s( vOut, 32, vIn, digits );
     #else
-    gcvt(r,digits,buffer);
+    gcvt(vIn,digits,vOut);
     #endif
 
-    return buffer ;
+    return vOut ;
 }
 
 wchar_t* cnvR64toWS(double vIn)
@@ -251,71 +251,77 @@ wchar_t* cnvR64toWS(double vIn)
 
 // ........................................................... convert I80 to S8 --
 
-char* cnvI80toS8(long long r)
+char* cnvI80toS8(long long vIn)
 {
     const unsigned char maxBufferLen=32;
-    char* buffer=calloc(sizeof(char),maxBufferLen);
-    snprintf(buffer, maxBufferLen, "%lld", r);
+    char* vOut=calloc(sizeof(char),maxBufferLen);
+    snprintf(vOut, maxBufferLen, "%lld", vIn);
 
-    return buffer ;
+    return vOut ;
 }
 
-wchar_t* cnvI80toWS(long long r)
+wchar_t* cnvI80toWS(long long vIn)
 {
     const unsigned char maxBufferLen=32;
-    wchar_t* buffer=calloc(sizeof(wchar_t),maxBufferLen);
-    swprintf(buffer, maxBufferLen, L"%lld", r);
+    wchar_t* vOut=calloc(sizeof(wchar_t),maxBufferLen);
+    swprintf(vOut, maxBufferLen, L"%lld", vIn);
 
-    return wcsdup(buffer) ;
+    return wcsdup(vOut) ;
 }
-
 
 // ........................................................... convert I64 to S8 WS
 
-char* cnvI64toS8(long r)
+char* cnvI64toS8(long vIn)
 {
     const unsigned char maxBufferLen=32;
-    char* buffer=calloc(sizeof(char),maxBufferLen);
-    snprintf(buffer, maxBufferLen, "%ld", r);
+    char* vOut=calloc(sizeof(char),maxBufferLen);
+    snprintf(vOut, maxBufferLen, "%ld", vIn);
 
-    return buffer ;
+    return vOut ;
 }
 
 wchar_t* cnvI64toWS(long vIn)
 {
-
-	#if defined (_MSC_VER)
-	long vIn = 0;
-	wchar_t vOut [12];	
-	_itow_s(vIn,vOut,sizeof(vOut)/2,10);
-	return wcsdup(vOut);	
-	#else
+#if defined (_MSC_VER)
+    wchar_t vOut [12];	
+    _itow_s(vIn,vOut,sizeof(vOut)/2,10);
+    return wcsdup(vOut);	
+#else
     const unsigned char maxBufferLen=32;
-    wchar_t* buffer=calloc(sizeof(wchar_t),maxBufferLen);
-    swprintf(buffer, maxBufferLen, L"%ld", vIn);
-    return buffer ;
-	#endif
-
+    wchar_t* vOut=calloc(sizeof(wchar_t),maxBufferLen);
+    swprintf(vOut, maxBufferLen, L"%ld", vIn);
+    return vOut ;
+#endif
 }
 
 // ........................................................... convert I64 to S8 WS
 
-char* cnvPTRtoS8(void* r)
+char* cnvPTRtoS8(void* vIn)
 {
     const unsigned char maxBufferLen=32;
-    char* buffer=calloc(sizeof(char),maxBufferLen);
-    snprintf(buffer, maxBufferLen, "%p", r);
-   
-    return buffer ;
+    char* vOut=calloc(sizeof(char),maxBufferLen);
+    
+    #if defined (_MSC_VER)
+    snprintf(vOut, maxBufferLen, "0x%p", vIn);
+    #else
+    snprintf(vOut, maxBufferLen, "%p", vIn);
+    #endif
+    
+    return vOut ;
 }  
 
-wchar_t* cnvPTRtoWS(void* r)
+wchar_t* cnvPTRtoWS(void* vIn)
 {
     const unsigned char maxBufferLen=32;
-    wchar_t* buffer=calloc(sizeof(wchar_t),maxBufferLen+1);
-    swprintf(buffer, maxBufferLen*sizeof(wchar_t), L"%p", r);
-   
-    return buffer ;
+    wchar_t* vOut=calloc(sizeof(wchar_t),maxBufferLen+1);
+    
+    #if defined (_MSC_VER)    
+    swprintf(vOut, maxBufferLen*sizeof(wchar_t), L"0x%p", vIn);
+    #else
+    swprintf(vOut, maxBufferLen*sizeof(wchar_t), L"%p", vIn);
+    #endif    
+    
+    return vOut ;
 }  
 
 
