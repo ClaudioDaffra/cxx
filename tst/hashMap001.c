@@ -8,10 +8,12 @@
     2) 	sh build.lib
 		clear  ; gcc tst/hashMap001.c lib/libcxx.so 							-o bin/x	-Wall -pedantic -Wextra
 		
-    valgrind ./bin/x
+        valgrind ./bin/x
 
-    cls & cl lib\gc.c src\string.c src\hashMap.c tst\hashMap001.c         /Febin/x.exe    /WX
+    3)  cls & cl lib\gc.c src\string.c src\hashMap.c tst\hashMap001.c           /Febin/x.exe   /WX /utf-8
 
+    4)  wbuildBat.bat
+        cls & cl tst\hashMap001.c lib\cxx.lib   /Febin/x.exe    /WX /utf-8
 */
  
 size_t	f1(void *key, size_t count,void** value, void *user)

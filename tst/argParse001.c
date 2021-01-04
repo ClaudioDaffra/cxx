@@ -7,11 +7,15 @@
 	2)	sh buildLib.sh
 		clear   ; gcc tst/argParse001.c lib/libcxx.so 	-o bin/x 	-Wall -pedantic -Wextra
 	
-	./bin/x /help
+        ./bin/x /help
 	
-    cls     & cl src\argParse.c tst\argParse001.c   /Febin\x.exe /WX
-    C:\project\cxx>bin\x.exe -i "file.txt"
-    file input [file.txt]
+    3)  cls     & cl src\argParse.c tst\argParse001.c   /Febin\x.exe /WX /utf-8
+
+    4)  wbuildLib.bat
+        cls & cl tst\argParse001.c lib\cxx.lib          /Febin\x.exe /WX /utf-8
+        
+        C:\project\cxx>bin\x.exe -i "file.txt"
+        file input [file.txt]
 */
 
 int main ( int argc , const char** argv ) 

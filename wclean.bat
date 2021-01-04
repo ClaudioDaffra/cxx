@@ -1,7 +1,7 @@
-del bin\*
-del obj\*
-del lib\*
-del *.exe
-del *.obj
+del /F /Q bin\*
+del /F /Q obj\*
+del /F /Q lib\*
+del /F /Q *.exe
+del /F /Q *.obj
 
 

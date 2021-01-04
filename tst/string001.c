@@ -2,14 +2,18 @@
 #include "../src/stdio.h"
 #include "../src/string.h"
 
-//	1)	gcc src/stdio.c src/string.c tst/string001.c 	-o bin\x	-Wall -pedantic -Wextra
-//
-//	2)	sh buildLib.h
-//		clear  	; gcc tst/string001.c	lib/libcxx.so   -o bin/x	-Wall -Wextra -pedantic
-//
-//	cl 	src\stdio.c src\string.c tst\string001.c    /Febin\x.exe 	/utf-8 /WX
+/*
+	1)	gcc src/stdio.c src/string.c tst/string001.c 	-o bin\x	-Wall -pedantic -Wextra
 
-// ...................................................................
+	2)	sh buildLib.h
+		clear  	; gcc tst/string001.c	lib/libcxx.so   -o bin/x	-Wall -Wextra -pedantic
+
+	3)  cls     & cl 	src\stdio.c src\string.c tst\string001.c    /Febin\x.exe 	/utf-8 /WX
+    
+    4)  wbuildLib.bat
+        cls & cl tst\string001.c lib\cxx.lib            /Febin\x.exe    /utf-8 /WX
+*/
+
 
 int main() 
 {

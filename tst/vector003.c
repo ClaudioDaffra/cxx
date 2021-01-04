@@ -9,7 +9,10 @@
 	2) 	sh buildLib.sh
 		clear  	; gcc tst/vector003.c	lib/libcxx.so   -o   bin/x	-Wall -Wextra -pedantic
 	
-	cls     & cl src\gc.c tst\vector003.c       /Febin\x.exe    /WX
+	3)  cls     & cl src\gc.c tst\vector003.c       /Febin\x.exe    /WX /utf-8
+    
+    4)  wbuildLib.bat
+        cls & cl tst\vector003.c lib\cxx.lib        /Febin\x.exe    /WX /utf-8    
 */
 
 
