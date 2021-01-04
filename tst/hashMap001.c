@@ -3,14 +3,14 @@
 
 /*
 
-    1) 	clear  ; gcc src/gc.c src/string.c src/hashMap.c tst/hashMap001.c  		-o bin/x	-Wall -pedantic -Wextra
+    1) 	clear  ; gcc src/stdio.c src/gc.c src/string.c src/hashMap.c tst/hashMap001.c -o bin/x -Wall -pedantic -Wextra
     
     2) 	sh build.lib
 		clear  ; gcc tst/hashMap001.c lib/libcxx.so 							-o bin/x	-Wall -pedantic -Wextra
 		
         valgrind ./bin/x
 
-    3)  cls & cl lib\gc.c src\string.c src\hashMap.c tst\hashMap001.c           /Febin/x.exe   /WX /utf-8
+    3)  cls & cl src\stdio.c src\gc.c src\string.c src\hashMap.c tst\hashMap001.c /Febin/x.exe   /WX /utf-8
 
     4)  wbuildBat.bat
         cls & cl tst\hashMap001.c lib\cxx.lib   /Febin/x.exe    /WX /utf-8
@@ -28,7 +28,7 @@ int main()
 {
 	gcStart();
 	
-	setlocale(LC_ALL, "") ;
+	consoleSetUTF8();
 
 	char*source="claudio";
 

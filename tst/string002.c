@@ -33,11 +33,15 @@ int main()
 	// convert
 	fwprintf ( stdout,L"\n" );
 	
-	fwprintf ( stdout,L"(%ls)\n",cnvR64toWS(1.8446744073709552e+019L) ) ;
-	fwprintf ( stdout,L"(%ls)\n",cnvR32toWS(-1.0737418e+008f) ) ;
-	fwprintf ( stdout,L"(%ls)\n",cnvI64toWS(1234567890) ) ;
+	fwprintf ( stdout,L"(%ls)\n",cnvR64toWS(DBL_MAX) ) ;
+	fwprintf ( stdout,L"(%ls)\n",cnvR32toWS(FLT_MAX) ) ;
+
 	fwprintf ( stdout,L"(%ls)\n",cnvPTRtoWS(str1) ) ;
-	fwprintf ( stdout,L"(%ls)\n",cnvI80toWS(LLONG_MAX) ) ;
+	
+	fwprintf ( stdout,L"(%ls)\n",cnvI80toWS(LLONG_MAX) 	) ;
+	fwprintf ( stdout,L"(%ls)\n",cnvI64toWS(LONG_MAX) 	) ;		
+	fwprintf ( stdout,L"(%ls)\n",cnvI32toWS(INT_MAX) 	) ;		
+	fwprintf ( stdout,L"(%ls)\n",cnvI16toWS(SHRT_MAX) 	) ;	
 				
     return 0; 
 } 

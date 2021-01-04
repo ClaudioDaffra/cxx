@@ -23,7 +23,7 @@
 #include <stdbool.h>
 #include <ctype.h>
 #include <limits.h>
-
+#include <float.h>
 
 // ................................................ header cxx
 

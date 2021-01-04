@@ -16,30 +16,27 @@
 
 int main() 
 {
-/*
     consoleSetUTF8();
-     
-    char32_t* str1 = U"1) ç°§é*èé€ 一周有七天。一周有七天,сказать,غداً في العاشرة و.\n"; 
-    
-    printf ( "%s\n",cnvS32toWS(str1)) ;
 
-    char16_t* str2 = u"2) ç°§é*èé€ 一周有七天。一周有七天,сказать,غداً في العاشرة و.\n"; 
-
-    fprintf ( stdout, "%s\n",cnvS16toWS(str2)) ;
-*/
     char* str3 = "claudio daffra";
-/*
-    fprintf ( stdout, "3) %s\n",cnvS8toWS(str3) ) ;
-*/
+
 	// convert
 	fprintf ( stdout,"\n" );
 	
-	fprintf ( stdout,"(%s)\n",cnvR64toS8(1.8446744073709552e+019L) ) ;
-	fprintf ( stdout,"(%s)\n",cnvR32toS8(-1.0737418e+008f) ) ;
-	fprintf ( stdout,"(%s)\n",cnvI64toS8(1234567890) ) ;
+	fprintf ( stdout,"(%s)\n",cnvR64toS8(DBL_MAX) ) ;
+	fprintf ( stdout,"(%s)\n",cnvR32toS8(FLT_MAX) ) ;
+
 	fprintf ( stdout,"(%s)\n",cnvPTRtoS8(str3) ) ;
-	fprintf ( stdout,"(%s)\n",cnvI80toS8(LLONG_MAX) ) ;
-				
+	
+	fprintf ( stdout,"(%s)\n",cnvI80toS8(LLONG_MAX) 	) ;
+	fprintf ( stdout,"(%s)\n",cnvI64toS8(LONG_MAX) 		) ;	
+	fprintf ( stdout,"(%s)\n",cnvI32toS8(INT_MAX) 		) ;
+	fprintf ( stdout,"(%s)\n",cnvI16toS8(SHRT_MAX) 		) ;
+	
+
+ 	char* x = cnvWStoS8(L"你好吗") ;
+    printf ( "[%s]\n",x ) ;
+					
     return 0; 
 } 
 

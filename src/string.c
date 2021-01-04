@@ -157,7 +157,7 @@ wchar_t* cnvS8toWS(char * vIn)
 }
 
 
-// ........................................................... convert
+// ........................................................... convert ws to MB
 
 char* cnvWStoS8( wchar_t* ws )
 {
@@ -268,6 +268,37 @@ wchar_t* cnvI80toWS(long long vIn)
 
     return wcsdup(vOut) ;
 }
+
+
+// ........................................................... convert I64 to S8 WS
+
+char* cnvI32toS8(int vIn)
+{
+	char vOut [12];
+	
+	#if defined (_MSC_VER)
+	_itoa_s(vIn,vOut,sizeof(vOut),10);
+	#else
+	sprintf( vOut, "%d", vIn);
+	#endif
+
+    return strdup(vOut) ;
+}
+
+wchar_t* cnvI32toWS(int vIn)
+{
+#if defined (_MSC_VER)
+    wchar_t vOut [12];	
+    _itow_s(vIn,vOut,sizeof(vOut)/2,10);
+    return wcsdup(vOut);	
+#else
+    const unsigned char maxBufferLen=32;
+    wchar_t* vOut=calloc(sizeof(wchar_t),maxBufferLen);
+    swprintf(vOut, maxBufferLen, L"%d", vIn);
+    return vOut ;
+#endif
+}
+
 
 // ........................................................... convert I64 to S8 WS
 
