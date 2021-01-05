@@ -6,11 +6,13 @@
 
 // ........................................... strlen
 
-size_t 		str16len	(char16_t* 	strarg) ;
-size_t 		str32len	(char32_t* 	strarg) ;
-size_t 		str8len		(char* 		strarg) ;
-size_t 		strwlen		(wchar_t* 	strarg) ;
-
+size_t 		str16len	(char16_t* 	    strarg) ;
+size_t 		str32len	(char32_t* 	    strarg) ;
+size_t 		str8len		(char* 		    strarg) ;
+size_t 		strwlen		(wchar_t* 	    strarg) ;
+size_t      strmblen    (const char*    strarg) ;
+#define     strmbslen(VIN)  strmblen(VIN)
+ 
 // ........................................... cnv vIn <-> s8
 
 wchar_t* 	cnvS32toWS	(char32_t *	vIn ) ;
@@ -18,6 +20,7 @@ wchar_t* 	cnvS16toWS	(char16_t *	vIn ) ;
 wchar_t* 	cnvS8toWS	(char * 	vIn	) ;
 
 char* 		cnvWStoS8	(wchar_t* vIn) ;
+#define     cnvWStoMBS(VIN)  cnvWStoS8(VIN)
 
 // ........................................... cnv number
 

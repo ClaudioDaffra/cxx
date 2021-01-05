@@ -51,6 +51,25 @@ size_t strwlen(wchar_t* strarg)
    return vIn-strarg;
 }
 
+// https://en.cppreference.com/w/c/string/multibyte/mblen
+
+size_t strmblen(const char* strarg)
+{
+    size_t result = 0;
+    const char* end = strarg + strlen(strarg);
+    mblen(NULL, 0); // reset the conversion state
+    while(strarg < end) 
+    {
+        int next = mblen(strarg, end - strarg);
+        if(next == -1) {
+           perror("strlen_mb");
+           break;
+        }
+        strarg += next;
+        ++result;
+    }
+    return result;
+}
 
 // ............................................... convert String 16 / 32 to Multi Byte
 //

@@ -1,7 +1,8 @@
 
+1) vectorData , hashMapData ...
 
-2) creare una lib dinamica gcc/cl
+2) gc local, gc pause resume
 
-4) check strlen / wcslen != NULL
+3) check strlen / wcslen != NULL
 
 
