@@ -1,54 +1,54 @@
 
 #include "string.h"
 
-// ............................................... str len 16 / 32
+// ............................................... vIn len 16 / 32
 
 size_t str16len(char16_t* strarg)
 {
    if(!strarg) return 0; 
    
-   char16_t* str = strarg;
+   char16_t* vIn = strarg;
    
-   for(;*str;++str)
+   for(;*vIn;++vIn)
      ; 
      
-   return str-strarg;
+   return vIn-strarg;
 }
 
 size_t str32len(char32_t* strarg)
 {
    if(!strarg) return 0; 
    
-   char32_t* str = strarg;
+   char32_t* vIn = strarg;
    
-   for(;*str;++str)
+   for(;*vIn;++vIn)
      ; 
      
-   return str-strarg;
+   return vIn-strarg;
 }
 
 size_t str8len(char* strarg)
 {
    if(!strarg) return 0; 
    
-   char* str = strarg;
+   char* vIn = strarg;
    
-   for(;*str;++str)
+   for(;*vIn;++vIn)
      ; 
      
-   return str-strarg;
+   return vIn-strarg;
 }
 
 size_t strwlen(wchar_t* strarg)
 {
    if(!strarg) return 0; 
    
-   wchar_t* str = strarg;
+   wchar_t* vIn = strarg;
    
-   for(;*str;++str)
+   for(;*vIn;++vIn)
      ; 
      
-   return str-strarg;
+   return vIn-strarg;
 }
 
 
@@ -57,14 +57,14 @@ size_t strwlen(wchar_t* strarg)
 // https://www.geeksforgeeks.org/c32rtomb-function-in-c-c/
 //
 
-wchar_t* cnvS32toWS(char32_t *str ) 
+wchar_t* cnvS32toWS(char32_t *vIn ) 
 { 
     // viene allocata la dimensione massima del vOut
     const size_t    size32  =   sizeof(char32_t);
     const size_t    sizew   =   sizeof(wchar_t ); 
     
-    const size_t    slen    =   str32len(str)*size32+1 ;
-    const size_t    slenw   =   str32len(str)*sizew +1 ;
+    const size_t    slen    =   str32len(vIn)*size32+1 ;
+    const size_t    slenw   =   str32len(vIn)*sizew +1 ;
  
     // per evitare stringhe NULL U""
     if ( slen==1 ) return NULL ;   
@@ -78,9 +78,9 @@ wchar_t* cnvS32toWS(char32_t *str )
     char*           sret    =   malloc( slen ) ;
     size_t          kret    =   0;
 
-    while (str[j]) 
+    while (vIn[j]) 
     { 
-        length = c32rtomb(s, str[j], &p); // initializing the function
+        length = c32rtomb(s, vIn[j], &p); // initializing the function
         if ((length == 0) || (length > MB_CUR_MAX)) break; 
         for (size_t i = 0; i < length; ++i) sret[kret++]=s[i] ;
         ++j; 
@@ -99,14 +99,14 @@ wchar_t* cnvS32toWS(char32_t *str )
     return wcs; 
 } 
 
-wchar_t* cnvS16toWS(char16_t *str ) 
+wchar_t* cnvS16toWS(char16_t *vIn ) 
 { 
     // viene allocata la dimensione massima del vOut
     const size_t    size16  =   sizeof(char16_t);
     const size_t    sizew   =   sizeof(wchar_t ); 
     
-    const size_t    slen    =   str16len(str)*size16+1 ;
-    const size_t    slenw   =   str16len(str)*sizew +1 ;
+    const size_t    slen    =   str16len(vIn)*size16+1 ;
+    const size_t    slenw   =   str16len(vIn)*sizew +1 ;
 
     // per evitare stringhe NULL u""
     if ( slen==1 ) return NULL ;    
@@ -120,9 +120,9 @@ wchar_t* cnvS16toWS(char16_t *str )
     char*           sret    =   malloc( slen ) ;
     size_t          kret    =   0;
 
-    while (str[j]) 
+    while (vIn[j]) 
     { 
-        length = c16rtomb(s, str[j], &p); // initializing the function
+        length = c16rtomb(s, vIn[j], &p); // initializing the function
         if ((length == 0) || (length > MB_CUR_MAX)) break; 
         for (size_t i = 0; i < length; ++i) sret[kret++]=s[i] ;
         ++j; 
@@ -142,41 +142,71 @@ wchar_t* cnvS16toWS(char16_t *str )
     return wcs; 
 } 
 
+// ........................................................... convert vIn to MB ( WINDOWS )
+// https://stackoverflow.com/questions/42793735/
+// how-to-convert-between-widecharacter-and-multi-byte-character-string-in-windows
+
+#ifdef _MSC_VER
+static
+WCHAR* convert_to_wstring(const char* vIn)
+{
+    int str_len = (int) strlen(vIn);
+    int num_chars = MultiByteToWideChar(CP_UTF8, 0, vIn, str_len, NULL, 0);
+    WCHAR* wstrTo = (WCHAR*) malloc((num_chars + 1) * sizeof(WCHAR));
+    if (wstrTo)
+    {
+        MultiByteToWideChar(CP_UTF8, 0, vIn, str_len, wstrTo, num_chars);
+        wstrTo[num_chars] = L'\0';
+    }
+    return wstrTo;
+}
+static
+CHAR* convert_from_wstring(const WCHAR* wstr)
+{
+    int wstr_len = (int) wcslen(wstr);
+    int num_chars = WideCharToMultiByte(CP_UTF8, 0, wstr, wstr_len, NULL, 0, NULL, NULL);
+    CHAR* strTo = (CHAR*) malloc((num_chars + 1) * sizeof(CHAR));
+    if (strTo)
+    {
+        WideCharToMultiByte(CP_UTF8, 0, wstr, wstr_len, strTo, num_chars, NULL, NULL);
+        strTo[num_chars] = '\0';
+    }
+    return strTo;
+}
+#endif
+
 wchar_t* cnvS8toWS(char * vIn)
 {
-    const size_t slen=strlen(vIn);
-    wchar_t * vOut = malloc ( (slen+1) * sizeof(wchar_t) ) ;
-
     #if defined(_MSC_VER)   
-    mbstowcs_s(NULL,vOut,(slen+1),vIn,slen);
+        return convert_to_wstring(vIn);
     #else
-	mbstowcs (vOut, vIn, slen+1 );
+        const size_t slen=strlen(vIn);
+        wchar_t * vOut = malloc ( (slen+1) * sizeof(wchar_t) ) ;    
+        mbstowcs (vOut, vIn, slen+1 );
+        return vOut;        
     #endif
-  
-    return vOut;
+
+    return NULL;
 }
 
+// ........................................................... convert vIn to MB
 
-// ........................................................... convert ws to MB
-
-char* cnvWStoS8( wchar_t* ws )
+char* cnvWStoS8( wchar_t* vIn )
 {
-  size_t len = sizeof(wchar_t) * wcslen(ws) ;
-  char* vOut = calloc ( sizeof(wchar_t),len );
-  
-  #if defined(_MSC_VER)
-  size_t i=0;
-  wcstombs_s(&i,vOut,len,ws,len) ;
-  #else
-  wcstombs ( vOut, ws, len ) ;
-  #endif
+    #if defined(_MSC_VER)
+        return convert_from_wstring(vIn);
+    #else
+        size_t len = sizeof(wchar_t) * wcslen(vIn) ;
+        char* vOut = calloc ( sizeof(wchar_t),len );  
+        wcstombs ( vOut, vIn, len ) ;
+        vOut=realloc(vOut,strlen(vOut)+1);
+        return vOut ;  
+    #endif
 
-  vOut=realloc(vOut,strlen(vOut)+1);
-
-  return vOut ;
+    return NULL ;
 }
 
-// ........................................................... convert real32 to S8 WS
+// ........................................................... convert real32 to S8 vIn
 
 char* cnvR32toS8(float vIn)
 {
@@ -212,7 +242,7 @@ wchar_t* cnvR32toWS(float vIn)
 	return wcsdup(vOut);
 }
 
-// ........................................................... convert real64 to S8 WS
+// ........................................................... convert real64 to S8 vIn
 
 char* cnvR64toS8(double vIn)
 {
@@ -270,7 +300,7 @@ wchar_t* cnvI80toWS(long long vIn)
 }
 
 
-// ........................................................... convert I64 to S8 WS
+// ........................................................... convert I64 to S8 vIn
 
 char* cnvI32toS8(int vIn)
 {
@@ -300,7 +330,7 @@ wchar_t* cnvI32toWS(int vIn)
 }
 
 
-// ........................................................... convert I64 to S8 WS
+// ........................................................... convert I64 to S8 vIn
 
 char* cnvI64toS8(long vIn)
 {
@@ -325,7 +355,7 @@ wchar_t* cnvI64toWS(long vIn)
 #endif
 }
 
-// ........................................................... convert I64 to S8 WS
+// ........................................................... convert I64 to S8 vIn
 
 char* cnvPTRtoS8(void* vIn)
 {

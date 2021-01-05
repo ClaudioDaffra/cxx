@@ -39,7 +39,7 @@ console_stream_t std_stream = console_stream_ansi;
 
         // set CHCP : 936 1252 > win7 : 65001
         
-        int chcp=936;                
+        int chcp=936;            
         SetConsoleCP( chcp ) ;             
         SetConsoleOutputCP( chcp ); 
 

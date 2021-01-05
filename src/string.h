@@ -4,20 +4,20 @@
 
 #include "cxx.h"
 
-// ........................................... str len
+// ........................................... strlen
 
 size_t 		str16len	(char16_t* 	strarg) ;
 size_t 		str32len	(char32_t* 	strarg) ;
 size_t 		str8len		(char* 		strarg) ;
 size_t 		strwlen		(wchar_t* 	strarg) ;
 
-// ........................................... cnv ws <-> s8
+// ........................................... cnv vIn <-> s8
 
-wchar_t* 	cnvS32toWS	(char32_t *	str ) ;
-wchar_t* 	cnvS16toWS	(char16_t *	str ) ;
+wchar_t* 	cnvS32toWS	(char32_t *	vIn ) ;
+wchar_t* 	cnvS16toWS	(char16_t *	vIn ) ;
 wchar_t* 	cnvS8toWS	(char * 	vIn	) ;
 
-char* 		cnvWStoS8	(wchar_t* ws) ;
+char* 		cnvWStoS8	(wchar_t* vIn) ;
 
 // ........................................... cnv number
 

@@ -13,7 +13,6 @@
         cls & cl tst\string002.c lib\cxx.lib            /Febin\x.exe    /utf-8 /WX
 */
 
-
 int main() 
 {
     consoleSetUTF8();
@@ -42,7 +41,12 @@ int main()
 	fwprintf ( stdout,L"(%ls)\n",cnvI64toWS(LONG_MAX) 	) ;		
 	fwprintf ( stdout,L"(%ls)\n",cnvI32toWS(INT_MAX) 	) ;		
 	fwprintf ( stdout,L"(%ls)\n",cnvI16toWS(SHRT_MAX) 	) ;	
-				
+
+    char* x = cnvWStoS8(L"你好吗") ;
+    fwprintf ( stdout,L"[%ls]\n",cnvS8toWS(x) ) ;
+
+    fwprintf(stdout,L"\nthat's al folks !\n");
+    
     return 0; 
 } 
 
