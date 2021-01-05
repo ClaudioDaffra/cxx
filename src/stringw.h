@@ -118,21 +118,22 @@ assert((ID).data!=NULL);									\
 */
 // ........................................................... [] SHRINK TO FIT
 
-#define wstringShrinkToFit(ID) do {                                                  \
+#define wstringShrinkToFit(ID) do {                                                 \
     (ID).data = gcRealloc  ( (ID).data   , ((ID).size) * sizeof((ID).data)  );      \
     (ID).capacity = (ID).size;                                                      \
 } while (0)    
 
-/*
+
 // ........................................................... [] RESERVE 
 
-#define wstringReserve(ID, N) do {                                                   \
+#define wstringReserve(ID, N) do {                                                  \
     if ((ID).capacity < (N)) {                                                      \
         (ID).data = gcRealloc  ( (ID).data   , (N) * sizeof((ID).data)  );          \
         (ID).capacity = (N);                                                        \
     } \
 } while (0)
 
+/*
 // ........................................................... [] wstringInsertAtVal     
         
 #define wstringInsertAtVal(ID, POS, VAL) do {                                                \
@@ -186,6 +187,7 @@ assert((ID).data!=NULL);									\
     (ID).size = (PTR).size;                                                                     \
 } while (0)
 
+*/
 
 // ........................................................... [] APPEND 
  
@@ -193,16 +195,15 @@ assert((ID).data!=NULL);									\
     size_t V1z = (ID).size ;                                                          	\
     size_t V2z = (V2).size ;                                                          	\
     if ((ID).capacity < (V1z+V2z)) {                                                    \
-        (ID).data = gcRealloc ( (ID).data , (V1z + V2z ) *  sizeof((ID).data) ) ;       \
-    }                                                                                   \
-    (ID).capacity = V1z + V2z ;                                                         \
-    while (V2z > 0) {                                                                   \
-        (ID).data[ (V1z + V2z - 1) ] = (V2).data[V2z-1];                                \
-        --V2z ;                                                                         \
-    }                                                                                   \
-    (ID).size = (ID).capacity ;                                                         \
+        (ID).data = gcRealloc ( (ID).data , (V1z+V2z+1 ) *  sizeof((ID).data) ) ;       \
+        (ID).capacity = V1z + V2z +1;                                                   \
+    } ;                                                                                 \
+    wcscat((ID).data,(V2).data);                                                        \
+    (ID).size = (V1z + V2z) ;                                                           \
 } while (0)
 
+
+/*
 // ........................................................... [] insert wstring at
 
 #define wstringInsertAtwstring(ID, POS, PTR ) do {                                                    \
@@ -229,12 +230,8 @@ assert((ID).data!=NULL);									\
     (ID).size += (N);                                                                               \
 } while (0)
 
-// ........................................................... [] PRINTF
-
-#define wstringPrintf(FORMAT,ID) do { 												\
-for ( size_t i = 0 ; i < (ID).size ; i++)  printf ( FORMAT , (ID).data[i] ) ;		\
-}while(0);
 */
+
 // ........................................................... [] FREE 
 
 #define wstringDealloc(ID) do {                        \
@@ -242,13 +239,6 @@ for ( size_t i = 0 ; i < (ID).size ; i++)  printf ( FORMAT , (ID).data[i] ) ;		\
 } while(0)
 
 /*   
-// ........................................................... [] SORT 
-
-#define wstringSort(TYPE,ID,CMP)  qsort((ID).data, (ID).size, sizeof(TYPE), CMP )  
-
-// ........................................................... [] BINARY SEARCH 
-
-#define wstringBinarySearch(TYPE,ID,CMP,KEY)  bsearch (&KEY, (ID).data, (ID).size , sizeof (TYPE), CMP) 
 
 // ........................................................... [] wstring ALLLOC wstring 
 

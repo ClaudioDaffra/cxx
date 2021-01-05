@@ -94,16 +94,38 @@ int main()
 
     wprintf ( L"front [%lc] back [%lc] at[3]==[%lc].\n",wstringFront(s1),wstringBack(s1),wstringAt(s1,3) ) ;
     
-    //..........................  shrink to fit
+    //..........................  shrink to fit , reserve
     
     wstringShrinkToFit(s1);
 
     wprintf ( L"[s1] %ls -> size %zu capacity %zu empty %u len(%zu)\n"
         ,s1.data,wstringSize(s1),wstringCapacity(s1),wstringEmpty(s1),wstringLen(s1) )   ;
         
-    //..........................   
+    wstringReserve(s1,32);
+    
+    //..........................  append
+
+    wstringTypeDef(char,s2) ;
+
+    wstring_s1_t s2 ;
+
+    wstringAlloc(s2,8);
+
+    wstringFromWS ( s2 , L"ABC你好吗DEF" ) ;
+
+    wprintf ( L"[s2] %ls -> size %zu capacity %zu empty %u len(%zu)\n"
+        ,s2.data,wstringSize(s2),wstringCapacity(s2),wstringEmpty(s2),wstringLen(s2) )   ;
+      
+    wstringAppend( s1 , s2 ) ;
+
+    wprintf ( L"[s1] %ls -> size %zu capacity %zu empty %u len(%zu)\n"
+        ,s1.data,wstringSize(s1),wstringCapacity(s1),wstringEmpty(s1),wstringLen(s1) )   ;
+     
+    //..........................     
 
     wstringDealloc(s1);
+
+    wstringDealloc(s2);
     
     gcStop();
     

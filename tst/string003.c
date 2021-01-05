@@ -113,16 +113,38 @@ int main()
 
     printf ( "front [%c] back [%c] at[3]==[%c].\n",stringFront(s1),stringBack(s1),stringAt(s1,3) ) ;
     
-    //..........................  shrink to fit
+    //..........................  shrink to fit , reserve
     
     stringShrinkToFit(s1);
 
     printf ( "[s1] %s -> size %zu capacity %zu empty %u len(%zu)\n"
         ,s1.data,stringSize(s1),stringCapacity(s1),stringEmpty(s1),stringLen(s1) )   ;
         
+    stringReserve(s1,32);
+
+    //..........................  append
+
+    stringTypeDef(char,s2) ;
+
+    string_s1_t s2 ;
+
+    stringAlloc(s2,8);
+
+    stringFromS8 ( s2 , "ABC" ) ;
+
+    printf ( "[s2] %s -> size %zu capacity %zu empty %u len(%zu)\n"
+        ,s2.data,stringSize(s2),stringCapacity(s2),stringEmpty(s2),stringLen(s2) )   ;
+      
+    stringAppend( s1 , s2 ) ;
+
+    printf ( "[s1] %s -> size %zu capacity %zu empty %u len(%zu)\n"
+        ,s1.data,stringSize(s1),stringCapacity(s1),stringEmpty(s1),stringLen(s1) )   ;
+     
     //..........................  
     
     stringDealloc(s1);
+
+    stringDealloc(s2);
     
     gcStop();
     

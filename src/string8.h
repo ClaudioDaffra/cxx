@@ -124,7 +124,7 @@ assert((ID).data!=NULL);									\
     (ID).capacity = (ID).size;                                                      \
 } while (0)    
 
-/*
+
 // ........................................................... [] RESERVE 
 
 #define stringReserve(ID, N) do {                                                   \
@@ -134,6 +134,7 @@ assert((ID).data!=NULL);									\
     } \
 } while (0)
 
+/*
 // ........................................................... [] stringInsertAtVal     
         
 #define stringInsertAtVal(ID, POS, VAL) do {                                                \
@@ -187,23 +188,21 @@ assert((ID).data!=NULL);									\
     (ID).size = (PTR).size;                                                                     \
 } while (0)
 
-
+*/
 // ........................................................... [] APPEND 
  
 #define stringAppend(ID, V2 ) do {                                                      \
     size_t V1z = (ID).size ;                                                          	\
     size_t V2z = (V2).size ;                                                          	\
     if ((ID).capacity < (V1z+V2z)) {                                                    \
-        (ID).data = gcRealloc ( (ID).data , (V1z + V2z ) *  sizeof((ID).data) ) ;       \
-    }                                                                                   \
-    (ID).capacity = V1z + V2z ;                                                         \
-    while (V2z > 0) {                                                                   \
-        (ID).data[ (V1z + V2z - 1) ] = (V2).data[V2z-1];                                \
-        --V2z ;                                                                         \
-    }                                                                                   \
-    (ID).size = (ID).capacity ;                                                         \
+        (ID).data = gcRealloc ( (ID).data , (V1z+V2z+1 ) *  sizeof((ID).data) ) ;       \
+        (ID).capacity = V1z + V2z +1;                                                   \
+    } ;                                                                                 \
+    strcat((ID).data,(V2).data);                                                        \
+    (ID).size = (V1z + V2z) ;                                                           \
 } while (0)
 
+/*
 // ........................................................... [] insert string at
 
 #define stringInsertAtstring(ID, POS, PTR ) do {                                                    \
@@ -230,12 +229,8 @@ assert((ID).data!=NULL);									\
     (ID).size += (N);                                                                               \
 } while (0)
 
-// ........................................................... [] PRINTF
-
-#define stringPrintf(FORMAT,ID) do { 												\
-for ( size_t i = 0 ; i < (ID).size ; i++)  printf ( FORMAT , (ID).data[i] ) ;		\
-}while(0);
 */
+
 // ........................................................... [] FREE 
 
 #define stringDealloc(ID) do {                        \
@@ -243,13 +238,6 @@ for ( size_t i = 0 ; i < (ID).size ; i++)  printf ( FORMAT , (ID).data[i] ) ;		\
 } while(0)
 
 /*   
-// ........................................................... [] SORT 
-
-#define stringSort(TYPE,ID,CMP)  qsort((ID).data, (ID).size, sizeof(TYPE), CMP )  
-
-// ........................................................... [] BINARY SEARCH 
-
-#define stringBinarySearch(TYPE,ID,CMP,KEY)  bsearch (&KEY, (ID).data, (ID).size , sizeof (TYPE), CMP) 
 
 // ........................................................... [] string ALLLOC string 
 
