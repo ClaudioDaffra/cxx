@@ -29,7 +29,7 @@ do{\
     (ID).size = len;\
 }while(0);
 
-#define wstringFromS8(ID,STR) wstringFromWS( ID , cnvS8toWS(STR) ) 
+#define wstringFromS8(ID,STR) wstringFromWS( ID , cnvS8toWS((char*)STR) ) 
 
 #define wstringLen(ID)   wcslen((ID).data)
 
@@ -52,13 +52,13 @@ int main()
   
     wstringFromWS ( s1 , L"precipitevolissimevolmente" ) ;
 
-    wprintf ( L"%s -> size %zu capacity %zu empty %u len(%zu)\n"
+    wprintf ( L"%ls -> size %zu capacity %zu empty %u len(%zu)\n"
         ,s1.data,wstringSize(s1),wstringCapacity(s1),wstringEmpty(s1),wstringLen(s1) ) ;
 
     const char* temp = "Claudio Daffra" ;
     wstringFromS8 ( s1 , temp ) ;
 
-    wprintf ( L"%s -> size %zu capacity %zu empty %u len(%zu)\n"
+    wprintf ( L"%ls -> size %zu capacity %zu empty %u len(%zu)\n"
         ,s1.data,wstringSize(s1),wstringCapacity(s1),wstringEmpty(s1),wstringLen(s1) ) ;
 
   
