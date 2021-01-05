@@ -1,7 +1,8 @@
 
-1) vectorData , hashMapData ...
+1) 
 
-2) gc local, gc pause resume
+2)  gc local, 
+    gc pause resume
 
 3) check strlen / wcslen != NULL
 

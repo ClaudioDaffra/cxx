@@ -85,17 +85,18 @@ assert((ID).data!=NULL);									\
 
 #define wstringData(ID) (ID).data
 
-/*
+
 // ........................................................... [] AT 
 
 #define wstringAt(ID, INDEX) (ID).data[INDEX]    
 
+/*
 // ........................................................... [] wstringOfwstring ... X , XY , XYZ
     
 #define wstringX(ID,NDX1)                wstringAt(ID,NDX1)
 #define wstringXY(ID,NDX1,NDX2)          wstringAt(wstringAt(ID,NDX1),NDX2)
 #define wstringXYZ(ID,NDX1,NDX2,NDX3)    wstringAt(wstringAt(wstringAt(ID,NDX1),NDX2),NDX3)
-
+*/
 // ........................................................... [] FRONT
 
 #define wstringFront(ID) (ID).data[0]
@@ -104,16 +105,17 @@ assert((ID).data!=NULL);									\
 
 #define wstringBack(ID) (ID).data[wstringSize(ID) - 1]
 
+/*
 // ........................................................... [] ITERATOR 
 
-#define itwstring(ID)        MERGE ( MERGE ( wstring_ , ID )  , _d )*  
+#define itWString(ID)        MERGE ( MERGE ( wstring_ , ID )  , _d )*  
  
 #define wstringBegin(ID)     (ID).data
 #define wstringEnd(ID)       ((ID).data+(ID).size) 
 
 #define wstringRBegin(ID)    ((ID).data + (ID).size - 1)
 #define wstringREnd(ID)      ((ID).data - 1 )
-
+*/
 // ........................................................... [] SHRINK TO FIT
 
 #define wstringShrinkToFit(ID) do {                                                  \
@@ -121,6 +123,7 @@ assert((ID).data!=NULL);									\
     (ID).capacity = (ID).size;                                                      \
 } while (0)    
 
+/*
 // ........................................................... [] RESERVE 
 
 #define wstringReserve(ID, N) do {                                                   \
@@ -231,13 +234,14 @@ assert((ID).data!=NULL);									\
 #define wstringPrintf(FORMAT,ID) do { 												\
 for ( size_t i = 0 ; i < (ID).size ; i++)  printf ( FORMAT , (ID).data[i] ) ;		\
 }while(0);
-
+*/
 // ........................................................... [] FREE 
 
 #define wstringDealloc(ID) do {                        \
     if ( (ID).data != NULL ) gcFree( (ID).data );     \
 } while(0)
-   
+
+/*   
 // ........................................................... [] SORT 
 
 #define wstringSort(TYPE,ID,CMP)  qsort((ID).data, (ID).size, sizeof(TYPE), CMP )  

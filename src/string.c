@@ -55,6 +55,8 @@ size_t strwlen(wchar_t* strarg)
 
 size_t strmblen(const char* strarg)
 {
+    if(!strarg) return 0;
+       
     size_t result = 0;
     const char* end = strarg + strlen(strarg);
     mblen(NULL, 0); // reset the conversion state
@@ -88,7 +90,7 @@ wchar_t* cnvS32toWS(char32_t *vIn )
     // per evitare stringhe NULL U""
     if ( slen==1 ) return NULL ;   
  
-    // generalmente MB_CUR_MAX è ugauel a 2
+    // generalmente MB_CUR_MAX è uguale a 2
     char*           s       =   malloc ( sizeof(char)*MB_CUR_MAX ) ;
     mbstate_t       p       =   {0}; 
     size_t          length  =   0; 
@@ -130,7 +132,7 @@ wchar_t* cnvS16toWS(char16_t *vIn )
     // per evitare stringhe NULL u""
     if ( slen==1 ) return NULL ;    
  
-    // generalmente MB_CUR_MAX è ugauel a 2
+    // generalmente MB_CUR_MAX è uguale a 2
     char*           s       =   malloc ( sizeof(char)*MB_CUR_MAX ) ;
     mbstate_t       p       =   {0}; 
     size_t          length  =   0; 
@@ -161,7 +163,8 @@ wchar_t* cnvS16toWS(char16_t *vIn )
     return wcs; 
 } 
 
-// ........................................................... convert vIn to MB ( WINDOWS )
+// ........................................................... convert S8 <-> MB ( WINDOWS ) and viceversa
+
 // https://stackoverflow.com/questions/42793735/
 // how-to-convert-between-widecharacter-and-multi-byte-character-string-in-windows
 

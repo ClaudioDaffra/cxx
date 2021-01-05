@@ -85,17 +85,19 @@ assert((ID).data!=NULL);									\
 
 #define stringData(ID) (ID).data
 
-/*
+
 // ........................................................... [] AT 
 
 #define stringAt(ID, INDEX) (ID).data[INDEX]    
 
+/*
 // ........................................................... [] stringOfstring ... X , XY , XYZ
     
 #define stringX(ID,NDX1)                stringAt(ID,NDX1)
 #define stringXY(ID,NDX1,NDX2)          stringAt(stringAt(ID,NDX1),NDX2)
 #define stringXYZ(ID,NDX1,NDX2,NDX3)    stringAt(stringAt(stringAt(ID,NDX1),NDX2),NDX3)
 
+*/
 // ........................................................... [] FRONT
 
 #define stringFront(ID) (ID).data[0]
@@ -104,16 +106,17 @@ assert((ID).data!=NULL);									\
 
 #define stringBack(ID) (ID).data[stringSize(ID) - 1]
 
+/*
 // ........................................................... [] ITERATOR 
 
-#define itstring(ID)        MERGE ( MERGE ( string_ , ID )  , _d )*  
+#define itString(ID)        MERGE ( MERGE ( string_ , ID )  , _d )*  
  
 #define stringBegin(ID)     (ID).data
 #define stringEnd(ID)       ((ID).data+(ID).size) 
 
 #define stringRBegin(ID)    ((ID).data + (ID).size - 1)
 #define stringREnd(ID)      ((ID).data - 1 )
-
+*/
 // ........................................................... [] SHRINK TO FIT
 
 #define stringShrinkToFit(ID) do {                                                  \
@@ -121,6 +124,7 @@ assert((ID).data!=NULL);									\
     (ID).capacity = (ID).size;                                                      \
 } while (0)    
 
+/*
 // ........................................................... [] RESERVE 
 
 #define stringReserve(ID, N) do {                                                   \
@@ -231,13 +235,14 @@ assert((ID).data!=NULL);									\
 #define stringPrintf(FORMAT,ID) do { 												\
 for ( size_t i = 0 ; i < (ID).size ; i++)  printf ( FORMAT , (ID).data[i] ) ;		\
 }while(0);
-
+*/
 // ........................................................... [] FREE 
 
 #define stringDealloc(ID) do {                        \
     if ( (ID).data != NULL ) gcFree( (ID).data );     \
 } while(0)
-   
+
+/*   
 // ........................................................... [] SORT 
 
 #define stringSort(TYPE,ID,CMP)  qsort((ID).data, (ID).size, sizeof(TYPE), CMP )  

@@ -89,8 +89,22 @@ int main()
     wprintf ( L"[s1] %ls -> size %zu capacity %zu empty %u len(%zu)\n"
         ,s1.data,wstringSize(s1),wstringCapacity(s1),wstringEmpty(s1),wstringLen(s1) )   ;
         
-    //.......................... 
-   
+        
+    //..........................  front back at
+
+    wprintf ( L"front [%lc] back [%lc] at[3]==[%lc].\n",wstringFront(s1),wstringBack(s1),wstringAt(s1,3) ) ;
+    
+    //..........................  shrink to fit
+    
+    wstringShrinkToFit(s1);
+
+    wprintf ( L"[s1] %ls -> size %zu capacity %zu empty %u len(%zu)\n"
+        ,s1.data,wstringSize(s1),wstringCapacity(s1),wstringEmpty(s1),wstringLen(s1) )   ;
+        
+    //..........................   
+
+    wstringDealloc(s1);
+    
     gcStop();
     
     return 0; 
