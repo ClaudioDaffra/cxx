@@ -50,35 +50,42 @@ assert((ID).data!=NULL);									\
 // ........................................................... [] EMPTY
 
 #define wstringEmpty(ID) ((ID).size == 0) 
-/*
+
 // ........................................................... [] PUSH_BACK
 
-#define wstringPushBack(ID, VAL) do {                                   		\
-    if ((ID).size + 1 > (ID).capacity) {                                	\
+#define wstringPushBack(ID, VAL) do {                                   	\
+    if ((ID).size + 1 >= (ID).capacity) {                                	\
         size_t N = ((ID).capacity += (ID).capacity);                     	\
         (ID).data = gcRealloc  ( (ID).data   , (N) * sizeof((ID).data)  );	\
         (ID).capacity = (N);                                             	\
-    } ;                                                                 	\
-    (ID).data[wstringSize(ID)] = (VAL);                                    	\
+    } ;                                                                     \
+    size_t len=wstringSize(ID);                                             \
+    (ID).data[len]   = (VAL);                                    	        \
+    (ID).data[len+1] = 0    ;                                    	        \
     ++(ID).size ;                                                       	\
 } while (0)
 
 // ........................................................... [] POP_BACK
 
-#define wstringPopBack(ID) do {  \
-    if ((ID).size) --(ID).size; \
+#define wstringPopBack(ID) do {             \
+    if ((ID).size) {                        \
+        (ID).data[wstringSize(ID)-1] = 0;    \
+        --(ID).size ;                       \
+    };\
 } while (0)
 
 // ........................................................... [] CLEAR
 
-#define wstringClear(ID) do {    \
-    (ID).size = 0;              \
+#define wstringClear(ID) do {       \
+    (ID).size = 0       ;           \
+    (ID).data[0] = 0    ;           \
 } while (0)
 
 // ........................................................... [] DATA
 
 #define wstringData(ID) (ID).data
 
+/*
 // ........................................................... [] AT 
 
 #define wstringAt(ID, INDEX) (ID).data[INDEX]    

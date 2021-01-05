@@ -48,16 +48,24 @@ int main()
 
     mbstringAlloc(s1,8);
 
-    // multi byte mbstring
+    //.......................... clear
+    
+    mbstringClear(s1);
+    
+    printf ( "clear [%s] -> size %zu capacity %zu empty %u len(%zu)\n"
+        ,s1.data,mbstringSize(s1),mbstringCapacity(s1),mbstringEmpty(s1),mbstringLen(s1) ) ;
+        
+    //.......................... multi byte mbstring
 
     mbstringFromWS ( s1 , L"你好吗" ) ;
 
     printf ( "%s -> size %zu capacity %zu empty %u len(%zu)\n"
         ,s1.data,mbstringSize(s1),mbstringCapacity(s1),mbstringEmpty(s1),mbstringLen(s1) ) ;
     
-    //.......................... init
+    //.......................... push back
     
-    //..........................    
+    //.......................... pop back 
+    
     gcStop();
     
     return 0; 

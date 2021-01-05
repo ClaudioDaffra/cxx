@@ -70,15 +70,16 @@ assert((ID).data!=NULL);									\
 } while (0)
 
 // ........................................................... [] CLEAR
+*/
 
-#define mbstringClear(ID) do {    \
-    (ID).size = 0;              \
+#define mbstringClear(ID) do {      \
+    mbstringFromWS(ID,L"\0");       \
 } while (0)
 
 // ........................................................... [] DATA
 
 #define mbstringData(ID) (ID).data
-
+/*
 // ........................................................... [] AT 
 
 #define mbstringAt(ID, INDEX) (ID).data[INDEX]    

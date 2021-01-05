@@ -51,33 +51,58 @@ int main()
 
     stringTypeDef(char,s1) ;
 
-    string_s1_t s1 ;
+    string_s1_t s1 , mbs ;
 
     stringAlloc(s1,8);
+    
+    stringAlloc(mbs,8);
+    
+    // multi byte string
 
+    stringFromWS ( mbs , L"你好吗" ) ;
+
+    printf ( "\n[mbs] %s -> size %zu capacity %zu empty %u len(%zu)\n"
+        ,mbs.data,stringSize(mbs),stringCapacity(mbs),stringEmpty(mbs),mbstringLen(mbs) ) ;   
+        
     //.......................... init
+    
+    printf ("\n");
+    
+    stringClear(s1);
+    printf ( "s1 clear [%s] len(%zu).\n",s1.data,strlen(s1.data));
+
+    //.......................... from char*
     
     stringFromS8 ( s1 , "precipitevolissimevolmente" ) ;
 
-    printf ( "%s -> size %zu capacity %zu empty %u len(%zu)\n"
+    printf ( "[s1] %s -> size %zu capacity %zu empty %u len(%zu)\n"
         ,s1.data,stringSize(s1),stringCapacity(s1),stringEmpty(s1),stringLen(s1) ) ;
 
     const char* temp = "Claudio Daffra" ;
     stringFromS8 ( s1 , temp ) ;
 
-    printf ( "%s -> size %zu capacity %zu empty %u len(%zu)\n"
+    printf ( "[s1] %s -> size %zu capacity %zu empty %u len(%zu)\n"
         ,s1.data,stringSize(s1),stringCapacity(s1),stringEmpty(s1),stringLen(s1) )   ;
 
-    // multi byte string
-
-    stringFromWS ( s1 , L"你好吗" ) ;
-
-    printf ( "%s -> size %zu capacity %zu empty %u len(%zu)\n"
-        ,s1.data,stringSize(s1),stringCapacity(s1),stringEmpty(s1),mbstringLen(s1) ) ;
+    //.......................... push Back "Claudio Daffra" + 'X' + 'Y'
     
-    //.......................... init
+    stringPushBack( s1 , 'X' ) ;
+    stringPushBack( s1 , 'Y' ) ;    
     
-    //..........................    
+    printf ( "after push back XY s1 [%s].\n",stringData(s1) ) ;
+
+    printf ( "[s1] %s -> size %zu capacity %zu empty %u len(%zu)\n"
+        ,s1.data,stringSize(s1),stringCapacity(s1),stringEmpty(s1),stringLen(s1) )   ;
+
+    stringPopBack(s1);
+    
+    printf ( "after pop back s1 [%s].\n",stringData(s1) ) ;
+
+    printf ( "[s1] %s -> size %zu capacity %zu empty %u len(%zu)\n"
+        ,s1.data,stringSize(s1),stringCapacity(s1),stringEmpty(s1),stringLen(s1) )   ;
+        
+    //..........................  
+    
     gcStop();
     
     return 0; 

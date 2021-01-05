@@ -49,11 +49,21 @@ int main()
     wstringAlloc(s1,8);
 
     //.......................... init
-  
+    
+    wprintf (L"\n");
+    
+    wstringClear(s1);
+    
+    wprintf ( L"s1 clear s1:[%ls] len(%zu).\n",s1.data,wcslen(s1.data));
+
+    //.......................... from wchar_t*
+    
     wstringFromWS ( s1 , L"precipitevolissimevolmente" ) ;
 
     wprintf ( L"%ls -> size %zu capacity %zu empty %u len(%zu)\n"
         ,s1.data,wstringSize(s1),wstringCapacity(s1),wstringEmpty(s1),wstringLen(s1) ) ;
+
+    //.......................... from char*
 
     const char* temp = "Claudio Daffra" ;
     wstringFromS8 ( s1 , temp ) ;
@@ -62,9 +72,25 @@ int main()
         ,s1.data,wstringSize(s1),wstringCapacity(s1),wstringEmpty(s1),wstringLen(s1) ) ;
 
   
-    //.......................... init
+    //.......................... push Back "Claudio Daffra" + L'X' + L'Y'
     
-    //..........................    
+    wstringPushBack( s1 , L'X' ) ;
+    wstringPushBack( s1 , L'Y' ) ;    
+    
+    wprintf ( L"after push back XY s1 [%ls].\n",wstringData(s1) ) ;
+
+    wprintf ( L"[s1] %ls -> size %zu capacity %zu empty %u len(%zu)\n"
+        ,s1.data,wstringSize(s1),wstringCapacity(s1),wstringEmpty(s1),wstringLen(s1) )   ;
+
+    wstringPopBack(s1); 
+    
+    wprintf ( L"after pop back s1 [%ls].\n",wstringData(s1) ) ;
+
+    wprintf ( L"[s1] %ls -> size %zu capacity %zu empty %u len(%zu)\n"
+        ,s1.data,wstringSize(s1),wstringCapacity(s1),wstringEmpty(s1),wstringLen(s1) )   ;
+        
+    //.......................... 
+   
     gcStop();
     
     return 0; 

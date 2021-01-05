@@ -50,35 +50,42 @@ assert((ID).data!=NULL);									\
 // ........................................................... [] EMPTY
 
 #define stringEmpty(ID) ((ID).size == 0) 
-/*
+
 // ........................................................... [] PUSH_BACK
 
 #define stringPushBack(ID, VAL) do {                                   		\
-    if ((ID).size + 1 > (ID).capacity) {                                	\
+    if ((ID).size + 1 >= (ID).capacity) {                                	\
         size_t N = ((ID).capacity += (ID).capacity);                     	\
         (ID).data = gcRealloc  ( (ID).data   , (N) * sizeof((ID).data)  );	\
         (ID).capacity = (N);                                             	\
-    } ;                                                                 	\
-    (ID).data[stringSize(ID)] = (VAL);                                    	\
+    } ;                                                                     \
+    size_t len=stringSize(ID);                                              \
+    (ID).data[len]   = (VAL);                                    	        \
+    (ID).data[len+1] = 0    ;                                    	        \
     ++(ID).size ;                                                       	\
 } while (0)
 
 // ........................................................... [] POP_BACK
 
-#define stringPopBack(ID) do {  \
-    if ((ID).size) --(ID).size; \
+#define stringPopBack(ID) do {              \
+    if ((ID).size) {                        \
+        (ID).data[stringSize(ID)-1] = 0;    \
+        --(ID).size ;                       \
+    };\
 } while (0)
 
 // ........................................................... [] CLEAR
 
-#define stringClear(ID) do {    \
-    (ID).size = 0;              \
+#define stringClear(ID) do {        \
+    (ID).size = 0       ;           \
+    (ID).data[0] = 0    ;           \
 } while (0)
 
 // ........................................................... [] DATA
 
 #define stringData(ID) (ID).data
 
+/*
 // ........................................................... [] AT 
 
 #define stringAt(ID, INDEX) (ID).data[INDEX]    
