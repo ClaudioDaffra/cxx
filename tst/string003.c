@@ -39,7 +39,7 @@ do{\
 }while(0);
 
 #define stringLen(ID)   strlen((ID).data)
-#define stringMBLen(ID) strmblen((ID).data)
+#define mbstringLen(ID) strmblen((ID).data)
 
 int main() 
 {
@@ -66,12 +66,14 @@ int main()
     stringFromS8 ( s1 , temp ) ;
 
     printf ( "%s -> size %zu capacity %zu empty %u len(%zu)\n"
-        ,s1.data,stringSize(s1),stringCapacity(s1),stringEmpty(s1),stringMBLen(s1) ) ;
+        ,s1.data,stringSize(s1),stringCapacity(s1),stringEmpty(s1),stringLen(s1) )   ;
+
+    // multi byte string
 
     stringFromWS ( s1 , L"你好吗" ) ;
 
     printf ( "%s -> size %zu capacity %zu empty %u len(%zu)\n"
-        ,s1.data,stringSize(s1),stringCapacity(s1),stringEmpty(s1),stringMBLen(s1) ) ;
+        ,s1.data,stringSize(s1),stringCapacity(s1),stringEmpty(s1),mbstringLen(s1) ) ;
     
     //.......................... init
     
