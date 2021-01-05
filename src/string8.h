@@ -146,22 +146,22 @@ assert((ID).data!=NULL);									\
     ++(ID).size;                                                                            \
     (ID).data[POS] = VAL;                                                                   \
 } while (0)
-
+*/
 // ........................................................... [] ERASE at
                 
-#define stringEraseAt(ID, POS) do {                                                         \
-    if ( (ID).size ) {                                                                      \
-    (ID).size -= 1;                                                                         \
-    memmove((ID).data + POS, (ID).data + POS + 1, ((ID).size - POS) * sizeof *(ID).data);   \
-    } ;                                                                                     \
+#define stringEraseAt(ID, POS) do {                                                             \
+    if ( (ID).size ) {                                                                          \
+    memmove((ID).data + POS, (ID).data + POS + 1    , ((ID).size - POS+1) * sizeof *(ID).data); \
+    (ID).size -= 1;                                                                             \
+    } ;                                                                                         \
 } while (0)
 
 // ........................................................... [] ERASE N
         
 #define stringEraseAtN(ID, POS, N) do {                                                         \
     if ( ((ID).size-(N))>0 ) {                                                                  \
+    memmove((ID).data + POS, (ID).data + POS + (N)  , ((ID).size - POS+N) * sizeof *(ID).data );\
     (ID).size -= (N);                                                                           \
-    memmove((ID).data + POS, (ID).data + POS + (N), ((ID).size - POS) * sizeof *(ID).data );    \
     }                                                                                           \
 } while (0)
 
@@ -173,8 +173,10 @@ assert((ID).data!=NULL);									\
     if ( (ID).size<(N) )                                                    \
         for (int i = (ID).size; i < (N); ++i) (ID).data[i] = (VAL);         \
     (ID).size = (N);                                                        \
+    (ID).data[N]=0;\
 } while (0)
 
+/*
 // ........................................................... [] COPY V1 <- V2 
  
 #define stringCopy(ID, PTR ) do {                                                               \
@@ -202,19 +204,21 @@ assert((ID).data!=NULL);									\
     (ID).size = (V1z + V2z) ;                                                           \
 } while (0)
 
-/*
+
 // ........................................................... [] insert string at
 
-#define stringInsertAtstring(ID, POS, PTR ) do {                                                    \
-    while ((ID).size + (PTR).size > (ID).capacity) {                                                \
-        (ID).capacity *= 2;                                                                         \
-        (ID).data = gcRealloc ( (ID).data , (ID).capacity *  sizeof((ID).data)   );                 \
-    }                                                                                               \
-    memmove((ID).data + POS + (PTR).size, (ID).data + POS, ((ID).size - POS) * sizeof *(ID).data);  \
-    for (size_t i = 0; i < (PTR).size; i++)                                                       	\
-        (ID).data[POS + i] = (PTR).data[0 + i];                                                     \
-    (ID).size += (PTR).size;                                                                        \
+#define stringInsertAtString(ID, POS, PTR ) do {                                                        \
+    while ((ID).size + (PTR).size > (ID).capacity) {                                                    \
+        (ID).capacity *= 2;                                                                             \
+        (ID).data = gcRealloc ( (ID).data , (ID).capacity *  sizeof((ID).data)   );                     \
+    }                                                                                                   \
+    memmove((ID).data + POS + (PTR).size , (ID).data + POS, ((ID).size - POS + 1) * sizeof *(ID).data); \
+    for (size_t i = 0; i < (PTR).size; i++)                                                       	    \
+        (ID).data[POS + i] = (PTR).data[0 + i];                                                         \
+    (ID).size += (PTR).size;                                                                            \
 } while (0)
+
+/*
 
 // ........................................................... [] stringInsertAtstringFromN( v1, POS1, v2 , POS2 , N )
 
