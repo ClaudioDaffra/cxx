@@ -65,12 +65,37 @@ console_stream_t std_stream = console_stream_ansi;
 
 void consoleSetMBS(void)
 {
-	#ifdef _MSC_VER
-        SetConsoleOutputCP( 65001 );	
-	#else
-		setlocale(LC_ALL,"");
-		setlocale(LC_NUMERIC , "C" ) ;	
-	#endif
+#ifdef _MSC_VER
+    //const wchar_t*   _fontName=L"SimSun-ExtB";
+    const wchar_t   _fontName[]=L"SimSun-ExtB";
+    SHORT           _fontWeight=FW_NORMAL;
+    SHORT           _fontSizeY=16;
+    SHORT           _fontSizeX=0;    
+
+    // set font
+    
+    CONSOLE_FONT_INFOEX info ;
+    info.cbSize       = sizeof(info);
+    info.dwFontSize.Y = _fontSizeY; // 16
+    info.dwFontSize.X = _fontSizeX; // 0    
+    info.FontWeight   = _fontWeight;
+
+    wcscpy_s( info.FaceName, _countof(_fontName) , _fontName ) ;
+    
+    SetCurrentConsoleFontEx(GetStdHandle(STD_OUTPUT_HANDLE), false, &info);
+    int chcp=65001;            
+    SetConsoleCP( chcp ) ;             
+    SetConsoleOutputCP( chcp ); 
+    
+    setlocale(LC_ALL,"it_IT.utf8");
+    setlocale(LC_NUMERIC , "C" ) ; 
+    
+#else
+
+    setlocale(LC_ALL,"");
+    setlocale(LC_NUMERIC , "C" ) ;	
+    
+#endif
 }
 
 

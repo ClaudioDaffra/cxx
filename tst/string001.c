@@ -17,7 +17,7 @@
 int main() 
 {
 	consoleSetMBS();
-	
+		
     char* str3 = "claudio daffra";
 
 	// convert
@@ -32,15 +32,9 @@ int main()
 	fprintf ( stdout,"(%s)\n",cnvI64toS8(LONG_MAX) 		) ;	
 	fprintf ( stdout,"(%s)\n",cnvI32toS8(INT_MAX) 		) ;
 	fprintf ( stdout,"(%s)\n",cnvI16toS8(SHRT_MAX) 		) ;
-	
-    #ifdef _MSC_VER
-        char* x= NULL ;
-        x = cnvWStoS8(L"[你好吗]\r\n") ; 
-        fprintf ( stdout,"%hs"  ,x ) ;
-    #else
-        char* x = cnvWStoS8(L"你好吗") ;
-        fprintf ( stdout,"[%s]\n",x ) ;
-    #endif
+
+    char* x = cnvWStoS8(L"你好吗") ;
+    fprintf ( stdout,"[%s]\n",x ) ;
 
     printf("\nthat's al folks !\n");
     
