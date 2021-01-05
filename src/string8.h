@@ -85,7 +85,6 @@ assert((ID).data!=NULL);									\
 
 #define stringData(ID) (ID).data
 
-
 // ........................................................... [] AT 
 
 #define stringAt(ID, INDEX) (ID).data[INDEX]    
@@ -106,24 +105,22 @@ assert((ID).data!=NULL);									\
 
 #define stringBack(ID) (ID).data[stringSize(ID) - 1]
 
-/*
 // ........................................................... [] ITERATOR 
 
-#define itString(ID)        MERGE ( MERGE ( string_ , ID )  , _d )*  
+#define itString(ID)        MERGE( ID  , _d )*  
  
-#define stringBegin(ID)     (ID).data
-#define stringEnd(ID)       ((ID).data+(ID).size) 
+#define stringBegin(ID)     &(ID).data[0]
+#define stringEnd(ID)       &(ID).data[(ID).size] 
 
-#define stringRBegin(ID)    ((ID).data + (ID).size - 1)
-#define stringREnd(ID)      ((ID).data - 1 )
-*/
+#define stringRBegin(ID)    &(ID).data[(ID).size-1]
+#define stringREnd(ID)      &(ID).data[0]
+
 // ........................................................... [] SHRINK TO FIT
 
 #define stringShrinkToFit(ID) do {                                                  \
     (ID).data = gcRealloc  ( (ID).data   , ((ID).size) * sizeof((ID).data)  );      \
     (ID).capacity = (ID).size;                                                      \
 } while (0)    
-
 
 // ........................................................... [] RESERVE 
 
@@ -134,7 +131,6 @@ assert((ID).data!=NULL);									\
     } \
 } while (0)
 
-/*
 // ........................................................... [] stringInsertAtVal     
         
 #define stringInsertAtVal(ID, POS, VAL) do {                                                \
@@ -146,7 +142,7 @@ assert((ID).data!=NULL);									\
     ++(ID).size;                                                                            \
     (ID).data[POS] = VAL;                                                                   \
 } while (0)
-*/
+
 // ........................................................... [] ERASE at
                 
 #define stringEraseAt(ID, POS) do {                                                             \
@@ -176,7 +172,6 @@ assert((ID).data!=NULL);									\
     (ID).data[N]=0;\
 } while (0)
 
-/*
 // ........................................................... [] COPY V1 <- V2 
  
 #define stringCopy(ID, PTR ) do {                                                               \
@@ -184,13 +179,10 @@ assert((ID).data!=NULL);									\
         (ID).capacity *= 2;                                                                     \
         (ID).data = gcRealloc ( (ID).data , (ID).capacity * sizeof((ID).data)   );              \
     } ;                                                                                         \
-    memmove((ID).data + 0 + (PTR).size, (ID).data + 0, ((ID).size - 0) * sizeof *(ID).data);    \
-    for (size_t i = 0; i < (PTR).size; i++)                                                   	\
-        (ID).data[0 + i] = (PTR).data[0 + i];                                                   \
+    strcpy( (ID).data , (PTR).data ) ;                                                          \
     (ID).size = (PTR).size;                                                                     \
 } while (0)
 
-*/
 // ........................................................... [] APPEND 
  
 #define stringAppend(ID, V2 ) do {                                                      \

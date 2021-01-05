@@ -149,7 +149,33 @@ int main()
     wprintf ( L"[s1] %ls -> size %zu capacity %zu empty %u len(%zu)\n"
         ,s1.data,wstringSize(s1),wstringCapacity(s1),wstringEmpty(s1),wstringLen(s1) )   ;
         
-    //..........................   
+    //..........................  string copy
+    
+    wstringCopy(s1,s2);
+
+    wprintf ( L"[s1] %ls -> size %zu capacity %zu empty %u len(%zu)\n"
+        ,s1.data,wstringSize(s1),wstringCapacity(s1),wstringEmpty(s1),wstringLen(s1) )   ;
+        
+    //..........................  insert at val
+    
+    wstringInsertAtVal(s1,2,L'Q');
+
+    wprintf ( L"[s1] %ls -> size %zu capacity %zu empty %u len(%zu)\n"
+        ,s1.data,wstringSize(s1),wstringCapacity(s1),wstringEmpty(s1),wstringLen(s1) )   ;
+        
+    //.......................... iterator
+    
+    for ( itWString(s1) it = wstringBegin(s1); it < wstringEnd(s1) ; it++ )
+    {
+        wprintf(L"[%lc]",*it);
+    }
+    wprintf(L"\n");
+
+    for ( itWString(s1) it = wstringRBegin(s1); it >= wstringREnd(s1) ; it-- )
+    {
+        wprintf(L"[%lc]",*it);
+    }
+    wprintf(L"\n");
     
     wstringDealloc(s1);
 

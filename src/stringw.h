@@ -105,17 +105,16 @@ assert((ID).data!=NULL);									\
 
 #define wstringBack(ID) (ID).data[wstringSize(ID) - 1]
 
-/*
 // ........................................................... [] ITERATOR 
 
-#define itWString(ID)        MERGE ( MERGE ( wstring_ , ID )  , _d )*  
+#define itWString(ID)        MERGE( ID  , _d )*  
  
-#define wstringBegin(ID)     (ID).data
-#define wstringEnd(ID)       ((ID).data+(ID).size) 
+#define wstringBegin(ID)     &(ID).data[0]
+#define wstringEnd(ID)       &(ID).data[(ID).size] 
 
-#define wstringRBegin(ID)    ((ID).data + (ID).size - 1)
-#define wstringREnd(ID)      ((ID).data - 1 )
-*/
+#define wstringRBegin(ID)    &(ID).data[(ID).size-1]
+#define wstringREnd(ID)      &(ID).data[0]
+
 // ........................................................... [] SHRINK TO FIT
 
 #define wstringShrinkToFit(ID) do {                                                 \
@@ -133,8 +132,7 @@ assert((ID).data!=NULL);									\
     } \
 } while (0)
 
-/*
-// ........................................................... [] wstringInsertAtVal     
+// ........................................................... [] stringInsertAtVal     
         
 #define wstringInsertAtVal(ID, POS, VAL) do {                                                \
     while ((ID).size + 1 > (ID).capacity) {                                                 \
@@ -145,7 +143,6 @@ assert((ID).data!=NULL);									\
     ++(ID).size;                                                                            \
     (ID).data[POS] = VAL;                                                                   \
 } while (0)
-*/
 // ........................................................... [] ERASE at
 
 #define wstringEraseAt(ID, POS) do {                                                             \
@@ -175,21 +172,16 @@ assert((ID).data!=NULL);									\
     (ID).data[N]=0;\
 } while (0)
 
-/*
 // ........................................................... [] COPY V1 <- V2 
  
-#define wstringCopy(ID, PTR ) do {                                                               \
+#define wstringCopy(ID, PTR ) do {                                                              \
     while ((ID).size + (PTR).size > (ID).capacity) {                                            \
         (ID).capacity *= 2;                                                                     \
         (ID).data = gcRealloc ( (ID).data , (ID).capacity * sizeof((ID).data)   );              \
     } ;                                                                                         \
-    memmove((ID).data + 0 + (PTR).size, (ID).data + 0, ((ID).size - 0) * sizeof *(ID).data);    \
-    for (size_t i = 0; i < (PTR).size; i++)                                                   	\
-        (ID).data[0 + i] = (PTR).data[0 + i];                                                   \
+    wcscpy( (ID).data , (PTR).data ) ;                                                          \
     (ID).size = (PTR).size;                                                                     \
 } while (0)
-
-*/
 
 // ........................................................... [] APPEND 
  

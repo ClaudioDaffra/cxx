@@ -168,7 +168,34 @@ int main()
     printf ( "[s1] %s -> size %zu capacity %zu empty %u len(%zu)\n"
         ,s1.data,stringSize(s1),stringCapacity(s1),stringEmpty(s1),stringLen(s1) )   ;
         
-    //..........................    
+    //..........................  string copy
+    
+    stringCopy(s1,s2);
+
+    printf ( "[s1] %s -> size %zu capacity %zu empty %u len(%zu)\n"
+        ,s1.data,stringSize(s1),stringCapacity(s1),stringEmpty(s1),stringLen(s1) )   ;
+        
+    //..........................  insert at val
+    
+    stringInsertAtVal(s1,2,'Q');
+
+    printf ( "[s1] %s -> size %zu capacity %zu empty %u len(%zu)\n"
+        ,s1.data,stringSize(s1),stringCapacity(s1),stringEmpty(s1),stringLen(s1) )   ;
+        
+    //.......................... iterator
+    
+    for ( itString(s1) it = stringBegin(s1); it < stringEnd(s1) ; it++ )
+    {
+        printf("[%c]",*it);
+    }
+    printf("\n");
+    
+    for ( itString(s1) it = stringRBegin(s1); it >= stringREnd(s1) ; it-- )
+    {
+        printf("[%c]",*it);
+    }
+    printf("\n");    
+    //.......................... 
     
     stringDealloc(s1);
 
