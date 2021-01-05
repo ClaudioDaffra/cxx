@@ -63,6 +63,15 @@ console_stream_t std_stream = console_stream_ansi;
 
 #endif
 
+void consoleSetMBS(void)
+{
+	#ifdef _MSC_VER
+        SetConsoleOutputCP( 65001 );	
+	#else
+		setlocale(LC_ALL,"");
+		setlocale(LC_NUMERIC , "C" ) ;	
+	#endif
+}
 
 
 /**/

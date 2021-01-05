@@ -48,8 +48,7 @@ extern console_stream_t std_stream;
 extern void cdConsolesetUTF8    ( void    ) ;
 
 #define consoleSetUTF8  cdConsolesetUTF8
-#define stdSetUTF8      cdConsolesetUTF8
-
+void 	consoleSetMBS	(void) ;
 
 
 #endif 

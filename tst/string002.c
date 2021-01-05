@@ -2,15 +2,15 @@
 #include "../src/cxx.h"
 
 /*
-	1)	gcc src/stdio.c src/string.c tst/string002.c 	-o bin/x	-Wall -pedantic -Wextra
+	1)	gcc src/stdio.c src/string.c tst/string002.c -o bin/x -Wall -pedantic -Wextra
 
 	2)	sh buildLib.h
-		clear  	; gcc tst/string002.c	lib/libcxx.so   -o bin/x	-Wall -Wextra -pedantic
+		clear  	; gcc tst/string002.c	lib/libcxx.so   -o bin/x -Wall -Wextra -pedantic
 
-	3)  cls     & cl 	src\stdio.c src\string.c tst\string002.c    /Febin\x.exe 	/utf-8 /WX
+	3)  cls     & cl 	src\stdio.c src\string.c tst\string002.c /Febin\x.exe 	/utf-8 /WX
     
     4)  wbuildLib.bat
-        cls & cl tst\string002.c lib\cxx.lib            /Febin\x.exe    /utf-8 /WX
+        cls & cl tst\string002.c lib\cxx.lib /Febin\x.exe    /utf-8 /WX
 */
 
 int main() 
