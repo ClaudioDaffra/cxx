@@ -69,7 +69,7 @@ assert((ID).data!=NULL);									\
 
 #define wstringPopBack(ID) do {             \
     if ((ID).size) {                        \
-        (ID).data[wstringSize(ID)-1] = 0;    \
+        (ID).data[wstringSize(ID)-1] = 0;   \
         --(ID).size ;                       \
     };\
 } while (0)
@@ -84,7 +84,6 @@ assert((ID).data!=NULL);									\
 // ........................................................... [] DATA
 
 #define wstringData(ID) (ID).data
-
 
 // ........................................................... [] AT 
 
@@ -122,7 +121,6 @@ assert((ID).data!=NULL);									\
     (ID).capacity = (ID).size;                                                      \
 } while (0)    
 
-
 // ........................................................... [] RESERVE 
 
 #define wstringReserve(ID, N) do {                                                  \
@@ -143,6 +141,7 @@ assert((ID).data!=NULL);									\
     ++(ID).size;                                                                            \
     (ID).data[POS] = VAL;                                                                   \
 } while (0)
+
 // ........................................................... [] ERASE at
 
 #define wstringEraseAt(ID, POS) do {                                                             \
@@ -209,11 +208,9 @@ assert((ID).data!=NULL);									\
     (ID).size += (PTR).size;                                                                            \
 } while (0)
 
+// ........................................................... [] wstringInsertAtStringFromN( v1, POS1, v2 , POS2 , N )
 
-/*
-// ........................................................... [] wstringInsertAtwstringFromN( v1, POS1, v2 , POS2 , N )
-
-#define wstringInsertAtwstringFromN(ID, POS, PTR , POS2 , N) do {                                     \
+#define wstringInsertAtStringFromN(ID, POS, PTR , POS2 , N) do {                                    \
     while ((ID).size + (N) > (ID).capacity) {                                                       \
         (ID).capacity *= 2;                                                                         \
         (ID).data = gcRealloc ( (ID).data , (ID).capacity *  sizeof((ID).data)  );                  \
@@ -222,10 +219,8 @@ assert((ID).data!=NULL);									\
     for (size_t i = 0; i < (N); i++)                                                              	\
         (ID).data[POS + i] = (PTR).data[POS2 + i];                                                  \
     (ID).size += (N);                                                                               \
+    (ID).data[(ID).size]=0;\
 } while (0)
-
-*/
-
 // ........................................................... [] FREE 
 
 #define wstringDealloc(ID) do {                        \

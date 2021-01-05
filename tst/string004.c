@@ -176,6 +176,22 @@ int main()
         wprintf(L"[%lc]",*it);
     }
     wprintf(L"\n");
+
+    //..........................  insert string from N
+   
+    wstringFromWS(s1,L"claudio"); // cl-audio
+    wstringFromWS(s2,L"DAFFRA");  // DA-FFR-A
+                                  // clAFFaudio
+    
+    wprintf(L"%ls.\n",s1.data);
+    wprintf(L"%ls.\n",s2.data);   
+    
+    wstringInsertAtStringFromN(s1,2,s2,1,3); // inserisce dalla posizioni 3 delle stringhe 3 caratteri da s2 in s1
+
+    wprintf ( L"[s1] %ls -> size %zu capacity %zu empty %u len(%zu)\n"
+        ,s1.data,wstringSize(s1),wstringCapacity(s1),wstringEmpty(s1),wstringLen(s1) )   ;
+
+    //..........................
     
     wstringDealloc(s1);
 

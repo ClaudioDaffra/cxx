@@ -194,7 +194,22 @@ int main()
     {
         printf("[%c]",*it);
     }
-    printf("\n");    
+    printf("\n"); 
+
+    //..........................  insert string from N
+   
+    stringFromS8(s1,"claudio"); // cl-audio
+    stringFromS8(s2,"DAFFRA");  // DA-FFR-A
+                                // clAFFaudio
+    
+    printf("%s.\n",s1.data);
+    printf("%s.\n",s2.data);   
+    
+    stringInsertAtStringFromN(s1,2,s2,1,3); // inserisce dalla posizioni 3 delle stringhe 3 caratteri da s2 in s1
+
+    printf ( "[s1] %s -> size %zu capacity %zu empty %u len(%zu)\n"
+        ,s1.data,stringSize(s1),stringCapacity(s1),stringEmpty(s1),stringLen(s1) )   ;
+
     //.......................... 
     
     stringDealloc(s1);

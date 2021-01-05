@@ -196,7 +196,6 @@ assert((ID).data!=NULL);									\
     (ID).size = (V1z + V2z) ;                                                           \
 } while (0)
 
-
 // ........................................................... [] insert string at
 
 #define stringInsertAtString(ID, POS, PTR ) do {                                                        \
@@ -210,11 +209,9 @@ assert((ID).data!=NULL);									\
     (ID).size += (PTR).size;                                                                            \
 } while (0)
 
-/*
+// ........................................................... [] stringInsertAtStringFromN( v1, POS1, v2 , POS2 , N )
 
-// ........................................................... [] stringInsertAtstringFromN( v1, POS1, v2 , POS2 , N )
-
-#define stringInsertAtstringFromN(ID, POS, PTR , POS2 , N) do {                                     \
+#define stringInsertAtStringFromN(ID, POS, PTR , POS2 , N) do {                                     \
     while ((ID).size + (N) > (ID).capacity) {                                                       \
         (ID).capacity *= 2;                                                                         \
         (ID).data = gcRealloc ( (ID).data , (ID).capacity *  sizeof((ID).data)  );                  \
@@ -223,9 +220,8 @@ assert((ID).data!=NULL);									\
     for (size_t i = 0; i < (N); i++)                                                              	\
         (ID).data[POS + i] = (PTR).data[POS2 + i];                                                  \
     (ID).size += (N);                                                                               \
+    (ID).data[(ID).size]=0;\
 } while (0)
-
-*/
 
 // ........................................................... [] FREE 
 
