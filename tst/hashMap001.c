@@ -28,7 +28,7 @@ int main()
 {
 	gcStart();
 	
-	consoleSetUTF8();
+	consoleSetMBS();
 
 	char*source="claudio";
 
@@ -67,9 +67,12 @@ int main()
 		if (*it!=NULL) 
 		{
 			if ((*it)->key!=NULL)
+            {
 				if ((*it)->value!=NULL)
-				
-				printf ( "key(%-20s) \nvalue(%p) %zu \n\n", (*it)->key,(*it)->value , (size_t)(*it)->value ) ;
+                {
+                    printf ( "key(%-20s) \nvalue(%p) %zu \n\n", (*it)->key,(*it)->value , (size_t)(*it)->value ) ;
+                }
+            }
 		}
 	}
 
