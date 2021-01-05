@@ -63,7 +63,15 @@ int main()
 
     printf ( "\n[mbs] %s -> size %zu capacity %zu empty %u len(%zu)\n"
         ,mbs.data,stringSize(mbs),stringCapacity(mbs),stringEmpty(mbs),mbstringLen(mbs) ) ;   
+    
+    /*
+        p.s.
         
+        per le stringhe multi byte occorre ( le operazione sono lente sui multibyte ) :
+        1) convertirle in wstring ed utilizzare la libreria per poi riconvertirle ;
+        2) adottarsi di una libreria esterna .
+    */
+    
     //.......................... init
     
     printf ("\n");
