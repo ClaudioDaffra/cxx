@@ -71,7 +71,7 @@ int main()
     stringFromWS ( s1 , L"你好吗" ) ;
 
     printf ( "%s -> size %zu capacity %zu empty %u len(%zu)\n"
-        ,s1.data,stringSize(s1),stringCapacity(s1),stringEmpty(s1),stringMBlen(s1.data) ) ;
+        ,s1.data,stringSize(s1),stringCapacity(s1),stringEmpty(s1),stringMBLen(s1) ) ;
     
     //.......................... init
     
