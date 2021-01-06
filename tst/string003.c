@@ -221,17 +221,17 @@ int main()
     printf ( "[s1] %s -> size %zu capacity %zu empty %u len(%zu)\n"
         ,s1.data,stringSize(s1),stringCapacity(s1),stringEmpty(s1),stringLen(s1) )   ;
 
-    //.......................... vettori di stringhe vector 
+    //.......................... vettori di stringhe string 
 
             stringType( char ) ;
             
-            // [OK] vectorTypeDef( char_d , vString ) ;
+            // [OK] stringTypeDef( char_d , vString ) ;
             typedef string_char_t* pStringchar_t ;
             
-            vectorTypeDef( pStringchar_t , vpString ) ; // <-- need data type
+            stringTypeDef( pStringchar_t , vpString ) ; // <-- need data type
             
-            vector_vpString_t v1s ; 
-            vectorAlloc(v1s,4);
+            string_vpString_t v1s ; 
+            stringAlloc(v1s,4);
           
             pStringchar_t ps = NULL ;
             
@@ -239,14 +239,14 @@ int main()
             
             stringAlloc(*ps,8);
             stringFromS8( *ps , "Claudio" ) ; 
-            vectorPushBack( v1s , ps ) ;
+            stringPushBack( v1s , ps ) ;
 	
 
             ps=new(string_char_t);
             
             stringAlloc(*ps,8);
             stringFromS8( *ps , "Daffra" ) ; 
-            vectorPushBack( v1s , ps ) ;
+            stringPushBack( v1s , ps ) ;
             
             printf ( "\n" ) ;    
             printf ( "1) string :: [%s]\n",v1s.data[0]->text ) ;
@@ -257,6 +257,38 @@ int main()
     //		because of : stringPushBack -> (ID).data[len]   = (VAL);
     //		and not memmove
     //.......................... 
+ 
+
+	stringTypeDef( char 	   , x1 ) ;	// string_x1_t
+	
+    string_x1_t x1,x2  ;
+
+    stringAlloc( x1 , 8 ) ;
+    stringAlloc( x2 , 8 ) ;    
+    
+
+    //
+ 
+	vectorTypeDef( string_x1_t , v1 ) ;	// vector_v1_t     
+    
+    vector_v1_t v1 ;
+    
+    vectorAlloc( v1 , 8 ) ;
+
+    //
+    
+    stringFromS8( x1 , "CLAUDIO" );    
+    vectorPushBack( v1 , x1 ) ;
+    
+    stringFromS8( x2 , "DAFFRA" );    
+    vectorPushBack( v1 , x2 ) ;
+    
+    printf ( "\n0] %s." , v1.data[0].text );
+    printf ( "\n1] %s." , v1.data[1].text );
+    printf ( "\n"  );   
+
+    
+    // .........................
     
 	stringDealloc(s1);
 
