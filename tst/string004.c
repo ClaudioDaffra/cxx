@@ -191,7 +191,37 @@ int main()
     wprintf ( L"[s1] %ls -> size %zu capacity %zu empty %u len(%zu)\n"
         ,s1.data,wstringSize(s1),wstringCapacity(s1),wstringEmpty(s1),wstringLen(s1) )   ;
 
-    //..........................
+    //.......................... vettori di stringhe
+
+            typedef wchar_t wchar ;
+            
+            wstringType( wchar ) ;
+            
+            // [OK] vectorTypeDef( char_d , vString ) ;
+            typedef wstring_wchar_t* pStringWChar_t ;
+            
+            vectorTypeDef( pStringWChar_t , vpString ) ; // <-- need data type
+            
+            vector_vpString_t v1s ; 
+            vectorAlloc(v1s,4);
+          
+            pStringWChar_t ps = NULL ;
+            
+            ps=new(wstring_wchar_t);
+            wstringAlloc(*ps,8);
+            wstringFromWS( *ps , L"Claudio" ) ; 
+            vectorPushBack( v1s , ps ) ;
+
+            ps=new(wstring_wchar_t);
+            wstringAlloc(*ps,8);
+            wstringFromWS( *ps , L"Daffra" ) ; 
+            vectorPushBack( v1s , ps ) ;
+            
+            wprintf ( L"\n" ) ;    
+            wprintf ( L"1) wstring :: [%ls]\n",v1s.data[0]->text ) ;
+            wprintf ( L"2) wstring :: [%ls]\n",v1s.data[1]->text ) ;            
+  
+    //.......................... 
     
     wstringDealloc(s1);
 

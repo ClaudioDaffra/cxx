@@ -21,7 +21,10 @@ typedef TYPE MERGE ( MERGE ( wstring_ , ID )  , _d );  	\
 typedef TYPE MERGE ( ID  , _d );  						\
 typedef struct MERGE ( MERGE ( wstring_ , ID )  , _s )	\
 {                                                   	\
+    union {                                             \
     TYPE*   data ;                                  	\
+    TYPE*   text ;                                  	\
+    } ;                                                 \
     size_t  size        ;                           	\
     size_t  capacity    ;                           	\
 }  MERGE ( MERGE ( wstring_ , ID )  , _t ) ;				\

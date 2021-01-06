@@ -1,9 +1,9 @@
 
-1) 
+1) unire tutto in 1 libreria
 
 2)  gc local, 
     gc pause resume
 
 3) check strlen / wcslen != NULL
 
-
+4) vettori di stringhe

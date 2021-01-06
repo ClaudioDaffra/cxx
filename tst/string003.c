@@ -210,8 +210,38 @@ int main()
     printf ( "[s1] %s -> size %zu capacity %zu empty %u len(%zu)\n"
         ,s1.data,stringSize(s1),stringCapacity(s1),stringEmpty(s1),stringLen(s1) )   ;
 
+    //.......................... vettori di stringhe
+
+            stringType( char ) ;
+            
+            // [OK] vectorTypeDef( char_d , vString ) ;
+            vectorTypeDef( string_char_t , vString ) ; // <-- need data type
+            
+            vector_vString_t v1s ; 
+            vectorAlloc(v1s,4);
+            
+            string_char_t tempString[2] ; // temporary string
+            
+            stringAlloc(tempString[0],8);
+            stringAlloc(tempString[1],8);   
+            
+            stringFromS8( tempString[0] , "Claudio" ) ;
+            vectorPushBack( v1s , tempString[0] ) ;
+
+            stringFromS8( tempString[1] , "Daffra" ) ;
+            vectorPushBack( v1s , tempString[1] ) ;
+            
+            printf ( "\n" ) ;    
+            printf ( "1) string :: [%s]\n",v1s.data[0].text ) ;
+            printf ( "2) string :: [%s]\n",v1s.data[1].text ) ;
+
+
+            printf ( "\n" ) ;    
+            printf ( "1) string :: [%s]\n",vectorAt(v1s,0).text ) ;
+            printf ( "2) string :: [%s]\n",vectorAt(v1s,1).text ) ;
+            
     //.......................... 
-    
+       
     stringDealloc(s1);
 
     stringDealloc(s2);
