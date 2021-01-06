@@ -252,10 +252,6 @@ int main()
             printf ( "1) string :: [%s]\n",v1s.data[0]->text ) ;
             printf ( "2) string :: [%s]\n",v1s.data[1]->text ) ;            
  
-    // p.s. work for string heap allocated pointer only
-    //      not string stack allocated
-    //		because of : stringPushBack -> (ID).data[len]   = (VAL);
-    //		and not memmove
     //.......................... 
  
 
@@ -265,7 +261,6 @@ int main()
 
     stringAlloc( x1 , 8 ) ;
     stringAlloc( x2 , 8 ) ;    
-    
 
     //
  
@@ -286,7 +281,6 @@ int main()
     printf ( "\n0] %s." , v1.data[0].text );
     printf ( "\n1] %s." , v1.data[1].text );
     printf ( "\n"  );   
-
     
     // .........................
     
