@@ -17,7 +17,7 @@
 int main() 
 {
     gcStart();
-    
+
     consoleSetMBS();
 
 	//.......................... typedef def alloc
@@ -224,7 +224,7 @@ int main()
             printf ( "\n" ) ;    
             printf ( "1) string :: [%s]\n",v1s.data[0]->text ) ;
             printf ( "2) string :: [%s]\n",v1s.data[1]->text ) ;            
- 
+
     //.......................... vector string
 
         stringTypeDef( char 	   , x1 ) ;	// string_x1_t
@@ -253,25 +253,25 @@ int main()
         printf ( "\n0] %s." , v1.data[0].text );
         printf ( "\n1] %s." , v1.data[1].text );
         printf ( "\n"  );   
-    
+
     // ......................... replace all
-    
+
     stringFromS8(s1,"Claudio Daffra");
     
     printf ( "[s1] %s -> size %zu capacity %zu empty %u len(%zu)\n"
         ,s1.data,stringSize(s1),stringCapacity(s1),stringEmpty(s1),stringLen(s1) )   ;
 
-    stringReplaceAll( s1 , "a" , "XYZ" ) ;
+    stringReplaceAll( s1 , "a" , "XYZ" ) ; 
  
     printf ( "[s1] %s -> size %zu capacity %zu empty %u len(%zu)\n"
         ,s1.data,stringSize(s1),stringCapacity(s1),stringEmpty(s1),stringLen(s1) )   ;
-        
+    
      // .........................
-     
+  
 	stringDealloc(s1);
 
 	stringDealloc(s2);
-    
+  
     gcStop();
   
     return 0; 

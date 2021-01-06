@@ -433,6 +433,9 @@ char *repl_str(const char *str, const char *from, const char *to)
 	size_t cpylen, orglen, retlen, tolen, fromlen = strlen(from);
 
 	/* Find all matches and cache their positions. */
+	
+	pos_cache = gcMalloc(sizeof(*pos_cache) * cache_sz); // FIX MEMORY LEAK
+	
 	while ((pstr2 = strstr(pstr, from)) != NULL) {
 		count++;
 
@@ -516,6 +519,9 @@ wchar_t *repl_wcs(const wchar_t *str, const wchar_t *from, const wchar_t *to)
 	size_t cpylen, orglen, retlen, tolen, fromlen = wcslen(from);
 
 	/* Find all matches and cache their positions. */
+	
+	pos_cache = gcMalloc(sizeof(*pos_cache) * cache_sz); // FIX MEMORY LEAK
+		
 	while ((pstr2 = wcsstr(pstr, from)) != NULL) {
 		count++;
 
