@@ -228,8 +228,8 @@ assert((ID).data!=NULL);									\
 
 // ........................................................... [] FREE 
 
-#define stringDealloc(ID) do {                        \
-    if ( (ID).data != NULL ) gcFree( (ID).data );     \
+#define stringDealloc(ID) do {                        						\
+    if ( (ID).data != NULL ) { gcFree( (ID).data );   (ID).data=NULL;  }	\
 } while(0)
 
 /*   

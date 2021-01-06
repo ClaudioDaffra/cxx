@@ -56,7 +56,7 @@ int main()
     stringAlloc(s1,8);
     
     stringAlloc(mbs,8);
-    
+     
     // multi byte string
 
     stringFromWS ( mbs , L"你好吗" ) ;
@@ -64,13 +64,13 @@ int main()
     printf ( "\n[mbs] %s -> size %zu capacity %zu empty %u len(%zu)\n"
         ,mbs.data,stringSize(mbs),stringCapacity(mbs),stringEmpty(mbs),mbstringLen(mbs) ) ;   
     
-    /*
-        p.s.
-        
-        per le stringhe multi byte occorre ( le operazione sono lente sui multibyte ) :
-        1) convertirle in wstring ed utilizzare la libreria per poi riconvertirle ;
-        2) adottarsi di una libreria esterna .
-    */
+    //
+    //  p.s.
+    //   
+    //  per le stringhe multi byte occorre ( le operazione sono lente sui multibyte ) :
+    //  1) convertirle in wstring ed utilizzare la libreria per poi riconvertirle ;
+    //  2) adottarsi di una libreria esterna .
+    //
     
     //.......................... init
     
@@ -80,7 +80,7 @@ int main()
     printf ( "s1 clear [%s] len(%zu).\n",s1.data,strlen(s1.data));
 
     //.......................... from char*
-    
+ 
     stringFromS8 ( s1 , "precipitevolissimevolmente" ) ;
 
     printf ( "[s1] %s -> size %zu capacity %zu empty %u len(%zu)\n"
@@ -155,7 +155,7 @@ int main()
         ,s1.data,stringSize(s1),stringCapacity(s1),stringEmpty(s1),stringLen(s1) )   ;
         
     //..........................  string erase at N
-    
+ 
     stringEraseAtN(s1,3,5);
 
     printf ( "[s1] %s -> size %zu capacity %zu empty %u len(%zu)\n"
@@ -189,7 +189,7 @@ int main()
         printf("[%c]",*it);
     }
     printf("\n");
-    
+   
     for ( itString(s1) it = stringRBegin(s1); it >= stringREnd(s1) ; it-- )
     {
         printf("[%c]",*it);
@@ -210,44 +210,46 @@ int main()
     printf ( "[s1] %s -> size %zu capacity %zu empty %u len(%zu)\n"
         ,s1.data,stringSize(s1),stringCapacity(s1),stringEmpty(s1),stringLen(s1) )   ;
 
-    //.......................... vettori di stringhe
+    //.......................... vettori di stringhe vector 
 
             stringType( char ) ;
             
             // [OK] vectorTypeDef( char_d , vString ) ;
-            vectorTypeDef( string_char_t , vString ) ; // <-- need data type
+            typedef string_char_t* pStringchar_t ;
             
-            vector_vString_t v1s ; 
+            vectorTypeDef( pStringchar_t , vpString ) ; // <-- need data type
+            
+            vector_vpString_t v1s ; 
             vectorAlloc(v1s,4);
+          
+            pStringchar_t ps = NULL ;
             
-            string_char_t tempString[2] ; // temporary string
-            
-            stringAlloc(tempString[0],8);
-            stringAlloc(tempString[1],8);   
-            
-            stringFromS8( tempString[0] , "Claudio" ) ;
-            vectorPushBack( v1s , tempString[0] ) ;
+            ps=new(string_char_t);
+            stringAlloc(*ps,8);
+            stringFromS8( *ps , "Claudio" ) ; 
+            vectorPushBack( v1s , ps ) ;
 
-            stringFromS8( tempString[1] , "Daffra" ) ;
-            vectorPushBack( v1s , tempString[1] ) ;
+            ps=new(string_char_t);
+            stringAlloc(*ps,8);
+            stringFromS8( *ps , "Daffra" ) ; 
+            vectorPushBack( v1s , ps ) ;
             
             printf ( "\n" ) ;    
-            printf ( "1) string :: [%s]\n",v1s.data[0].text ) ;
-            printf ( "2) string :: [%s]\n",v1s.data[1].text ) ;
-
-
-            printf ( "\n" ) ;    
-            printf ( "1) string :: [%s]\n",vectorAt(v1s,0).text ) ;
-            printf ( "2) string :: [%s]\n",vectorAt(v1s,1).text ) ;
-            
+            printf ( "1) string :: [%s]\n",v1s.data[0]->text ) ;
+            printf ( "2) string :: [%s]\n",v1s.data[1]->text ) ;            
+  
+    // p.s. work for string heap allocated pointer only
+    //      not string stack allocated
+    //		because of : stringPushBack -> (ID).data[len]   = (VAL);
+    //		and not memmove
     //.......................... 
-       
-    stringDealloc(s1);
+    
+	stringDealloc(s1);
 
-    stringDealloc(s2);
+	stringDealloc(s2);
     
     gcStop();
-    
+  
     return 0; 
 } 
 

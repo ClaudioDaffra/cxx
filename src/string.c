@@ -91,12 +91,12 @@ wchar_t* cnvS32toWS(char32_t *vIn )
     if ( slen==1 ) return NULL ;   
  
     // generalmente MB_CUR_MAX è uguale a 2
-    char*           s       =   malloc ( sizeof(char)*MB_CUR_MAX ) ;
+    char*           s       =   gcMalloc ( sizeof(char)*MB_CUR_MAX ) ;
     mbstate_t       p       =   {0}; 
     size_t          length  =   0; 
     int             j       =   0; 
     
-    char*           sret    =   malloc( slen ) ;
+    char*           sret    =   gcMalloc( slen ) ;
     size_t          kret    =   0;
 
     while (vIn[j]) 
@@ -108,14 +108,14 @@ wchar_t* cnvS32toWS(char32_t *vIn )
     } 
     sret[kret]=0; 
     // viene riallocata la dimensione effettiva del vOut
-    sret = realloc ( sret , kret*sizeof(char)  );
+    sret = gcRealloc ( sret , kret*sizeof(char)  );
 
-    wchar_t* wcs =  malloc( slenw ) ;   
+    wchar_t* wcs =  gcMalloc( slenw ) ;   
     size_t lengthw = mbsrtowcs(wcs, (const char**)&sret, kret, NULL);
-    wcs = realloc ( wcs,lengthw*sizeof(wchar_t) );
+    wcs = gcRealloc ( wcs,lengthw*sizeof(wchar_t) );
  
-    free(s);
-    free(sret);
+    gcFree(s);
+    gcFree(sret);
     
     return wcs; 
 } 
@@ -133,12 +133,12 @@ wchar_t* cnvS16toWS(char16_t *vIn )
     if ( slen==1 ) return NULL ;    
  
     // generalmente MB_CUR_MAX è uguale a 2
-    char*           s       =   malloc ( sizeof(char)*MB_CUR_MAX ) ;
+    char*           s       =   gcMalloc ( sizeof(char)*MB_CUR_MAX ) ;
     mbstate_t       p       =   {0}; 
     size_t          length  =   0; 
     int             j       =   0; 
     
-    char*           sret    =   malloc( slen ) ;
+    char*           sret    =   gcMalloc( slen ) ;
     size_t          kret    =   0;
 
     while (vIn[j]) 
@@ -151,14 +151,14 @@ wchar_t* cnvS16toWS(char16_t *vIn )
     sret[kret]=0; 
     
     // viene riallocata la dimensione effettiva del vOut
-    sret = realloc ( sret , kret*sizeof(char)  );
+    sret = gcRealloc ( sret , kret*sizeof(char)  );
 
-    wchar_t* wcs =  malloc( slenw*sizeof(wchar_t) ) ;   
+    wchar_t* wcs =  gcMalloc( slenw*sizeof(wchar_t) ) ;   
     size_t lengthw = mbsrtowcs(wcs, (const char**)&sret, kret, NULL);
-    wcs = realloc ( wcs,lengthw*sizeof(wchar_t) );
+    wcs = gcRealloc ( wcs,lengthw*sizeof(wchar_t) );
    
-    free(s);
-    free(sret);
+    gcFree(s);
+    gcFree(sret);
     
     return wcs; 
 } 
@@ -174,7 +174,7 @@ WCHAR* convert_to_wstring(const char* vIn)
 {
     int str_len = (int) strlen(vIn);
     int num_chars = MultiByteToWideChar(CP_UTF8, 0, vIn, str_len, NULL, 0);
-    WCHAR* wstrTo = (WCHAR*) malloc((num_chars + 1) * sizeof(WCHAR));
+    WCHAR* wstrTo = (WCHAR*) gcMalloc((num_chars + 1) * sizeof(WCHAR));
     if (wstrTo)
     {
         MultiByteToWideChar(CP_UTF8, 0, vIn, str_len, wstrTo, num_chars);
@@ -187,7 +187,7 @@ CHAR* convert_from_wstring(const WCHAR* wstr)
 {
     int wstr_len = (int) wcslen(wstr);
     int num_chars = WideCharToMultiByte(CP_UTF8, 0, wstr, wstr_len, NULL, 0, NULL, NULL);
-    CHAR* strTo = (CHAR*) malloc((num_chars + 1) * sizeof(CHAR));
+    CHAR* strTo = (CHAR*) gcMalloc((num_chars + 1) * sizeof(CHAR));
     if (strTo)
     {
         WideCharToMultiByte(CP_UTF8, 0, wstr, wstr_len, strTo, num_chars, NULL, NULL);
@@ -203,7 +203,7 @@ wchar_t* cnvS8toWS(char * vIn)
         return convert_to_wstring(vIn);
     #else
         const size_t slen=strlen(vIn);
-        wchar_t * vOut = malloc ( (slen+1) * sizeof(wchar_t) ) ;    
+        wchar_t * vOut = gcMalloc ( (slen+1) * sizeof(wchar_t) ) ;    
         mbstowcs (vOut, vIn, slen+1 );
         return vOut;        
     #endif
@@ -219,9 +219,9 @@ char* cnvWStoS8( wchar_t* vIn )
         return convert_from_wstring(vIn);
     #else
         size_t len = sizeof(wchar_t) * wcslen(vIn) ;
-        char* vOut = calloc ( sizeof(wchar_t),len );  
+        char* vOut = gcCalloc ( sizeof(wchar_t),len );  
         wcstombs ( vOut, vIn, len ) ;
-        vOut=realloc(vOut,strlen(vOut)+1);
+        vOut=gcRealloc(vOut,strlen(vOut)+1);
         return vOut ;  
     #endif
 
@@ -269,7 +269,7 @@ wchar_t* cnvR32toWS(float vIn)
 char* cnvR64toS8(double vIn)
 {
     const unsigned char maxBufferLen=32;
-    char* vOut=calloc(sizeof(char),maxBufferLen);
+    char* vOut=gcCalloc(sizeof(char),maxBufferLen);
     const size_t digits=8;
     
     #if defined(_MSC_VER)
@@ -306,7 +306,7 @@ wchar_t* cnvR64toWS(double vIn)
 char* cnvI80toS8(long long vIn)
 {
     const unsigned char maxBufferLen=32;
-    char* vOut=calloc(sizeof(char),maxBufferLen);
+    char* vOut=gcCalloc(sizeof(char),maxBufferLen);
     snprintf(vOut, maxBufferLen, "%lld", vIn);
 
     return vOut ;
@@ -315,7 +315,7 @@ char* cnvI80toS8(long long vIn)
 wchar_t* cnvI80toWS(long long vIn)
 {
     const unsigned char maxBufferLen=32;
-    wchar_t* vOut=calloc(sizeof(wchar_t),maxBufferLen);
+    wchar_t* vOut=gcCalloc(sizeof(wchar_t),maxBufferLen);
     swprintf(vOut, maxBufferLen, L"%lld", vIn);
 
     return wcsdup(vOut) ;
@@ -345,7 +345,7 @@ wchar_t* cnvI32toWS(int vIn)
     return wcsdup(vOut);	
 #else
     const unsigned char maxBufferLen=32;
-    wchar_t* vOut=calloc(sizeof(wchar_t),maxBufferLen);
+    wchar_t* vOut=gcCalloc(sizeof(wchar_t),maxBufferLen);
     swprintf(vOut, maxBufferLen, L"%d", vIn);
     return vOut ;
 #endif
@@ -357,7 +357,7 @@ wchar_t* cnvI32toWS(int vIn)
 char* cnvI64toS8(long vIn)
 {
     const unsigned char maxBufferLen=32;
-    char* vOut=calloc(sizeof(char),maxBufferLen);
+    char* vOut=gcCalloc(sizeof(char),maxBufferLen);
     snprintf(vOut, maxBufferLen, "%ld", vIn);
 
     return vOut ;
@@ -371,7 +371,7 @@ wchar_t* cnvI64toWS(long vIn)
     return wcsdup(vOut);	
 #else
     const unsigned char maxBufferLen=32;
-    wchar_t* vOut=calloc(sizeof(wchar_t),maxBufferLen);
+    wchar_t* vOut=gcCalloc(sizeof(wchar_t),maxBufferLen);
     swprintf(vOut, maxBufferLen, L"%ld", vIn);
     return vOut ;
 #endif
@@ -382,7 +382,7 @@ wchar_t* cnvI64toWS(long vIn)
 char* cnvPTRtoS8(void* vIn)
 {
     const unsigned char maxBufferLen=32;
-    char* vOut=calloc(sizeof(char),maxBufferLen);
+    char* vOut=gcCalloc(sizeof(char),maxBufferLen);
     
     #if defined (_MSC_VER)
     snprintf(vOut, maxBufferLen, "0x%p", vIn);
@@ -396,7 +396,7 @@ char* cnvPTRtoS8(void* vIn)
 wchar_t* cnvPTRtoWS(void* vIn)
 {
     const unsigned char maxBufferLen=32;
-    wchar_t* vOut=calloc(sizeof(wchar_t),maxBufferLen+1);
+    wchar_t* vOut=gcCalloc(sizeof(wchar_t),maxBufferLen+1);
     
     #if defined (_MSC_VER)    
     swprintf(vOut, maxBufferLen*sizeof(wchar_t), L"0x%p", vIn);

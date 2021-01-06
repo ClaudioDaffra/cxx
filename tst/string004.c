@@ -221,6 +221,10 @@ int main()
             wprintf ( L"1) wstring :: [%ls]\n",v1s.data[0]->text ) ;
             wprintf ( L"2) wstring :: [%ls]\n",v1s.data[1]->text ) ;            
   
+    // p.s. work for string heap allocated pointer only
+    //      not string stack allocated
+    //		because of : stringPushBack -> (ID).data[len]   = (VAL);
+    //		and not memmove
     //.......................... 
     
     wstringDealloc(s1);
