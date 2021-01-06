@@ -45,7 +45,23 @@ wchar_t* 	cnvR32toWS	(float vIn);
 char* 		cnvR64toS8	(double vIn) ;
 wchar_t* 	cnvR64toWS	(double Vin) ;
 
+char *repl_str(const char *str, const char *from, const char *to);
+#define stringReplaceAll( ID , FROM , TO )\
+do{\
+(ID).data=repl_str((ID).data ,FROM,TO);\
+size_t len=strlen((ID).data);\
+(ID).size=len;\
+(ID).capacity=len;\
+}while(0);
 
+wchar_t *repl_wcs(const wchar_t *str, const wchar_t *from, const wchar_t *to) ;
+#define wstringReplaceAll( ID , FROM , TO )\
+do{\
+(ID).data=repl_wcs((ID).data ,FROM,TO);\
+size_t len=wcslen((ID).data);\
+(ID).size=len;\
+(ID).capacity=len;\
+}while(0);
 
 /**/
 

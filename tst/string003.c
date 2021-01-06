@@ -8,38 +8,11 @@
 	2)	sh buildLib.h
 		clear  	; gcc tst/string003.c	lib/libcxx.so   -o bin/x	-Wall -Wextra -pedantic
 
-	3)  cls     & cl 	src\gc.c src\stdio.c src\string.c tst\string003.c    /Febin\x.exe 	/utf-8 /WX
+	3)  cls     & cl 	src\gc.c src\stdio.c src\string.c tst\string003.c    /Febin\x.exe 	/utf-8 /WX /MP
     
     4)  wbuildLib.bat
         cls & cl tst\string003.c lib\cxx.lib            /Febin\x.exe    /utf-8 /WX
 */
-
-#define stringCheckCapacity(TYPE,ID,LEN)\
-    if (LEN>=(ID).capacity)\
-    {\
-        while (LEN > (ID).capacity) (ID).capacity *= 2;\
-       (ID).data = (TYPE*) gcRealloc (  (ID).data, (ID).capacity *  sizeof(TYPE)   );\
-    };
-    
-#define stringFromS8(ID,STR)\
-do{\
-    size_t len=strlen(STR);\
-    stringCheckCapacity(char,ID,len);\
-    strcpy ( (ID).data , STR );\
-    (ID).size = len;\
-}while(0);
-
-#define stringFromWS(ID,WSTR)\
-do{\
-    char* STR=cnvWStoS8(WSTR);\
-    size_t len=strlen(STR);\
-    stringCheckCapacity(char,ID,len);\
-    strcpy ( (ID).data , STR );\
-    (ID).size = len;\
-}while(0);
-
-#define stringLen(ID)   strlen((ID).data)
-#define mbstringLen(ID) strmblen((ID).data)
 
 int main() 
 {
@@ -252,38 +225,49 @@ int main()
             printf ( "1) string :: [%s]\n",v1s.data[0]->text ) ;
             printf ( "2) string :: [%s]\n",v1s.data[1]->text ) ;            
  
-    //.......................... 
+    //.......................... vector string
+
+        stringTypeDef( char 	   , x1 ) ;	// string_x1_t
+        
+        string_x1_t x1,x2  ;
+
+        stringAlloc( x1 , 8 ) ;
+        stringAlloc( x2 , 8 ) ;    
+
+        //
+     
+        vectorTypeDef( string_x1_t , v1 ) ;	// vector_v1_t     
+        
+        vector_v1_t v1 ;
+        
+        vectorAlloc( v1 , 8 ) ;
+
+        //
+        
+        stringFromS8( x1 , "CLAUDIO" );    
+        vectorPushBack( v1 , x1 ) ;
+        
+        stringFromS8( x2 , "DAFFRA" );    
+        vectorPushBack( v1 , x2 ) ;
+        
+        printf ( "\n0] %s." , v1.data[0].text );
+        printf ( "\n1] %s." , v1.data[1].text );
+        printf ( "\n"  );   
+    
+    // ......................... replace all
+    
+    stringFromS8(s1,"Claudio Daffra");
+    
+    printf ( "[s1] %s -> size %zu capacity %zu empty %u len(%zu)\n"
+        ,s1.data,stringSize(s1),stringCapacity(s1),stringEmpty(s1),stringLen(s1) )   ;
+
+    stringReplaceAll( s1 , "a" , "XYZ" ) ;
  
-
-	stringTypeDef( char 	   , x1 ) ;	// string_x1_t
-	
-    string_x1_t x1,x2  ;
-
-    stringAlloc( x1 , 8 ) ;
-    stringAlloc( x2 , 8 ) ;    
-
-    //
- 
-	vectorTypeDef( string_x1_t , v1 ) ;	// vector_v1_t     
-    
-    vector_v1_t v1 ;
-    
-    vectorAlloc( v1 , 8 ) ;
-
-    //
-    
-    stringFromS8( x1 , "CLAUDIO" );    
-    vectorPushBack( v1 , x1 ) ;
-    
-    stringFromS8( x2 , "DAFFRA" );    
-    vectorPushBack( v1 , x2 ) ;
-    
-    printf ( "\n0] %s." , v1.data[0].text );
-    printf ( "\n1] %s." , v1.data[1].text );
-    printf ( "\n"  );   
-    
-    // .........................
-    
+    printf ( "[s1] %s -> size %zu capacity %zu empty %u len(%zu)\n"
+        ,s1.data,stringSize(s1),stringCapacity(s1),stringEmpty(s1),stringLen(s1) )   ;
+        
+     // .........................
+     
 	stringDealloc(s1);
 
 	stringDealloc(s2);

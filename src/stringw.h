@@ -241,6 +241,31 @@ assert((ID).data!=NULL);									\
 (ID).capacity  = N;	
 */
 
+
+
+#define wstringCheckCapacity(TYPE,ID,LEN)\
+    if (LEN>=(ID).capacity)\
+    {\
+        while (LEN > (ID).capacity) (ID).capacity *= 2;\
+       (ID).data = (TYPE*) gcRealloc (  (ID).data, (ID).capacity *  sizeof(TYPE)   );\
+    };
+    
+#define wstringFromWS(ID,STR)\
+do{\
+    size_t len=wcslen(STR);\
+    wstringCheckCapacity(wchar_t,ID,len);\
+    wcscpy ( (ID).data , STR );\
+    (ID).size = len;\
+}while(0);
+
+#define wstringFromS8(ID,STR) wstringFromWS( ID , cnvS8toWS((char*)STR) ) 
+
+#define wstringLen(ID)   wcslen((ID).data)
+
+
+
+
+
 #endif
 
  

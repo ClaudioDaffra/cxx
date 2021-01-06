@@ -243,6 +243,38 @@ assert((ID).data!=NULL);									\
 (ID).capacity  = N;	
 */
 
+
+
+#define stringCheckCapacity(TYPE,ID,LEN)\
+    if (LEN>=(ID).capacity)\
+    {\
+        while (LEN > (ID).capacity) (ID).capacity *= 2;\
+       (ID).data = (TYPE*) gcRealloc (  (ID).data, (ID).capacity *  sizeof(TYPE)   );\
+    };
+    
+#define stringFromS8(ID,STR)\
+do{\
+    size_t len=strlen(STR);\
+    stringCheckCapacity(char,ID,len);\
+    strcpy ( (ID).data , STR );\
+    (ID).size = len;\
+}while(0);
+
+#define stringFromWS(ID,WSTR)\
+do{\
+    char* STR=cnvWStoS8(WSTR);\
+    size_t len=strlen(STR);\
+    stringCheckCapacity(char,ID,len);\
+    strcpy ( (ID).data , STR );\
+    (ID).size = len;\
+}while(0);
+
+#define stringLen(ID)   strlen((ID).data)
+#define mbstringLen(ID) strmblen((ID).data)
+
+
+
+
 #endif
 
  
