@@ -46,32 +46,43 @@ int main()
     gcStart();
     
     consoleSetMBS();
-    
-    //.......................... typedef def alloc
+
+	//.......................... typedef def alloc
 
     stringTypeDef(char,s1) ;
+     
+	//..........................  mbs
 
-    string_s1_t s1 , mbs ;
-
-    stringAlloc(s1,8);
+    string_s1_t mbs ;
     
     stringAlloc(mbs,8);
-     
+   
     // multi byte string
 
     stringFromWS ( mbs , L"你好吗" ) ;
 
     printf ( "\n[mbs] %s -> size %zu capacity %zu empty %u len(%zu)\n"
-        ,mbs.data,stringSize(mbs),stringCapacity(mbs),stringEmpty(mbs),mbstringLen(mbs) ) ;   
-    
+        ,mbs.data
+		,stringSize(mbs)
+		,stringCapacity(mbs)
+		,stringEmpty(mbs)
+		,mbstringLen(mbs) 
+	) ;  
+
     //
     //  p.s.
     //   
     //  per le stringhe multi byte occorre ( le operazione sono lente sui multibyte ) :
     //  1) convertirle in wstring ed utilizzare la libreria per poi riconvertirle ;
     //  2) adottarsi di una libreria esterna .
-    //
-    
+    //      
+ 
+	//..........................  string
+	
+    string_s1_t s1 ;
+
+    stringAlloc(s1,8);
+
     //.......................... init
     
     printf ("\n");
@@ -197,7 +208,7 @@ int main()
     printf("\n"); 
 
     //..........................  insert string from N
-   
+  
     stringFromS8(s1,"claudio"); // cl-audio
     stringFromS8(s2,"DAFFRA");  // DA-FFR-A
                                 // clAFFaudio
@@ -225,11 +236,14 @@ int main()
             pStringchar_t ps = NULL ;
             
             ps=new(string_char_t);
+            
             stringAlloc(*ps,8);
             stringFromS8( *ps , "Claudio" ) ; 
             vectorPushBack( v1s , ps ) ;
+	
 
             ps=new(string_char_t);
+            
             stringAlloc(*ps,8);
             stringFromS8( *ps , "Daffra" ) ; 
             vectorPushBack( v1s , ps ) ;
@@ -237,7 +251,7 @@ int main()
             printf ( "\n" ) ;    
             printf ( "1) string :: [%s]\n",v1s.data[0]->text ) ;
             printf ( "2) string :: [%s]\n",v1s.data[1]->text ) ;            
-  
+ 
     // p.s. work for string heap allocated pointer only
     //      not string stack allocated
     //		because of : stringPushBack -> (ID).data[len]   = (VAL);

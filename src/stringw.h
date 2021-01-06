@@ -226,8 +226,8 @@ assert((ID).data!=NULL);									\
 } while (0)
 // ........................................................... [] FREE 
 
-#define wstringDealloc(ID) do {                        \
-    if ( (ID).data != NULL ) gcFree( (ID).data );     \
+#define wstringDealloc(ID) do {                        						\
+    if ( (ID).data != NULL ) { gcFree( (ID).data );   (ID).data=NULL;  }	\
 } while(0)
 
 /*   
