@@ -280,6 +280,11 @@ strcpy((ID).data,strTemp);\
 (ID).capacity=len;\
 }while(0);
 
+#define stringCompare(ID1,ID2)  ( (  (ID1).size!=(ID2).size ) ? 1 : strcmp((ID1).data,(ID2).data) )
+
+#define stringCompareN(ID1,ID2,N)  strncmp( (ID1).data,(ID2).data ,N )
+
+
 
 #endif
 

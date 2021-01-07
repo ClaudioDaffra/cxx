@@ -279,8 +279,13 @@ int main()
     printf ( "[s1] %s -> size %zu capacity %zu empty %u len(%zu)\n"
         ,s1.text,stringSize(s1),stringCapacity(s1),stringEmpty(s1),stringLen(s1) )   ;
         	
+    // .........................  compare
+
+	printf ( "compare s1,s2 [%s] ?= [%s] -> [%d] \n",s1.data,s2.data,!stringCompare(s1,s2) ) ;
+	printf ( "compare s1,s2 [%s] ?= [%s] -> [%d] \n",s1.data,s1.data,!stringCompareN(s1,s1,3) ) ;
+		
     // ......................... 
-  
+      
 	stringDealloc(s1);
 
 	stringDealloc(s2);

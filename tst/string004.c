@@ -226,6 +226,11 @@ int main()
     wprintf ( L"[s1] %ls -> size %zu capacity %zu empty %u len(%zu)\n"
         ,s1.text,wstringSize(s1),wstringCapacity(s1),wstringEmpty(s1),wstringLen(s1) )   ;
         	
+    // .........................  compare
+
+	wprintf ( L"compare s1,s2 [%ls] ?= [%ls] -> [%d] \n",s1.data,s2.data,!wstringCompare(s1,s2) ) ;
+	wprintf ( L"compare s1,s2 [%ls] ?= [%ls] -> [%d] \n",s1.data,s1.data,!wstringCompareN(s1,s1,3) ) ;
+		
     // ......................... 
     	    
     wstringDealloc(s1);
