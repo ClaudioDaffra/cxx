@@ -243,8 +243,6 @@ assert((ID).data!=NULL);									\
 (ID).capacity  = N;	
 */
 
-
-
 #define stringCheckCapacity(TYPE,ID,LEN)\
     if (LEN>=(ID).capacity)\
     {\
@@ -272,7 +270,15 @@ do{\
 #define stringLen(ID)   strlen((ID).data)
 #define mbstringLen(ID) strmblen((ID).data)
 
-
+#define stringFormat(ID,FORMAT,...)\
+do{\
+char* strTemp=NULL;\
+strTemp=s8Format_( FORMAT , __VA_ARGS__ );\
+size_t len=strlen(strTemp);\
+strcpy((ID).data,strTemp);\
+(ID).size=len;\
+(ID).capacity=len;\
+}while(0);
 
 
 #endif

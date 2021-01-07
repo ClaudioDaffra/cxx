@@ -63,6 +63,15 @@ size_t len=wcslen((ID).data);\
 (ID).capacity=len;\
 }while(0);
 
+
+wchar_t* wsFormat_(const wchar_t* format,...);  
+#define wsFormat(FORMAT,...) wsFormat_( FORMAT , __VA_ARGS__ )
+
+char* s8Format_(const char* format,...);  
+#define s8Format(FORMAT,...) s8Format_( FORMAT , __VA_ARGS__ )
+
+
+
 /**/
 
 

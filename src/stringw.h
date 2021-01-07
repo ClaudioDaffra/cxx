@@ -234,14 +234,12 @@ assert((ID).data!=NULL);									\
 
 // ........................................................... [] wstring ALLLOC wstring 
 
-#define wstringAllocwstring(TYPE,ID,N)                  		\
+#define wstringAllocwstring(TYPE,ID,N)                  	\
 (ID).data = (void*) gcMalloc ( sizeof(TYPE) * N ); 			\
 assert((ID).data!=NULL);									\
 (ID).size      = 0;                                    		\
 (ID).capacity  = N;	
 */
-
-
 
 #define wstringCheckCapacity(TYPE,ID,LEN)\
     if (LEN>=(ID).capacity)\
@@ -262,8 +260,15 @@ do{\
 
 #define wstringLen(ID)   wcslen((ID).data)
 
-
-
+#define wstringFormat(ID,FORMAT,...)\
+do{\
+wchar_t* strTemp=NULL;\
+strTemp=wsFormat_( FORMAT , __VA_ARGS__ );\
+size_t len=wcslen(strTemp);\
+wcscpy((ID).data,strTemp);\
+(ID).size=len;\
+(ID).capacity=len;\
+}while(0);
 
 
 #endif

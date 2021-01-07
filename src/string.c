@@ -581,7 +581,63 @@ end_repl_wcs:
 	return ret;
 }
 
-/**/
+wchar_t* wsFormat_(const wchar_t* format,...) 
+{
+	va_list args,a2 ;
+	va_start (args  , format );
+	va_start (a2    , format );
 
+	// calcola la lunghezza della stringa 
+	wchar_t buffer[gcMaxStringBuffer];
+
+	int len = -1;
+	
+	len=vswprintf(buffer,gcMaxStringBuffer,format, args ); 
+	assert(len>=0);
+
+	wchar_t* temp  = gcMalloc( (len+1)*sizeof(wchar_t) );
+	assert(temp!=NULL);
+	
+	// formattala
+	len=vswprintf( temp , len+1, format, a2 );     
+	assert(len>=0); 
+	
+	va_end (args);
+	va_end (a2); 
+	
+	return temp;          
+}
+    
+
+char* s8Format_(const char* format,...) 
+{
+	va_list args,a2 ;
+	va_start (args  , format );
+	va_start (a2    , format );
+
+	// calcola la lunghezza della stringa 
+	char buffer[gcMaxStringBuffer];
+
+	int len = -1;
+	
+	len=vsprintf(buffer,format, args ); 
+	assert(len>=0);
+
+	char* temp  = gcMalloc( (len+1)*sizeof(wchar_t) );
+	assert(temp!=NULL);
+	
+	// formattala
+	len=vsprintf( temp , format, a2 );     
+	assert(len>=0); 
+	
+	va_end (args);
+	va_end (a2); 
+	
+	return temp;          
+}
+ 
+
+
+/**/
 
 

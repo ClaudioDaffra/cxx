@@ -24,6 +24,7 @@
 #include <ctype.h>
 #include <limits.h>
 #include <float.h>
+#include <stdarg.h>
 
 // ................................................ header cxx
 
@@ -76,7 +77,9 @@
 
 #define delete(ID)	if((ID)!=NULL){gcFree(ID);(ID)=NULL;}
 
+// ................................................ maxStringBuffer
 
+#define gcMaxStringBuffer 4096
 
 
 #endif

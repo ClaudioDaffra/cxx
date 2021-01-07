@@ -213,8 +213,21 @@ int main()
     wprintf ( L"[s1] %ls -> size %zu capacity %zu empty %u len(%zu)\n"
         ,s1.data,wstringSize(s1),wstringCapacity(s1),wstringEmpty(s1),wstringLen(s1) )   ;
         
+    // ......................... wstring formatn
+
+	wchar_t* x = wsFormat( L"%f" , 1.2 ) ;
+
+	wprintf ( L"--> %ls.\n",x) ;
+
+	//
+	
+	wstringFormat( s1,L"%f" , 3.4 ) ;
+
+    wprintf ( L"[s1] %ls -> size %zu capacity %zu empty %u len(%zu)\n"
+        ,s1.text,wstringSize(s1),wstringCapacity(s1),wstringEmpty(s1),wstringLen(s1) )   ;
+        	
     // ......................... 
-    
+    	    
     wstringDealloc(s1);
 
     wstringDealloc(s2);

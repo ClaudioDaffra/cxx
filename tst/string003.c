@@ -266,7 +266,20 @@ int main()
     printf ( "[s1] %s -> size %zu capacity %zu empty %u len(%zu)\n"
         ,s1.data,stringSize(s1),stringCapacity(s1),stringEmpty(s1),stringLen(s1) )   ;
     
-     // .........................
+    // ......................... wstring formatn
+
+	char* x = s8Format( "%f" , 1.2 ) ;
+
+	printf ( "--> %s.\n",x) ;
+
+	//
+	
+	stringFormat( s1,"%f" , 3.4 ) ;
+	
+    printf ( "[s1] %s -> size %zu capacity %zu empty %u len(%zu)\n"
+        ,s1.text,stringSize(s1),stringCapacity(s1),stringEmpty(s1),stringLen(s1) )   ;
+        	
+    // ......................... 
   
 	stringDealloc(s1);
 
