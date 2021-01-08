@@ -340,6 +340,11 @@ void* gcFree_( struct gc_s* gc , void* ptr )
 
 void* gcRealloc_( struct gc_s* gc , void* ptr, size_t size )
 {
+	if ( ptr==NULL ) 				// FIX WITH NULL POINTER
+	{
+		return gcMalloc(size);
+	}
+	
 	void* old = ptr ;
 
 	ptr = realloc( ptr,size ) ;
