@@ -25,7 +25,7 @@ int main()
 
 	// .......................... malloc
 	
-	int* a1 = gcMalloc(sizeof(int)*10 ) ;
+	int* a1 = gcMalloc(sizeof(int)*1000 ) ;
 
 	(void)a1;
 

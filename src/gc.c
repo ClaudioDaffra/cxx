@@ -337,7 +337,7 @@ void* gcFree_( struct gc_s* gc , void* ptr )
 }
 
 // ........................................... gc realloc
-
+/*
 void* gcRealloc_( struct gc_s* gc , void* ptr, size_t size )
 {
 	if ( ptr==NULL ) 				// FIX WITH NULL POINTER
@@ -352,6 +352,51 @@ void* gcRealloc_( struct gc_s* gc , void* ptr, size_t size )
 
 	gcFind(gc,old);
 	*gc->dtor=NULL ;	
+
+	return ptr ;
+}
+*/
+
+void* gcFree_NoDtor( struct gc_s* gc , void* ptr )
+{
+	if ( gcFind(gc,ptr) ) 
+	{
+		if (*gc->dtor!=NULL)
+		{
+			//(*gc->dtor)(ptr);
+			
+			*gc->dtor=NULL ;
+
+			ptr=NULL;
+		}
+	}
+	return ptr;
+}
+
+
+// ........................................... gc realloc
+
+void* gcRealloc_( struct gc_s* gc , void* ptr, size_t size )
+{
+	if ( ptr==NULL ) 				// FIX WITH NULL POINTER
+	{
+		return gcMalloc(size);
+	}
+	
+	void* old = ptr ;
+
+	ptr = realloc( ptr,size ) ;
+
+	if (old!=ptr)
+	{
+		gcAdd(gc,ptr,free);
+		// remove no free
+		gcFree_NoDtor(gc,old);
+	}
+	else
+	{
+		gcFree_(gc,old);
+	}
 
 	return ptr ;
 }
