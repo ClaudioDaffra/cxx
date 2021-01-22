@@ -2,12 +2,12 @@
 #include "../src/cxx.h"
 
 /*
-	1)	gcc src/stdio.c src/string.c tst/string001.c 	-o bin/x	-Wall -pedantic -Wextra
+	1)	gcc src/gc.c src/stdio.c src/string.c tst/string001.c 	-o bin/x	-Wall -pedantic -Wextra
 
 	2)	sh buildLib.h
 		clear  	; gcc tst/string001.c	lib/libcxx.so   -o bin/x	-Wall -Wextra -pedantic
 
-	3)  cls     & cl 	src\stdio.c src\string.c tst\string001.c    /Febin\x.exe 	/utf-8 /WX
+	3)  cls     & cl 	src\gc.c src\stdio.c src\string.c tst\string001.c    /Febin\x.exe 	/utf-8 /WX
     
     4)  wbuildLib.bat
         cls & cl tst\string001.c lib\cxx.lib            /Febin\x.exe    /utf-8 /WX
@@ -16,6 +16,8 @@
 
 int main() 
 {
+    gcStart();
+    
 	consoleSetMBS();
 		
     char* str3 = "claudio daffra";
@@ -37,6 +39,8 @@ int main()
     fprintf ( stdout,"[%s]\n",x ) ;
 
     printf("\nthat's al folks !\n");
+    
+    gcStop();
     
     return 0; 
 } 

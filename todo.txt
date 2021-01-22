@@ -4,6 +4,54 @@
 2)  gc local, 
     gc pause resume
 
-3) check strlen / wcslen != NULL
+3) check : 
+    strcmp wcscmp ,
+    strlen / wcslen != NULL
+    
+4) esempio 002 non funzionante in windows 32 to WS 16 to WS 
 
-4) vettori di stringhe
+5) string to do
+
+
+operator=
+begin
+end
+rbegin
+rend
+cbegin 
+cend 
+crbegin 
+crend 
+max_size
+resize
+reserve
+empty
+shrink_to_fit 
+Element access:
+operator[]
+at
+back 
+front 
+Modifiers:
+operator+=
+append
+push_back
+assign
+insert
+erase
+replace
+swap
+pop_back 
+c_str
+data
+get_allocator
+copy
+find
+rfind
+find_first_of
+find_last_of
+find_first_not_of
+find_last_not_of
+substr
+compare
+ 
