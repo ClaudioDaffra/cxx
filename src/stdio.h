@@ -1,38 +1,13 @@
 #ifndef cdSTDIO
 #define cdSTDIO
 
-#include <string.h>
-#include <wchar.h>
-#include <locale.h>
-#include <stdio.h>
-#include <stdint.h>
-#include <stdbool.h>
-#include <errno.h>
-
+#include "cxx.h"
 
 // questo per evitare warning comparazione ( signed wchar_t / unsigned wchar_t )
 #define _WEOF (wchar_t)WEOF
 
 // (not standard ) : error: use of undeclared identifier 'errno_t'
 typedef int errno_t;
-
-//
-
-#if defined(_WIN32) || defined(_WIN64)
-
-#include <windows.h>
-#include <io.h>
-#include <fcntl.h>
-
-#endif
-
-#include <wchar.h>
-#include <stdint.h>
-#include <stdio.h>
-#include <string.h>
-#include <locale.h>
-#include <wchar.h>
-#include <stdlib.h>
 
 typedef enum console_stream_e
 {
@@ -44,12 +19,15 @@ typedef enum console_stream_e
 
 extern console_stream_t std_stream;
 
+extern void cdConsolesetUTF8    ( void ) ;
+#define 	consoleSetUTF8  	cdConsolesetUTF8
+#define 	stdConsoleSetUTF8   cdConsolesetUTF8
 
-extern void cdConsolesetUTF8    ( void    ) ;
+void 		consoleSetMBS		(void) ;
+#define 	stdConsoleSetMBS     consoleSetMBS
 
-#define consoleSetUTF8  cdConsolesetUTF8
-void 	consoleSetMBS	(void) ;
-
+int       	cdFileWOpen     	( FILE** pf, char* fileName, const char* flag , const char* ccs ) ;
+#define 	stdFileWOpen        cdFileWOpen
 
 #endif 
 

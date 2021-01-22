@@ -4,7 +4,6 @@
 
 // ................................................ default header
 
-
 #define _GNU_SOURCE
 
 #define _XOPEN_SOURCE_EXTENDED 1
@@ -25,6 +24,28 @@
 #include <limits.h>
 #include <float.h>
 #include <stdarg.h>
+#include <locale.h>
+#include <stdbool.h>
+#include <errno.h>
+#include <wctype.h>
+#include <time.h>
+#include <errno.h>
+
+
+#if defined(_WIN32) || defined(_WIN64)
+	#include <windows.h>
+	#include <io.h>
+	#include <fcntl.h>
+#endif
+
+#ifdef __linux__
+	#include <wchar.h>
+#endif
+
+#ifdef __APPLE__
+	#pragma GCC diagnostic push
+	#pragma GCC diagnostic ignored "-Wdollar-in-identifier-extension"
+#endif
 
 // ................................................ header cxx
 
@@ -81,6 +102,8 @@
 
 #define gcMaxStringBuffer 4096
 
+#define wdebug(...) fwprintf(stderr,__VA_ARGS__)
+#define debug(...)  fprintf (stderr,__VA_ARGS__)
 
 #endif
 

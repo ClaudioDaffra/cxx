@@ -9,7 +9,6 @@
 // vectorTypeDef(TYPE,ID)
 
 /*
- 
     vector_ID_d			:	TYPE
     ID_d				:   TYPE
 	vector_ID_s			:	struct vector_ID_s
@@ -26,7 +25,7 @@ typedef struct MERGE ( MERGE ( vector_ , ID )  , _s )	\
     size_t  size        ;                           	\
     size_t  capacity    ;                           	\
 }  MERGE ( MERGE ( vector_ , ID )  , _t ) ;				\
-typedef MERGE ( MERGE ( vector_ , ID )  , _t ) * MERGE ( MERGE ( vector_ , ID )  , _p );
+typedef MERGE ( MERGE ( vector_ , ID )  , _t ) * MERGE ( MERGE ( vector_ , ID )  , _p )
 
 // vectorType(TYPE,ID) :  generic vector
 

@@ -1,6 +1,7 @@
 
 #include "string.h"
 
+
 // ............................................... vIn len 16 / 32
 
 size_t str16len(char16_t* strarg)
